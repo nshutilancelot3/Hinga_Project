@@ -6,6 +6,10 @@ A bilingual web platform for Rwanda's smallholder farmers: market prices, weathe
 
 [View the 4-week sprint board](https://github.com/users/Teta-Dianah/projects/3)
 
+## Design
+
+[Wireframes on Figma](https://www.figma.com/design/DvsgrmtfWybZK8p3MtUV9P/Hinga-wireframes?node-id=0-1) (user flow, mobile and desktop screens)
+
 ## Team
 
 | Name | Role | GitHub |
