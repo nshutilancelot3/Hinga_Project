@@ -1,0 +1,106 @@
+{
+  "nav": {
+    "prices": "Ibiciro by'Isoko",
+    "weather": "Ikirere",
+    "diagnosis": "Isuzuma ry'Ibihingwa",
+    "marketplace": "Isoko",
+    "login": "Injira",
+    "register": "Iyandikishe",
+    "logout": "Sohoka",
+    "admin": "Ikibanza cy'Ubuyobozi"
+  },
+  "auth": {
+    "fullName": "Amazina yombi",
+    "email": "Aderesi imeli",
+    "password": "Ijambo banga",
+    "role": "Ndi",
+    "district": "Akarere",
+    "languagePref": "Ururimi rukunda",
+    "registerTitle": "Fungura konti yawe",
+    "loginTitle": "Murakaza neza",
+    "registerButton": "Fungura konti",
+    "loginButton": "Injira",
+    "noAccount": "Nta konti ufite?",
+    "hasAccount": "Usanganywe konti?",
+    "roles": {
+      "farmer": "Umuhinzi",
+      "buyer": "Umuguzi",
+      "coop_admin": "Umuyobozi w'Ikoperative"
+    },
+    "languages": {
+      "rw": "Ikinyarwanda",
+      "en": "Icyongereza"
+    },
+    "errors": {
+      "invalidCredentials": "Imeli cyangwa ijambo banga sibyo.",
+      "emailTaken": "Konti ifite iyi imeli isanzwe ihari.",
+      "generic": "Hari ikibazo. Ongera ugerageze."
+    }
+  },
+  "prices": {
+    "title": "Ibiciro by'Isoko",
+    "filterCrop": "Shungura ubuhinzi",
+    "filterMarket": "Shungura isoko",
+    "allCrops": "Ubuhinzi bwose",
+    "allMarkets": "Amasoko yose",
+    "crop": "Ubuhinzi",
+    "market": "Isoko",
+    "price": "Igiciro (RWF/kg)",
+    "date": "Itariki",
+    "loading": "Gutegereza ibiciro...",
+    "empty": "Nta biciro bibonetse."
+  },
+  "weather": {
+    "title": "Iteganyabihe",
+    "selectDistrict": "Hitamo akarere",
+    "loading": "Gutegereza iteganyabihe...",
+    "feelsLike": "Biteye nk'aho",
+    "humidity": "Ubuhehere",
+    "wind": "Umuyaga"
+  },
+  "diagnosis": {
+    "title": "Isuzuma ry'Ibihingwa",
+    "upload": "Shyiraho ifoto y'igihingwa cyawe",
+    "dragDrop": "Kururura cyangwa kanda ushyireho",
+    "diagnoseButton": "Suzuma",
+    "loading": "Gusuzuma igihingwa cyawe...",
+    "result": "Ibisubizo by'isuzuma",
+    "confidence": "Ubushobozi",
+    "disclaimer": "Iyi nsubizo ni ubufasha gusa. Baza inzobere mu buhinzi igihe hari ikibazo gikomeye.",
+    "errors": {
+      "noFile": "Hitamo ifoto mbere.",
+      "tooLarge": "Ifoto igomba kuba munsi ya 5MB.",
+      "generic": "Isuzuma ntiryakunze. Ongera ugerageze."
+    }
+  },
+  "marketplace": {
+    "title": "Isoko",
+    "postListing": "Shyira urutonde",
+    "sendEnquiry": "Ohereza ikibazo",
+    "filterCrop": "Shungura ubuhinzi",
+    "filterDistrict": "Shungura akarere",
+    "allCrops": "Ubuhinzi bwose",
+    "allDistricts": "Indangakarere zose",
+    "quantity": "Ingano (kg)",
+    "pricePerKg": "Igiciro kuri kg (RWF)",
+    "description": "Ibisobanuro",
+    "district": "Akarere",
+    "crop": "Ubwoko bw'igihingwa",
+    "farmer": "Umuhinzi",
+    "message": "Ubutumwa bwawe",
+    "submit": "Ohereza",
+    "cancel": "Hagarika",
+    "loading": "Gutegereza urutonde...",
+    "empty": "Nta rutonde ruhari.",
+    "enquirySent": "Ikibazo cyawe cyoherejwe."
+  },
+  "common": {
+    "loading": "Gutegereza...",
+    "error": "Hari ikibazo.",
+    "retry": "Ongera ugerageze",
+    "save": "Bika",
+    "delete": "Siba",
+    "edit": "Hindura",
+    "close": "Funga"
+  }
+}

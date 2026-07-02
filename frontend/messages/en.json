@@ -1,0 +1,106 @@
+{
+  "nav": {
+    "prices": "Market Prices",
+    "weather": "Weather",
+    "diagnosis": "Crop Diagnosis",
+    "marketplace": "Marketplace",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "admin": "Admin Panel"
+  },
+  "auth": {
+    "fullName": "Full name",
+    "email": "Email address",
+    "password": "Password",
+    "role": "I am a",
+    "district": "District",
+    "languagePref": "Preferred language",
+    "registerTitle": "Create your account",
+    "loginTitle": "Welcome back",
+    "registerButton": "Create account",
+    "loginButton": "Sign in",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "roles": {
+      "farmer": "Farmer",
+      "buyer": "Buyer",
+      "coop_admin": "Cooperative Admin"
+    },
+    "languages": {
+      "rw": "Kinyarwanda",
+      "en": "English"
+    },
+    "errors": {
+      "invalidCredentials": "Wrong email or password.",
+      "emailTaken": "An account with this email already exists.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "prices": {
+    "title": "Market Prices",
+    "filterCrop": "Filter by crop",
+    "filterMarket": "Filter by market",
+    "allCrops": "All crops",
+    "allMarkets": "All markets",
+    "crop": "Crop",
+    "market": "Market",
+    "price": "Price (RWF/kg)",
+    "date": "Date",
+    "loading": "Loading prices...",
+    "empty": "No prices found."
+  },
+  "weather": {
+    "title": "Weather Forecast",
+    "selectDistrict": "Select district",
+    "loading": "Loading forecast...",
+    "feelsLike": "Feels like",
+    "humidity": "Humidity",
+    "wind": "Wind"
+  },
+  "diagnosis": {
+    "title": "Crop Diagnosis",
+    "upload": "Upload a photo of your crop",
+    "dragDrop": "Drag and drop or click to select",
+    "diagnoseButton": "Diagnose",
+    "loading": "Analysing your crop...",
+    "result": "Diagnosis result",
+    "confidence": "Confidence",
+    "disclaimer": "This result is a guide only. Consult an agronomist for serious crop issues.",
+    "errors": {
+      "noFile": "Please select an image first.",
+      "tooLarge": "Image must be under 5MB.",
+      "generic": "Diagnosis failed. Please try again."
+    }
+  },
+  "marketplace": {
+    "title": "Marketplace",
+    "postListing": "Post a listing",
+    "sendEnquiry": "Send enquiry",
+    "filterCrop": "Filter by crop",
+    "filterDistrict": "Filter by district",
+    "allCrops": "All crops",
+    "allDistricts": "All districts",
+    "quantity": "Quantity (kg)",
+    "pricePerKg": "Price per kg (RWF)",
+    "description": "Description",
+    "district": "District",
+    "crop": "Crop type",
+    "farmer": "Farmer",
+    "message": "Your message",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "loading": "Loading listings...",
+    "empty": "No listings yet.",
+    "enquirySent": "Your enquiry was sent."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "retry": "Try again",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  }
+}
