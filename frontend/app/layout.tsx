@@ -5,7 +5,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Hinga',
-  description: 'Isoko, ikirere, isuzuma ry\'ibihingwa — mu Kinyarwanda.',
+  description: 'Isoko, ikirere, isuzuma ry\'ibihingwa mu Kinyarwanda.',
 };
 
 export default async function RootLayout({
