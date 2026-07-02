@@ -6,3 +6,89 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  user_id       String   @id @default(uuid()) @db.Uuid
+  full_name     String   @db.VarChar(100)
+  email         String   @unique @db.VarChar(150)
+  password_hash String
+  role          String   @db.VarChar(20)
+  district      String   @db.VarChar(50)
+  language_pref String   @default("rw") @db.VarChar(10)
+  created_at    DateTime @default(now())
+
+  listings           Listing[]
+  market_prices      MarketPrice[]
+  diagnosis_sessions DiagnosisSession[]
+  enquiries          Enquiry[]
+
+  @@map("users")
+}
+
+model MarketPrice {
+  price_id    String   @id @default(uuid()) @db.Uuid
+  market_name String   @db.VarChar(80)
+  crop_type   String   @db.VarChar(80)
+  price_rwf   Decimal  @db.Decimal(10, 2)
+  unit        String   @default("kg") @db.VarChar(20)
+  admin_id    String   @db.Uuid
+  recorded_at DateTime @default(now())
+
+  admin User @relation(fields: [admin_id], references: [user_id])
+
+  @@map("market_prices")
+}
+
+model Listing {
+  listing_id   String   @id @default(uuid()) @db.Uuid
+  farmer_id    String   @db.Uuid
+  crop_type    String   @db.VarChar(80)
+  quantity_kg  Decimal  @db.Decimal(10, 2)
+  price_per_kg Decimal  @db.Decimal(10, 2)
+  district     String   @db.VarChar(50)
+  status       String   @default("active") @db.VarChar(20)
+  created_at   DateTime @default(now())
+
+  farmer    User      @relation(fields: [farmer_id], references: [user_id])
+  enquiries Enquiry[]
+
+  @@map("listings")
+}
+
+model Enquiry {
+  enquiry_id String   @id @default(uuid()) @db.Uuid
+  listing_id String   @db.Uuid
+  buyer_id   String   @db.Uuid
+  message    String
+  status     String   @default("pending") @db.VarChar(20)
+  created_at DateTime @default(now())
+
+  listing Listing @relation(fields: [listing_id], references: [listing_id])
+  buyer   User    @relation(fields: [buyer_id], references: [user_id])
+
+  @@map("enquiries")
+}
+
+model DiagnosisSession {
+  session_id   String   @id @default(uuid()) @db.Uuid
+  farmer_id    String   @db.Uuid
+  crop_type    String   @db.VarChar(80)
+  disease_name String   @db.VarChar(150)
+  confidence   Float
+  treatment    String
+  created_at   DateTime @default(now())
+
+  farmer User @relation(fields: [farmer_id], references: [user_id])
+
+  @@map("diagnosis_sessions")
+}
+
+model WeatherCache {
+  cache_id      String   @id @default(uuid()) @db.Uuid
+  district      String   @unique @db.VarChar(50)
+  forecast_json String
+  fetched_at    DateTime @default(now())
+  expires_at    DateTime
+
+  @@map("weather_cache")
+}
