@@ -1,5 +1,5 @@
 # Hinga Frontend
 
-Next.js 14 app (Tailwind CSS, next-intl for Kinyarwanda/English). Scaffolded in [#3](https://github.com/nshutilancelot3/Hinga_Project/issues/3).
+Next.js 14 app (Tailwind CSS, next-intl for Kinyarwanda/English). 
 
-Deployed on Render — see [#7](https://github.com/nshutilancelot3/Hinga_Project/issues/7).
+Deployed on Render. Live at [hinga-frontend.onrender.com](https://hinga-frontend.onrender.com).
