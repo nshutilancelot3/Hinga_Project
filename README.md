@@ -1,10 +1,14 @@
 # Hinga
 
-A bilingual web platform for Rwanda's smallholder farmers — market prices, weather forecast, crop disease diagnosis, and a produce marketplace in Kinyarwanda and English.
+A bilingual web platform for Rwanda's smallholder farmers: market prices, weather forecast, crop disease diagnosis, and a produce marketplace in Kinyarwanda and English.
 
 ## Scrum Board
 
 [View the 4-week sprint board](https://github.com/users/Teta-Dianah/projects/3)
+
+## Design
+
+[Wireframes on Figma](https://www.figma.com/design/DvsgrmtfWybZK8p3MtUV9P/Hinga-wireframes?node-id=0-1) (user flow, mobile and desktop screens)
 
 ## Team
 
