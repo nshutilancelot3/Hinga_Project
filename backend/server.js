@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'ok', service: 'hinga-backend' });
 });
 
 const PORT = process.env.PORT || 4000;
