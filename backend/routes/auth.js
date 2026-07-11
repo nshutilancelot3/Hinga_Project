@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const prisma = require('../lib/prisma');
 
 const router = express.Router();
@@ -47,9 +48,22 @@ router.post('/login', async (req, res) => {
     return res.status(401).json({ error: 'Invalid email or password' });
   }
 
-  // TODO(#9, second half): issue JWT signed with JWT_SECRET (7-day expiry)
-  // and return it alongside user_id, full_name, role, district, language_pref.
-  res.status(501).json({ error: 'Login not fully implemented yet' });
+  const token = jwt.sign(
+    { user_id: user.user_id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  res.json({
+    token,
+    user: {
+      user_id: user.user_id,
+      full_name: user.full_name,
+      role: user.role,
+      district: user.district,
+      language_pref: user.language_pref,
+    },
+  });
 });
 
 module.exports = router;
