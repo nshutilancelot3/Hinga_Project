@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const prisma = require('../lib/prisma');
 
 const router = express.Router();
@@ -31,6 +32,37 @@ router.post('/register', async (req, res) => {
     user_id: user.user_id,
     email: user.email,
     role: user.role,
+  });
+});
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+
+  const valid = await bcrypt.compare(password, user.password_hash);
+  if (!valid) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+
+  const token = jwt.sign(
+    { user_id: user.user_id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  res.json({
+    token,
+    user: {
+      user_id: user.user_id,
+      full_name: user.full_name,
+      role: user.role,
+      district: user.district,
+      language_pref: user.language_pref,
+    },
   });
 });
 
