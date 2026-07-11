@@ -34,4 +34,22 @@ router.post('/register', async (req, res) => {
   });
 });
 
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+
+  const valid = await bcrypt.compare(password, user.password_hash);
+  if (!valid) {
+    return res.status(401).json({ error: 'Invalid email or password' });
+  }
+
+  // TODO(#9, second half): issue JWT signed with JWT_SECRET (7-day expiry)
+  // and return it alongside user_id, full_name, role, district, language_pref.
+  res.status(501).json({ error: 'Login not fully implemented yet' });
+});
+
 module.exports = router;
