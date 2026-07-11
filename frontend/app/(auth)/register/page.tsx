@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiPost, getErrorKey } from '@/lib/api';
+import { apiPost, getErrorMessage } from '@/lib/api';
 
 const DISTRICTS = [
   'Bugesera','Burera','Gakenke','Gasabo','Gatsibo','Gicumbi','Gisagara',
@@ -35,7 +35,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const data = await apiPost('/auth/register', {
+      await apiPost('/auth/register', {
         full_name: fullName,
         email,
         password,
@@ -43,10 +43,9 @@ export default function RegisterPage() {
         district,
         language_pref: languagePref,
       });
-      localStorage.setItem('token', data.token);
-      router.push('/prices');
+      router.push('/login');
     } catch (err) {
-      setError(t(`errors.${getErrorKey(err)}` as 'errors.generic'));
+      setError(getErrorMessage(err, t('errors.generic')));
     } finally {
       setLoading(false);
     }

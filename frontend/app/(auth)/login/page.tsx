@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiPost, getErrorKey } from '@/lib/api';
+import { apiPost, getErrorMessage } from '@/lib/api';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -27,7 +27,7 @@ export default function LoginPage() {
       localStorage.setItem('token', data.token);
       router.push('/prices');
     } catch (err) {
-      setError(t(`errors.${getErrorKey(err)}` as 'errors.generic'));
+      setError(getErrorMessage(err, t('errors.generic')));
     } finally {
       setLoading(false);
     }
