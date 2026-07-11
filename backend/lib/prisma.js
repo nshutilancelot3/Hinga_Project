@@ -1,3 +1,4 @@
+// Shared PrismaClient instance so every route reuses one connection pool.
 const { PrismaClient } = require('@prisma/client');
 const { PrismaPg } = require('@prisma/adapter-pg');
 
