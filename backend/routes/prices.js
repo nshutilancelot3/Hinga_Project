@@ -33,10 +33,24 @@ router.get('/', async (req, res) => {
 // POST /api/prices
 
 router.post('/', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
-  const { market_name, crop_type, price_rwf, unit } = req.body;
+  const market_name = typeof req.body.market_name === 'string' ? req.body.market_name.trim() : '';
+  const crop_type = typeof req.body.crop_type === 'string' ? req.body.crop_type.trim() : '';
+  const { price_rwf, unit } = req.body;
 
   if (!market_name || !crop_type || price_rwf === undefined) {
     return res.status(400).json({ error: 'market_name, crop_type and price_rwf are required' });
+  }
+  if (market_name.length > 80 || crop_type.length > 80) {
+    return res.status(400).json({ error: 'market_name and crop_type must be 80 characters or fewer' });
+  }
+
+  const parsedPrice = Number(price_rwf);
+  if (Number.isNaN(parsedPrice) || parsedPrice <= 0) {
+    return res.status(400).json({ error: 'price_rwf must be a positive number' });
+  }
+
+  if (unit !== undefined && (typeof unit !== 'string' || !unit.trim() || unit.length > 20)) {
+    return res.status(400).json({ error: 'unit must be a non-empty string of 20 characters or fewer' });
   }
 
   try {
@@ -44,8 +58,8 @@ router.post('/', authenticate, requireRole('coop_admin', 'super_admin'), async (
       data: {
         market_name,
         crop_type,
-        price_rwf,
-        ...(unit !== undefined && { unit }),
+        price_rwf: parsedPrice,
+        ...(unit !== undefined && { unit: unit.trim() }),
         admin_id: req.user.user_id,
       },
     });
