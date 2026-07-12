@@ -1,11 +1,12 @@
 const express = require('express');
 const prisma = require('../lib/prisma');
+const authenticate = require('../middleware/authenticate');
+const requireRole = require('../middleware/requireRole');
 
 const router = express.Router();
 
 // GET /api/prices
-// Public. Returns market prices ordered by most recent first.
-// Optional filters: ?crop=<crop_type> and ?market=<market_name> (case-insensitive).
+
 router.get('/', async (req, res) => {
   const { crop, market } = req.query;
 
@@ -26,6 +27,62 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('GET /api/prices failed:', err);
     res.status(500).json({ error: 'Failed to fetch market prices' });
+  }
+});
+
+// PUT /api/prices/:id
+
+router.put('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
+  const { price_rwf, unit, market_name } = req.body;
+
+  const data = {};
+  if (price_rwf !== undefined) {
+    const parsed = Number(price_rwf);
+    if (Number.isNaN(parsed) || parsed <= 0) {
+      return res.status(400).json({ error: 'price_rwf must be a positive number' });
+    }
+    data.price_rwf = parsed;
+  }
+  if (unit !== undefined) {
+    data.unit = unit;
+  }
+  if (market_name !== undefined) {
+    data.market_name = market_name;
+  }
+
+  if (Object.keys(data).length === 0) {
+    return res.status(400).json({ error: 'Provide at least one of price_rwf, unit, market_name' });
+  }
+
+  try {
+    const price = await prisma.marketPrice.update({
+      where: { price_id: req.params.id },
+      data,
+    });
+    res.json(price);
+  } catch (err) {
+    if (err.code === 'P2025') {
+      return res.status(404).json({ error: 'Price record not found' });
+    }
+    console.error('PUT /api/prices/:id failed:', err);
+    res.status(500).json({ error: 'Failed to update market price' });
+  }
+});
+
+// DELETE /api/prices/:id
+
+router.delete('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
+  try {
+    await prisma.marketPrice.delete({
+      where: { price_id: req.params.id },
+    });
+    res.status(204).end();
+  } catch (err) {
+    if (err.code === 'P2025') {
+      return res.status(404).json({ error: 'Price record not found' });
+    }
+    console.error('DELETE /api/prices/:id failed:', err);
+    res.status(500).json({ error: 'Failed to delete market price' });
   }
 });
 
