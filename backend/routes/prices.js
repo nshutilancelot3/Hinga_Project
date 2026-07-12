@@ -30,6 +30,32 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST /api/prices
+
+router.post('/', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
+  const { market_name, crop_type, price_rwf, unit } = req.body;
+
+  if (!market_name || !crop_type || price_rwf === undefined) {
+    return res.status(400).json({ error: 'market_name, crop_type and price_rwf are required' });
+  }
+
+  try {
+    const price = await prisma.marketPrice.create({
+      data: {
+        market_name,
+        crop_type,
+        price_rwf,
+        ...(unit !== undefined && { unit }),
+        admin_id: req.user.user_id,
+      },
+    });
+    res.status(201).json(price);
+  } catch (err) {
+    console.error('POST /api/prices failed:', err);
+    res.status(500).json({ error: 'Failed to create market price' });
+  }
+});
+
 // PUT /api/prices/:id
 
 router.put('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
