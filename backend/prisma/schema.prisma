@@ -45,6 +45,7 @@ model Listing {
   quantity_kg  Decimal  @db.Decimal(10, 2)
   price_per_kg Decimal  @db.Decimal(10, 2)
   district     String   @db.VarChar(50)
+  description  String?
   status       String   @default("active") @db.VarChar(20)
   created_at   DateTime @default(now())
 
