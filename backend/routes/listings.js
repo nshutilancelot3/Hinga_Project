@@ -162,4 +162,18 @@ router.put('/:id', authenticate, requireRole('farmer'), loadOwnListing, async (r
   }
 });
 
+// DELETE /api/listings/:id
+
+router.delete('/:id', authenticate, requireRole('farmer'), loadOwnListing, async (req, res) => {
+  try {
+    await prisma.listing.delete({
+      where: { listing_id: req.params.id },
+    });
+    res.status(204).end();
+  } catch (err) {
+    console.error('DELETE /api/listings/:id failed:', err);
+    res.status(500).json({ error: 'Failed to delete listing' });
+  }
+});
+
 module.exports = router;
