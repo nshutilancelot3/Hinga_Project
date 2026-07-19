@@ -5,14 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiPost, getErrorMessage } from '@/lib/api';
-
-const DISTRICTS = [
-  'Bugesera','Burera','Gakenke','Gasabo','Gatsibo','Gicumbi','Gisagara',
-  'Huye','Kamonyi','Karongi','Kayonza','Kicukiro','Kirehe','Muhanga',
-  'Musanze','Ngabo','Ngoma','Ngororero','Nyabihu','Nyagatare','Nyamagabe',
-  'Nyamasheke','Nyanza','Nyarugenge','Nyaruguru','Rubavu','Ruhango',
-  'Rulindo','Rusizi','Rutsiro','Rwamagana',
-];
+import { DISTRICTS } from '@/lib/districts';
 
 export default function RegisterPage() {
   const t = useTranslations('auth');
