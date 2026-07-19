@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiGet, apiPost, getCurrentUser, getErrorMessage, isLoggedIn } from '@/lib/api';
+import { apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 
 type Listing = {
@@ -24,7 +24,8 @@ export default function MarketplacePage() {
 
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [errorRaw, setErrorRaw] = useState('');
+  const [hasError, setHasError] = useState(false);
   const [cropFilter, setCropFilter] = useState('');
   const [districtFilter, setDistrictFilter] = useState('');
 
@@ -34,12 +35,14 @@ export default function MarketplacePage() {
   const [postQuantity, setPostQuantity] = useState('');
   const [postPrice, setPostPrice] = useState('');
   const [postDescription, setPostDescription] = useState('');
-  const [postError, setPostError] = useState('');
+  const [postErrorRaw, setPostErrorRaw] = useState('');
+  const [postHasError, setPostHasError] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
 
   const [openEnquiryId, setOpenEnquiryId] = useState<string | null>(null);
   const [enquiryMessage, setEnquiryMessage] = useState('');
-  const [enquiryError, setEnquiryError] = useState('');
+  const [enquiryErrorRaw, setEnquiryErrorRaw] = useState('');
+  const [enquiryHasError, setEnquiryHasError] = useState(false);
   const [enquiryLoading, setEnquiryLoading] = useState(false);
   const [sentEnquiryIds, setSentEnquiryIds] = useState<string[]>([]);
 
@@ -51,7 +54,10 @@ export default function MarketplacePage() {
     setLoading(true);
     apiGet('/listings')
       .then(setListings)
-      .catch((err) => setError(getErrorMessage(err, tc('error'))))
+      .catch((err) => {
+        setErrorRaw(getRawError(err));
+        setHasError(true);
+      })
       .finally(() => setLoading(false));
   }
 
@@ -81,7 +87,7 @@ export default function MarketplacePage() {
 
   async function handlePostSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setPostError('');
+    setPostHasError(false);
     setPostLoading(true);
 
     try {
@@ -99,7 +105,8 @@ export default function MarketplacePage() {
       setPostDescription('');
       loadListings();
     } catch (err) {
-      setPostError(getErrorMessage(err, tc('error')));
+      setPostErrorRaw(getRawError(err));
+      setPostHasError(true);
     } finally {
       setPostLoading(false);
     }
@@ -112,12 +119,12 @@ export default function MarketplacePage() {
     }
     setOpenEnquiryId(listingId);
     setEnquiryMessage('');
-    setEnquiryError('');
+    setEnquiryHasError(false);
   }
 
   async function handleEnquirySubmit(e: React.FormEvent, listingId: string) {
     e.preventDefault();
-    setEnquiryError('');
+    setEnquiryHasError(false);
     setEnquiryLoading(true);
 
     try {
@@ -125,7 +132,8 @@ export default function MarketplacePage() {
       setSentEnquiryIds((ids) => [...ids, listingId]);
       setOpenEnquiryId(null);
     } catch (err) {
-      setEnquiryError(getErrorMessage(err, tc('error')));
+      setEnquiryErrorRaw(getRawError(err));
+      setEnquiryHasError(true);
     } finally {
       setEnquiryLoading(false);
     }
@@ -174,7 +182,7 @@ export default function MarketplacePage() {
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
+      {hasError && <p className="text-sm text-red-600 mb-4">{errorRaw || tc('error')}</p>}
 
       {showPostForm && (
         <form
@@ -236,7 +244,7 @@ export default function MarketplacePage() {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
             />
           </div>
-          {postError && <p className="text-sm text-red-600">{postError}</p>}
+          {postHasError && <p className="text-sm text-red-600">{postErrorRaw || tc('error')}</p>}
           <div className="flex gap-3">
             <button
               type="submit"
@@ -294,7 +302,7 @@ export default function MarketplacePage() {
                         placeholder={t('message')}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
                       />
-                      {enquiryError && <p className="text-sm text-red-600">{enquiryError}</p>}
+                      {enquiryHasError && <p className="text-sm text-red-600">{enquiryErrorRaw || tc('error')}</p>}
                       <div className="flex gap-2">
                         <button
                           type="submit"

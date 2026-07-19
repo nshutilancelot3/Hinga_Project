@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiPost, getErrorMessage } from '@/lib/api';
+import { apiPost, getRawError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 
 export default function RegisterPage() {
@@ -19,12 +19,13 @@ export default function RegisterPage() {
   const [role, setRole] = useState('farmer');
   const [district, setDistrict] = useState(DISTRICTS[0]);
   const [languagePref, setLanguagePref] = useState('rw');
-  const [error, setError] = useState('');
+  const [errorRaw, setErrorRaw] = useState('');
+  const [hasError, setHasError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
+    setHasError(false);
     setLoading(true);
 
     try {
@@ -38,7 +39,8 @@ export default function RegisterPage() {
       });
       router.push('/login');
     } catch (err) {
-      setError(getErrorMessage(err, t('errors.generic')));
+      setErrorRaw(getRawError(err));
+      setHasError(true);
     } finally {
       setLoading(false);
     }
@@ -113,7 +115,7 @@ export default function RegisterPage() {
               <option value="en">{t('languages.en')}</option>
             </select>
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {hasError && <p className="text-sm text-red-600">{errorRaw || t('errors.generic')}</p>}
           <button
             type="submit"
             disabled={loading}

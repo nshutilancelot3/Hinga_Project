@@ -64,10 +64,6 @@ export function getCurrentUser() {
   return raw ? JSON.parse(raw) : null;
 }
 
-export function getErrorMessage(err: unknown, fallback: string) {
-  return err instanceof Error && err.message ? err.message : fallback;
-}
-
 // Callers translate the fallback themselves so it stays live across a language switch.
 export function getRawError(err: unknown) {
   return err instanceof Error ? err.message : '';
