@@ -86,8 +86,13 @@ router.post('/', authenticate, requireRole('farmer'), async (req, res) => {
 
 const LISTING_STATUSES = ['active', 'sold', 'cancelled'];
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 // Loads the listing and rejects with 404/403 unless the caller owns it.
 async function loadOwnListing(req, res, next) {
+  if (!UUID_PATTERN.test(req.params.id)) {
+    return res.status(404).json({ error: 'Listing not found' });
+  }
   try {
     const listing = await prisma.listing.findUnique({
       where: { listing_id: req.params.id },
@@ -101,9 +106,6 @@ async function loadOwnListing(req, res, next) {
     req.listing = listing;
     next();
   } catch (err) {
-    if (err.code === 'P2023') {
-      return res.status(404).json({ error: 'Listing not found' });
-    }
     console.error(`${req.method} /api/listings/:id failed:`, err);
     res.status(500).json({ error: 'Failed to load listing' });
   }
