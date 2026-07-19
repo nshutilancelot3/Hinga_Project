@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { apiGet, getErrorMessage } from '@/lib/api';
+import { apiGet, getRawError } from '@/lib/api';
 
 type MarketPrice = {
   price_id: string;
@@ -20,14 +20,18 @@ export default function PricesPage() {
 
   const [prices, setPrices] = useState<MarketPrice[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [errorRaw, setErrorRaw] = useState('');
+  const [hasError, setHasError] = useState(false);
   const [cropFilter, setCropFilter] = useState('');
   const [marketFilter, setMarketFilter] = useState('');
 
   useEffect(() => {
     apiGet('/prices')
       .then(setPrices)
-      .catch((err) => setError(getErrorMessage(err, tc('error'))))
+      .catch((err) => {
+        setErrorRaw(getRawError(err));
+        setHasError(true);
+      })
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -80,7 +84,7 @@ export default function PricesPage() {
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
+      {hasError && <p className="text-sm text-red-600 mb-4">{errorRaw || tc('error')}</p>}
 
       <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl">
         <table className="w-full text-sm">

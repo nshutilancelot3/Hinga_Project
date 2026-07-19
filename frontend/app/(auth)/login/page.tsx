@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiPost, getErrorMessage } from '@/lib/api';
+import { apiPost, getRawError } from '@/lib/api';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -14,12 +14,13 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errorRaw, setErrorRaw] = useState('');
+  const [hasError, setHasError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
+    setHasError(false);
     setLoading(true);
 
     try {
@@ -28,7 +29,8 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(data.user));
       router.push('/prices');
     } catch (err) {
-      setError(getErrorMessage(err, t('errors.generic')));
+      setErrorRaw(getRawError(err));
+      setHasError(true);
     } finally {
       setLoading(false);
     }
@@ -59,7 +61,7 @@ export default function LoginPage() {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
             />
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {hasError && <p className="text-sm text-red-600">{errorRaw || t('errors.generic')}</p>}
           <button
             type="submit"
             disabled={loading}
