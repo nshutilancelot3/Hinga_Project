@@ -5,6 +5,7 @@ const authRoutes = require('./routes/auth');
 
 const pricesRouter = require('./routes/prices');
 const listingsRouter = require('./routes/listings');
+const weatherRouter = require('./routes/weather');
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/prices', pricesRouter);
 app.use('/api/listings', listingsRouter);
+app.use('/api/weather', weatherRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
