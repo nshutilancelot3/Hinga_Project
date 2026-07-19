@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiUpload, getErrorMessage, isLoggedIn } from '@/lib/api';
+import { apiUpload, getRawError, isLoggedIn } from '@/lib/api';
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 
@@ -20,7 +20,8 @@ export default function DiagnosisPage() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [result, setResult] = useState<DiagnosisResult | null>(null);
-  const [error, setError] = useState('');
+  const [errorKey, setErrorKey] = useState<'noFile' | 'tooLarge' | 'generic' | null>(null);
+  const [errorRaw, setErrorRaw] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -28,11 +29,11 @@ export default function DiagnosisPage() {
     if (!selected) return;
 
     if (selected.size > MAX_SIZE_BYTES) {
-      setError(t('errors.tooLarge'));
+      setErrorKey('tooLarge');
       return;
     }
 
-    setError('');
+    setErrorKey(null);
     setResult(null);
     setFile(selected);
     setPreviewUrl(URL.createObjectURL(selected));
@@ -46,11 +47,11 @@ export default function DiagnosisPage() {
       return;
     }
     if (!file) {
-      setError(t('errors.noFile'));
+      setErrorKey('noFile');
       return;
     }
 
-    setError('');
+    setErrorKey(null);
     setResult(null);
     setLoading(true);
 
@@ -60,7 +61,8 @@ export default function DiagnosisPage() {
       const data = await apiUpload('/diagnose', formData);
       setResult(data);
     } catch (err) {
-      setError(getErrorMessage(err, t('errors.generic')));
+      setErrorRaw(getRawError(err));
+      setErrorKey('generic');
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,11 @@ export default function DiagnosisPage() {
           />
         </label>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {errorKey && (
+          <p className="text-sm text-red-600">
+            {errorKey === 'generic' && errorRaw ? errorRaw : t(`errors.${errorKey}`)}
+          </p>
+        )}
 
         <button
           type="submit"
