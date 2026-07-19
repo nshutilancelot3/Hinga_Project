@@ -45,6 +45,27 @@ export async function apiPost(path: string, body: object) {
   return data;
 }
 
+export async function apiUpload(path: string, formData: FormData) {
+  const res = await fetch(`${API_URL}/api${path}`, {
+    method: 'POST',
+    headers: authHeader(),
+    body: formData,
+  });
+
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    data = null;
+  }
+
+  if (!res.ok) {
+    throw new Error(data?.error);
+  }
+
+  return data;
+}
+
 export function isLoggedIn() {
   return typeof window !== 'undefined' && !!localStorage.getItem('token');
 }
