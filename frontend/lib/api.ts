@@ -5,11 +5,16 @@ function authHeader(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-export async function apiGet(path: string) {
-  const res = await fetch(`${API_URL}/api${path}`, {
-    headers: authHeader(),
-  });
+// A dead fetch() throws a raw browser message like "Failed to fetch" - normalize it away.
+async function safeFetch(url: string, init: RequestInit) {
+  try {
+    return await fetch(url, init);
+  } catch {
+    throw new Error();
+  }
+}
 
+async function parseResponse(res: Response) {
   let data;
   try {
     data = await res.json();
@@ -24,25 +29,20 @@ export async function apiGet(path: string) {
   return data;
 }
 
+export async function apiGet(path: string) {
+  const res = await safeFetch(`${API_URL}/api${path}`, {
+    headers: authHeader(),
+  });
+  return parseResponse(res);
+}
+
 export async function apiPost(path: string, body: object) {
-  const res = await fetch(`${API_URL}/api${path}`, {
+  const res = await safeFetch(`${API_URL}/api${path}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(body),
   });
-
-  let data;
-  try {
-    data = await res.json();
-  } catch {
-    data = null;
-  }
-
-  if (!res.ok) {
-    throw new Error(data?.error);
-  }
-
-  return data;
+  return parseResponse(res);
 }
 
 export function isLoggedIn() {
@@ -55,6 +55,7 @@ export function getCurrentUser() {
   return raw ? JSON.parse(raw) : null;
 }
 
-export function getErrorMessage(err: unknown, fallback: string) {
-  return err instanceof Error && err.message ? err.message : fallback;
+// Callers translate the fallback themselves so it stays live across a language switch.
+export function getRawError(err: unknown) {
+  return err instanceof Error ? err.message : '';
 }
