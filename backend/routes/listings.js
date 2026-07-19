@@ -84,4 +84,82 @@ router.post('/', authenticate, requireRole('farmer'), async (req, res) => {
   }
 });
 
+const LISTING_STATUSES = ['active', 'sold', 'cancelled'];
+
+// Loads the listing and rejects with 404/403 unless the caller owns it.
+async function loadOwnListing(req, res, next) {
+  try {
+    const listing = await prisma.listing.findUnique({
+      where: { listing_id: req.params.id },
+    });
+    if (!listing) {
+      return res.status(404).json({ error: 'Listing not found' });
+    }
+    if (listing.farmer_id !== req.user.user_id) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    req.listing = listing;
+    next();
+  } catch (err) {
+    if (err.code === 'P2023') {
+      return res.status(404).json({ error: 'Listing not found' });
+    }
+    console.error(`${req.method} /api/listings/:id failed:`, err);
+    res.status(500).json({ error: 'Failed to load listing' });
+  }
+}
+
+// PUT /api/listings/:id
+
+router.put('/:id', authenticate, requireRole('farmer'), loadOwnListing, async (req, res) => {
+  const { quantity_kg, price_per_kg, description, status } = req.body;
+
+  const data = {};
+  if (quantity_kg !== undefined) {
+    const parsed = Number(quantity_kg);
+    if (Number.isNaN(parsed) || parsed <= 0) {
+      return res.status(400).json({ error: 'quantity_kg must be a positive number' });
+    }
+    data.quantity_kg = parsed;
+  }
+  if (price_per_kg !== undefined) {
+    const parsed = Number(price_per_kg);
+    if (Number.isNaN(parsed) || parsed <= 0) {
+      return res.status(400).json({ error: 'price_per_kg must be a positive number' });
+    }
+    data.price_per_kg = parsed;
+  }
+  if (description !== undefined) {
+    if (typeof description !== 'string' || !description.trim()) {
+      return res.status(400).json({ error: 'description must be a non-empty string' });
+    }
+    data.description = description.trim();
+  }
+  if (status !== undefined) {
+    if (!LISTING_STATUSES.includes(status)) {
+      return res
+        .status(400)
+        .json({ error: `status must be one of: ${LISTING_STATUSES.join(', ')}` });
+    }
+    data.status = status;
+  }
+
+  if (Object.keys(data).length === 0) {
+    return res
+      .status(400)
+      .json({ error: 'Provide at least one of quantity_kg, price_per_kg, description, status' });
+  }
+
+  try {
+    const listing = await prisma.listing.update({
+      where: { listing_id: req.params.id },
+      data,
+    });
+    res.json(listing);
+  } catch (err) {
+    console.error('PUT /api/listings/:id failed:', err);
+    res.status(500).json({ error: 'Failed to update listing' });
+  }
+});
+
 module.exports = router;
