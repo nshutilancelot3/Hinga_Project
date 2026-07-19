@@ -25,6 +25,7 @@ export default function LoginPage() {
     try {
       const data = await apiPost('/auth/login', { email, password });
       localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
       router.push('/prices');
     } catch (err) {
       setError(getErrorMessage(err, t('errors.generic')));
