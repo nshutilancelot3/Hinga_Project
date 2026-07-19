@@ -1,7 +1,14 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 
+function authHeader(): Record<string, string> {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 export async function apiGet(path: string) {
-  const res = await fetch(`${API_URL}/api${path}`);
+  const res = await fetch(`${API_URL}/api${path}`, {
+    headers: authHeader(),
+  });
 
   let data;
   try {
@@ -20,7 +27,7 @@ export async function apiGet(path: string) {
 export async function apiPost(path: string, body: object) {
   const res = await fetch(`${API_URL}/api${path}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(body),
   });
 
@@ -36,6 +43,16 @@ export async function apiPost(path: string, body: object) {
   }
 
   return data;
+}
+
+export function isLoggedIn() {
+  return typeof window !== 'undefined' && !!localStorage.getItem('token');
+}
+
+export function getCurrentUser() {
+  if (typeof window === 'undefined') return null;
+  const raw = localStorage.getItem('user');
+  return raw ? JSON.parse(raw) : null;
 }
 
 export function getErrorMessage(err: unknown, fallback: string) {
