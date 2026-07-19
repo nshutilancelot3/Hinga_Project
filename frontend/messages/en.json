@@ -1,4 +1,7 @@
 {
+  "home": {
+    "tagline": "Market prices, weather, crop diagnosis, and a marketplace, all in one place in Kinyarwanda and English."
+  },
   "nav": {
     "prices": "Market Prices",
     "weather": "Weather",
