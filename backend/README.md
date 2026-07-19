@@ -100,3 +100,22 @@ Creates a produce listing. Requires a JWT (`Authorization: Bearer <token>`) with
 | `description`  | string | no       | Free text             |
 
 Responses: `201` with the created listing, `400` on invalid input, `401` without a valid token, `403` for non-farmer roles.
+
+### `PUT /api/listings/:id`
+
+Updates a listing. Requires a JWT with the `farmer` role, and the caller must be the farmer who owns the listing. Send any subset of the fields below; at least one is required.
+
+| Field          | Type   | Notes                                    |
+| -------------- | ------ | ---------------------------------------- |
+| `quantity_kg`  | number | Must be positive                         |
+| `price_per_kg` | number | Must be positive                         |
+| `description`  | string | Non-empty                                |
+| `status`       | string | One of `active`, `sold`, `cancelled`     |
+
+Responses: `200` with the updated listing, `400` on invalid input, `401` without a valid token, `403` if the caller does not own the listing, `404` if it does not exist.
+
+### `DELETE /api/listings/:id`
+
+Deletes a listing. Requires a JWT with the `farmer` role, and the caller must be the farmer who owns the listing.
+
+Responses: `204` on success, `401` without a valid token, `403` if the caller does not own the listing, `404` if it does not exist.
