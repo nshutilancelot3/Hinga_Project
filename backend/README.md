@@ -119,3 +119,40 @@ Responses: `200` with the updated listing, `400` on invalid input, `401` without
 Deletes a listing. Requires a JWT with the `farmer` role, and the caller must be the farmer who owns the listing.
 
 Responses: `204` on success, `401` without a valid token, `403` if the caller does not own the listing, `404` if it does not exist.
+
+### `POST /api/enquiries`
+
+Sends a buyer enquiry about a listing. Requires a JWT (`Authorization: Bearer <token>`) with the `buyer` role. The `buyer_id` is taken from the token. `status` defaults to `pending`.
+
+| Field        | Type   | Required | Notes                                  |
+| ------------ | ------ | -------- | -------------------------------------- |
+| `listing_id` | string | yes      | UUID of an active listing              |
+| `message`    | string | yes      | Free text                              |
+
+The listing must exist and still be `active`, and a buyer cannot enquire about their own listing.
+
+Responses: `201` with the created enquiry, `400` on invalid input or own-listing enquiry, `401` without a valid token, `403` for non-buyer roles, `404` if the listing does not exist or is inactive.
+
+### `GET /api/enquiries?listing_id=`
+
+Returns all enquiries on one listing, newest first, for the farmer who owns it. Requires a JWT. Each enquiry includes the buyer's name under `buyer.full_name`.
+
+| Parameter    | Description                    | Required |
+| ------------ | ------------------------------ | -------- |
+| `listing_id` | UUID of the farmer's listing   | yes      |
+
+```json
+[
+  {
+    "enquiry_id": "…",
+    "listing_id": "…",
+    "buyer_id": "…",
+    "message": "Is this still available?",
+    "status": "pending",
+    "created_at": "2026-07-19T00:00:00.000Z",
+    "buyer": { "full_name": "…" }
+  }
+]
+```
+
+Responses: `200` with the enquiries, `400` on a missing or invalid `listing_id`, `401` without a valid token, `403` if the listing belongs to another farmer, `404` if the listing does not exist.
