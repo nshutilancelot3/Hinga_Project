@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
+import { translateCondition } from '@/lib/weatherConditions';
 
 type ForecastSlot = {
   dt: number;
@@ -103,7 +104,7 @@ export default function WeatherPage() {
                 />
                 <p className="text-lg font-semibold">{Math.round(slot.main.temp)}°C</p>
                 <p className="text-xs text-gray-500 capitalize mb-2">
-                  {slot.weather[0]?.description}
+                  {slot.weather[0]?.description ? translateCondition(slot.weather[0].description, locale) : ''}
                 </p>
                 <p className="text-xs text-gray-500">
                   {t('feelsLike')}: {Math.round(slot.main.feels_like)}°C

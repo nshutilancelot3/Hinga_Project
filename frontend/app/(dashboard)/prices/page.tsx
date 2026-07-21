@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
+import { translateCrop } from '@/lib/crops';
 
 type MarketPrice = {
   price_id: string;
@@ -65,7 +66,7 @@ export default function PricesPage() {
           >
             <option value="">{t('allCrops')}</option>
             {crops.map((crop) => (
-              <option key={crop} value={crop}>{crop}</option>
+              <option key={crop} value={crop}>{translateCrop(crop, locale)}</option>
             ))}
           </select>
         </div>
@@ -117,7 +118,7 @@ export default function PricesPage() {
               rows.map((p) => (
                 <tr key={p.price_id} className="border-b border-gray-100 last:border-b-0">
                   <td className="px-4 py-3">{p.market_name}</td>
-                  <td className="px-4 py-3">{p.crop_type}</td>
+                  <td className="px-4 py-3">{translateCrop(p.crop_type, locale)}</td>
                   <td className="px-4 py-3">
                     {Number(p.price_rwf).toLocaleString(locale)}/{p.unit}
                   </td>
