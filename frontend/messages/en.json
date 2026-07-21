@@ -48,7 +48,7 @@
     "allMarkets": "All markets",
     "crop": "Crop",
     "market": "Market",
-    "price": "Price (RWF/kg)",
+    "price": "Price (RWF)",
     "date": "Date",
     "loading": "Loading prices...",
     "empty": "No prices found."
