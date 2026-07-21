@@ -10,7 +10,9 @@
     "login": "Injira",
     "register": "Iyandikishe",
     "logout": "Sohoka",
-    "admin": "Ikibanza cy'Ubuyobozi"
+    "admin": "Ikibanza cy'Ubuyobozi",
+    "openMenu": "Fungura urutonde",
+    "closeMenu": "Funga urutonde"
   },
   "auth": {
     "fullName": "Amazina yombi",
