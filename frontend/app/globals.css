@@ -24,4 +24,22 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Staggered entrance for the weather forecast rows. Transform/opacity only. */
+  .wx-rise {
+    animation: wx-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+}
+
+@keyframes wx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wx-rise {
+    animation: none;
+  }
 }
