@@ -10,7 +10,9 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
-    "admin": "Admin Panel"
+    "admin": "Admin Panel",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "auth": {
     "fullName": "Full name",
