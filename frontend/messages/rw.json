@@ -37,7 +37,10 @@
     "errors": {
       "invalidCredentials": "Imeli cyangwa ijambo banga sibyo.",
       "emailTaken": "Konti ifite iyi imeli isanzwe ihari.",
-      "generic": "Hari ikibazo. Ongera ugerageze."
+      "generic": "Hari ikibazo. Ongera ugerageze.",
+      "missingField": "Nyamuneka uzuza: {field}",
+      "passwordTooShort": "Ijambo banga rigomba kugira nibura inyuguti 8.",
+      "invalidRole": "Nyamuneka hitamo uruhare rwemewe."
     }
   },
   "prices": {

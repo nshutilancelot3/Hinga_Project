@@ -6,13 +6,30 @@ const prisma = require('../lib/prisma');
 const router = express.Router();
 
 const SALT_ROUNDS = 12;
+// super_admin accounts are created by an existing super admin, never self-registered.
+const REGISTERABLE_ROLES = ['farmer', 'buyer', 'coop_admin'];
 
 router.post('/register', async (req, res) => {
   const { full_name, email, password, role, district, language_pref } = req.body;
 
+  const required = { full_name, email, password, role, district };
+  for (const [field, value] of Object.entries(required)) {
+    if (!value || typeof value !== 'string' || !value.trim()) {
+      return res.status(400).json({ error: 'MISSING_FIELD', field });
+    }
+  }
+
+  if (!REGISTERABLE_ROLES.includes(role)) {
+    return res.status(400).json({ error: 'INVALID_ROLE' });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'PASSWORD_TOO_SHORT' });
+  }
+
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    return res.status(409).json({ error: 'Email already registered' });
+    return res.status(409).json({ error: 'EMAIL_TAKEN' });
   }
 
   const password_hash = await bcrypt.hash(password, SALT_ROUNDS);
@@ -38,14 +55,18 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(401).json({ error: 'INVALID_CREDENTIALS' });
+  }
+
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    return res.status(401).json({ error: 'Invalid email or password' });
+    return res.status(401).json({ error: 'INVALID_CREDENTIALS' });
   }
 
   const valid = await bcrypt.compare(password, user.password_hash);
   if (!valid) {
-    return res.status(401).json({ error: 'Invalid email or password' });
+    return res.status(401).json({ error: 'INVALID_CREDENTIALS' });
   }
 
   const token = jwt.sign(

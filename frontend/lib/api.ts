@@ -14,6 +14,14 @@ async function safeFetch(url: string, init: RequestInit) {
   }
 }
 
+export class ApiError extends Error {
+  field?: string;
+  constructor(code?: string, field?: string) {
+    super(code);
+    this.field = field;
+  }
+}
+
 async function parseResponse(res: Response) {
   let data;
   try {
@@ -23,7 +31,7 @@ async function parseResponse(res: Response) {
   }
 
   if (!res.ok) {
-    throw new Error(data?.error);
+    throw new ApiError(data?.error, data?.field);
   }
 
   return data;
@@ -67,4 +75,10 @@ export function getCurrentUser() {
 // Callers translate the fallback themselves so it stays live across a language switch.
 export function getRawError(err: unknown) {
   return err instanceof Error ? err.message : '';
+}
+
+// Structured code + field for callers that translate error codes.
+export function getApiError(err: unknown): { code: string; field?: string } {
+  if (err instanceof ApiError) return { code: err.message, field: err.field };
+  return { code: '' };
 }
