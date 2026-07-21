@@ -66,6 +66,11 @@ export function isLoggedIn() {
   return typeof window !== 'undefined' && !!localStorage.getItem('token');
 }
 
+export function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+}
+
 export function getCurrentUser() {
   if (typeof window === 'undefined') return null;
   const raw = localStorage.getItem('user');
