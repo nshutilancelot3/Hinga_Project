@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { apiUpload, getRawError, isLoggedIn } from '@/lib/api';
+import { translateDisease } from '@/lib/diseases';
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 
@@ -16,6 +17,7 @@ type DiagnosisResult = {
 export default function DiagnosisPage() {
   const t = useTranslations('diagnosis');
   const router = useRouter();
+  const locale = useLocale();
 
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -111,7 +113,7 @@ export default function DiagnosisPage() {
       {result && (
         <div className="max-w-md bg-white border border-gray-200 rounded-xl p-6 mt-6">
           <h2 className="text-lg font-semibold mb-3">{t('result')}</h2>
-          <p className="font-medium text-gray-900">{result.disease_name}</p>
+          <p className="font-medium text-gray-900">{translateDisease(result.disease_name, locale)}</p>
           <p className="text-sm text-gray-500 mb-3">
             {t('confidence')}: {Math.round(result.confidence * 100)}%
           </p>

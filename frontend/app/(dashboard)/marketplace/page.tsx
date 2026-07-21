@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
+import { translateCrop } from '@/lib/crops';
 
 type Listing = {
   listing_id: string;
@@ -163,7 +164,7 @@ export default function MarketplacePage() {
           >
             <option value="">{t('allCrops')}</option>
             {crops.map((crop) => (
-              <option key={crop} value={crop}>{crop}</option>
+              <option key={crop} value={crop}>{translateCrop(crop, locale)}</option>
             ))}
           </select>
         </div>
@@ -272,7 +273,7 @@ export default function MarketplacePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {rows.map((l) => (
             <div key={l.listing_id} className="bg-white border border-gray-200 rounded-xl p-4">
-              <p className="font-medium text-gray-900">{l.crop_type}</p>
+              <p className="font-medium text-gray-900">{translateCrop(l.crop_type, locale)}</p>
               <p className="text-sm text-gray-500 mt-1">
                 {t('quantity')}: {Number(l.quantity_kg).toLocaleString(locale)} kg
               </p>
