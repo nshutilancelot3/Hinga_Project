@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
+import { formatShortDate } from '@/lib/dateFormat';
 
 type MarketPrice = {
   price_id: string;
@@ -123,11 +124,7 @@ export default function PricesPage() {
                     {Number(p.price_rwf).toLocaleString(locale)}/{p.unit}
                   </td>
                   <td className="px-4 py-3">
-                    {new Date(p.recorded_at).toLocaleDateString(locale, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                    })}
+                    {formatShortDate(new Date(p.recorded_at), locale)}
                   </td>
                 </tr>
               ))

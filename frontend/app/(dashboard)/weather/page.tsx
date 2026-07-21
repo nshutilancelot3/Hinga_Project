@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 import { translateCondition } from '@/lib/weatherConditions';
+import { formatLongDate, formatTime } from '@/lib/dateFormat';
 
 type ForecastSlot = {
   dt: number;
@@ -79,11 +80,7 @@ export default function WeatherPage() {
       {days.map(([day, slots]) => (
         <section key={day} className="mb-6">
           <h2 className="text-sm font-medium text-gray-600 mb-2">
-            {new Date(`${day}T00:00:00`).toLocaleDateString(locale, {
-              weekday: 'long',
-              month: 'short',
-              day: 'numeric',
-            })}
+            {formatLongDate(new Date(`${day}T00:00:00`), locale)}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
             {slots.map((slot) => (
@@ -92,10 +89,7 @@ export default function WeatherPage() {
                 className="bg-white border border-gray-200 rounded-xl p-3 text-center"
               >
                 <p className="text-xs text-gray-500">
-                  {new Date(slot.dt * 1000).toLocaleTimeString(locale, {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
+                  {formatTime(new Date(slot.dt * 1000))}
                 </p>
                 <img
                   src={`https://openweathermap.org/img/wn/${slot.weather[0]?.icon}@2x.png`}
