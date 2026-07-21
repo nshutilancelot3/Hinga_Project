@@ -124,7 +124,7 @@ export default function PricesPage() {
                     {Number(p.price_rwf).toLocaleString(locale)}/{p.unit}
                   </td>
                   <td className="px-4 py-3">
-                    {formatShortDate(new Date(p.recorded_at), locale)}
+                    {formatShortDate(new Date(p.recorded_at))}
                   </td>
                 </tr>
               ))

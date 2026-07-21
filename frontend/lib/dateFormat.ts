@@ -17,9 +17,10 @@ export function formatLongDate(date: Date, locale: string) {
     : `${weekday}, ${month} ${date.getDate()}`;
 }
 
-export function formatShortDate(date: Date, locale: string) {
-  const month = locale === 'rw' ? MONTHS_RW[date.getMonth()].slice(0, 3) : MONTHS_EN[date.getMonth()].slice(0, 3);
-  return locale === 'rw' ? `${date.getDate()} ${month} ${date.getFullYear()}` : `${month} ${date.getDate()}, ${date.getFullYear()}`;
+export function formatShortDate(date: Date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  return `${day}/${month}/${date.getFullYear()}`;
 }
 
 export function formatTime(date: Date) {
