@@ -118,7 +118,9 @@ export default function PricesPage() {
                 <tr key={p.price_id} className="border-b border-gray-100 last:border-b-0">
                   <td className="px-4 py-3">{p.market_name}</td>
                   <td className="px-4 py-3">{p.crop_type}</td>
-                  <td className="px-4 py-3">{Number(p.price_rwf).toLocaleString(locale)}</td>
+                  <td className="px-4 py-3">
+                    {Number(p.price_rwf).toLocaleString(locale)}/{p.unit}
+                  </td>
                   <td className="px-4 py-3">
                     {new Date(p.recorded_at).toLocaleDateString(locale, {
                       year: 'numeric',
