@@ -4,8 +4,22 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiPost, getRawError } from '@/lib/api';
+import { apiPost, getApiError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
+
+const FIELD_LABEL_KEYS: Record<string, string> = {
+  full_name: 'fullName',
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  district: 'district',
+};
+
+const ERROR_MESSAGE_KEYS: Record<string, string> = {
+  EMAIL_TAKEN: 'emailTaken',
+  INVALID_ROLE: 'invalidRole',
+  PASSWORD_TOO_SHORT: 'passwordTooShort',
+};
 
 export default function RegisterPage() {
   const t = useTranslations('auth');
@@ -19,13 +33,28 @@ export default function RegisterPage() {
   const [role, setRole] = useState('farmer');
   const [district, setDistrict] = useState(DISTRICTS[0]);
   const [languagePref, setLanguagePref] = useState('rw');
-  const [errorRaw, setErrorRaw] = useState('');
-  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState<{ code: string; field?: string } | null>(null);
   const [loading, setLoading] = useState(false);
+
+  function errorText() {
+    if (!error) return '';
+    if (error.code === 'MISSING_FIELD') {
+      const labelKey = error.field ? FIELD_LABEL_KEYS[error.field] : undefined;
+      return t('errors.missingField', { field: labelKey ? t(labelKey) : error.field ?? '' });
+    }
+    const key = ERROR_MESSAGE_KEYS[error.code];
+    return key ? t(`errors.${key}`) : t('errors.generic');
+  }
+
+  function selectLanguage(locale: string) {
+    setLanguagePref(locale);
+    document.cookie = `locale=${locale}; path=/`;
+    router.refresh();
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setHasError(false);
+    setError(null);
     setLoading(true);
 
     try {
@@ -39,8 +68,7 @@ export default function RegisterPage() {
       });
       router.push('/login');
     } catch (err) {
-      setErrorRaw(getRawError(err));
-      setHasError(true);
+      setError(getApiError(err));
     } finally {
       setLoading(false);
     }
@@ -108,14 +136,14 @@ export default function RegisterPage() {
             <label className="block text-sm text-gray-600 mb-1">{t('languagePref')}</label>
             <select
               value={languagePref}
-              onChange={(e) => setLanguagePref(e.target.value)}
+              onChange={(e) => selectLanguage(e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
             >
               <option value="rw">{t('languages.rw')}</option>
               <option value="en">{t('languages.en')}</option>
             </select>
           </div>
-          {hasError && <p className="text-sm text-red-600">{errorRaw || t('errors.generic')}</p>}
+          {error && <p className="text-sm text-red-600">{errorText()}</p>}
           <button
             type="submit"
             disabled={loading}
