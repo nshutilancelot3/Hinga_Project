@@ -10,7 +10,9 @@
     "login": "Injira",
     "register": "Iyandikishe",
     "logout": "Sohoka",
-    "admin": "Ikibanza cy'Ubuyobozi"
+    "admin": "Ikibanza cy'Ubuyobozi",
+    "openMenu": "Fungura urutonde",
+    "closeMenu": "Funga urutonde"
   },
   "auth": {
     "fullName": "Amazina yombi",
@@ -37,13 +39,16 @@
     "errors": {
       "invalidCredentials": "Imeli cyangwa ijambo banga sibyo.",
       "emailTaken": "Konti ifite iyi imeli isanzwe ihari.",
-      "generic": "Hari ikibazo. Ongera ugerageze."
+      "generic": "Hari ikibazo. Ongera ugerageze.",
+      "missingField": "Nyamuneka uzuza: {field}",
+      "passwordTooShort": "Ijambo banga rigomba kugira nibura inyuguti 8.",
+      "invalidRole": "Nyamuneka hitamo uruhare rwemewe."
     }
   },
   "prices": {
     "title": "Ibiciro by'Isoko",
-    "filterCrop": "Shungura ubuhinzi",
-    "filterMarket": "Shungura isoko",
+    "filterCrop": "Robanura ubuhinzi",
+    "filterMarket": "Robanura isoko",
     "allCrops": "Ubuhinzi bwose",
     "allMarkets": "Amasoko yose",
     "crop": "Ubuhinzi",
@@ -84,10 +89,10 @@
     "title": "Isoko",
     "postListing": "Shyira urutonde",
     "sendEnquiry": "Ohereza ikibazo",
-    "filterCrop": "Shungura ubuhinzi",
-    "filterDistrict": "Shungura akarere",
+    "filterCrop": "Robanura ubuhinzi",
+    "filterDistrict": "Robanura akarere",
     "allCrops": "Ubuhinzi bwose",
-    "allDistricts": "Indangakarere zose",
+    "allDistricts": "Uturere twose",
     "quantity": "Ingano (kg)",
     "pricePerKg": "Igiciro kuri kg (RWF)",
     "description": "Ibisobanuro",

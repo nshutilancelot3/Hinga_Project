@@ -10,7 +10,9 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
-    "admin": "Admin Panel"
+    "admin": "Admin Panel",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "auth": {
     "fullName": "Full name",
@@ -37,7 +39,10 @@
     "errors": {
       "invalidCredentials": "Wrong email or password.",
       "emailTaken": "An account with this email already exists.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "missingField": "Please fill in: {field}",
+      "passwordTooShort": "Password must be at least 8 characters.",
+      "invalidRole": "Please choose a valid role."
     }
   },
   "prices": {

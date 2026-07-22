@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { apiPost, getRawError } from '@/lib/api';
+import { apiPost, getApiError } from '@/lib/api';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorRaw, setErrorRaw] = useState('');
+  const [errorCode, setErrorCode] = useState('');
   const [hasError, setHasError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +29,7 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(data.user));
       router.push('/prices');
     } catch (err) {
-      setErrorRaw(getRawError(err));
+      setErrorCode(getApiError(err).code);
       setHasError(true);
     } finally {
       setLoading(false);
@@ -61,7 +61,11 @@ export default function LoginPage() {
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
             />
           </div>
-          {hasError && <p className="text-sm text-red-600">{errorRaw || t('errors.generic')}</p>}
+          {hasError && (
+            <p className="text-sm text-red-600">
+              {errorCode === 'INVALID_CREDENTIALS' ? t('errors.invalidCredentials') : t('errors.generic')}
+            </p>
+          )}
           <button
             type="submit"
             disabled={loading}

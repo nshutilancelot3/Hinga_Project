@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
+import { translateCondition } from '@/lib/weatherConditions';
 
 type ForecastSlot = {
   dt: number;
@@ -236,7 +237,9 @@ export default function WeatherPage() {
                 {Math.round(today.lead.main.temp)}°
               </p>
               <p className="mt-2 text-sm capitalize text-stone-500">
-                {today.lead.weather[0]?.description}
+                {today.lead.weather[0]?.description
+                  ? translateCondition(today.lead.weather[0].description, locale)
+                  : ''}
               </p>
             </div>
           </div>
