@@ -68,6 +68,7 @@
   },
   "diagnosis": {
     "title": "Crop Diagnosis",
+    "cropType": "Crop type",
     "upload": "Upload a photo of your crop",
     "dragDrop": "Drag and drop or click to select",
     "diagnoseButton": "Diagnose",

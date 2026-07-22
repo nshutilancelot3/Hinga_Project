@@ -68,6 +68,7 @@
   },
   "diagnosis": {
     "title": "Isuzuma ry'Ibihingwa",
+    "cropType": "Ubwoko bw'igihingwa",
     "upload": "Shyiraho ifoto y'igihingwa cyawe",
     "dragDrop": "Kururura cyangwa kanda ushyireho",
     "diagnoseButton": "Suzuma",
