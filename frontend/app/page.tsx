@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import Navbar from '@/components/Navbar';
+import HomeCta from '@/components/HomeCta';
 
 export default async function HomePage() {
   const t = await getTranslations('home');
-  const tn = await getTranslations('nav');
   return (
     <>
       <Navbar />
@@ -13,14 +12,7 @@ export default async function HomePage() {
         <p className="text-gray-500 text-base sm:text-lg mb-10 max-w-xl mx-auto">
           {t('tagline')}
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link href="/register" className="px-6 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 text-sm font-medium">
-            {tn('register')}
-          </Link>
-          <Link href="/login" className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium">
-            {tn('login')}
-          </Link>
-        </div>
+        <HomeCta />
       </main>
     </>
   );
