@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiUpload, getRawError, isLoggedIn } from '@/lib/api';
+import { apiPost, getRawError, isLoggedIn } from '@/lib/api';
 import { translateDisease } from '@/lib/diseases';
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
@@ -12,7 +12,34 @@ type DiagnosisResult = {
   disease_name: string;
   confidence: number;
   treatment: string;
+  is_healthy: boolean | null;
 };
+
+function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// The backend stores Plant.id's treatment object as a JSON string; render it
+// readably if it parsed, otherwise fall back to showing the raw text.
+function renderTreatment(treatment: string) {
+  try {
+    const parsed = JSON.parse(treatment);
+    if (parsed && typeof parsed === 'object') {
+      return Object.entries(parsed)
+        .filter(([, tips]) => Array.isArray(tips) && tips.length > 0)
+        .map(([category, tips]) => `${category}: ${(tips as string[]).join(', ')}`)
+        .join('\n');
+    }
+  } catch {
+    // not JSON, fall through to raw text
+  }
+  return treatment;
+}
 
 export default function DiagnosisPage() {
   const t = useTranslations('diagnosis');
@@ -21,6 +48,7 @@ export default function DiagnosisPage() {
 
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [cropType, setCropType] = useState('');
   const [result, setResult] = useState<DiagnosisResult | null>(null);
   const [errorKey, setErrorKey] = useState<'noFile' | 'tooLarge' | 'generic' | null>(null);
   const [errorRaw, setErrorRaw] = useState('');
@@ -58,9 +86,8 @@ export default function DiagnosisPage() {
     setLoading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('photo', file);
-      const data = await apiUpload('/diagnose', formData);
+      const image = await fileToDataUrl(file);
+      const data = await apiPost('/diagnosis', { image, crop_type: cropType });
       setResult(data);
     } catch (err) {
       setErrorRaw(getRawError(err));
@@ -75,6 +102,17 @@ export default function DiagnosisPage() {
       <h1 className="text-2xl font-semibold mb-6">{t('title')}</h1>
 
       <form onSubmit={handleSubmit} className="max-w-md flex flex-col gap-4">
+        <div>
+          <label className="block text-sm text-gray-600 mb-1">{t('cropType')}</label>
+          <input
+            type="text"
+            required
+            value={cropType}
+            onChange={(e) => setCropType(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+          />
+        </div>
+
         <label
           htmlFor="photo"
           className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-green-500 flex flex-col items-center gap-3"
@@ -117,7 +155,7 @@ export default function DiagnosisPage() {
           <p className="text-sm text-gray-500 mb-3">
             {t('confidence')}: {Math.round(result.confidence * 100)}%
           </p>
-          <p className="text-sm text-gray-700">{result.treatment}</p>
+          <p className="text-sm text-gray-700 whitespace-pre-line">{renderTreatment(result.treatment)}</p>
         </div>
       )}
 
