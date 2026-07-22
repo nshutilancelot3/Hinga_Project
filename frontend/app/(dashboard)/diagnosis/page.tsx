@@ -98,10 +98,10 @@ export default function DiagnosisPage() {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-6">{t('title')}</h1>
+    <div className="max-w-md mx-auto">
+      <h1 className="text-2xl font-semibold mb-6 text-center">{t('title')}</h1>
 
-      <form onSubmit={handleSubmit} className="max-w-md flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
           <label className="block text-sm text-gray-600 mb-1">{t('cropType')}</label>
           <input
@@ -149,7 +149,7 @@ export default function DiagnosisPage() {
       </form>
 
       {result && (
-        <div className="max-w-md bg-white border border-gray-200 rounded-xl p-6 mt-6">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 mt-6">
           <h2 className="text-lg font-semibold mb-3">{t('result')}</h2>
           <p className="font-medium text-gray-900">{translateDisease(result.disease_name, locale)}</p>
           <p className="text-sm text-gray-500 mb-3">
@@ -159,7 +159,7 @@ export default function DiagnosisPage() {
         </div>
       )}
 
-      <p className="max-w-md text-xs text-gray-500 mt-4">{t('disclaimer')}</p>
+      <p className="text-xs text-gray-500 mt-4">{t('disclaimer')}</p>
     </div>
   );
 }
