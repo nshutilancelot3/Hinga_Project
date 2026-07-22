@@ -115,6 +115,23 @@ function WeatherIcon({ code = '', className = '' }: { code?: string; className?:
   );
 }
 
+// Tint the range bar by conditions, not temperature — the bar's position already
+// carries the temp range. Rain pulls it toward sky blue, sun toward warm amber,
+// and an overcast-but-dry day stays muted stone. Rain wins when both are present,
+// since a farmer needs the wet-day warning more than the sunny-day nicety.
+function barColor(pop: number, code = '') {
+  const p = Math.max(0, Math.min(1, pop));
+  const kind = code.slice(0, 2);
+  // 01 clear, 02 few clouds, 03 scattered, 04 overcast; rest carry no sun.
+  const sun = kind === '01' ? 1 : kind === '02' ? 0.6 : kind === '03' ? 0.25 : kind === '04' ? 0.1 : 0;
+
+  const dry = [214, 211, 209]; // stone-300 — cloudy and dry
+  const warm = [245, 200, 66]; // amber — sunny
+  const wet = [2, 132, 199]; // sky-600 — rainy
+  const c = dry.map((d, i) => Math.round(d + (warm[i] - d) * sun * (1 - p) + (wet[i] - d) * p));
+  return `rgb(${c[0]} ${c[1]} ${c[2]})`;
+}
+
 export default function WeatherPage() {
   const t = useTranslations('weather');
   const tc = useTranslations('common');
@@ -260,6 +277,20 @@ export default function WeatherPage() {
         </section>
       )}
 
+      {days.length > 0 && (
+        <div className="mb-1 flex items-center justify-end gap-2 py-2 text-stone-400">
+          <WeatherIcon code="01d" className="h-4 w-4" />
+          <span
+            className="h-1.5 w-24 rounded-full"
+            style={{
+              background:
+                'linear-gradient(to right, rgb(245 200 66), rgb(214 211 209), rgb(2 132 199))',
+            }}
+          />
+          <WeatherIcon code="10d" className="h-4 w-4" />
+        </div>
+      )}
+
       {days.map((day, i) => {
         const left = ((day.min - scale.lo) / span) * 100;
         const right = ((day.max - scale.lo) / span) * 100;
@@ -284,8 +315,12 @@ export default function WeatherPage() {
 
               <div className="relative mx-1 h-1.5 min-w-0 flex-1 rounded-full bg-stone-200/80">
                 <div
-                  className="absolute inset-y-0 rounded-full bg-gradient-to-r from-sky-300 to-amber-300"
-                  style={{ left: `${left}%`, right: `${100 - right}%` }}
+                  className="absolute inset-y-0 rounded-full"
+                  style={{
+                    left: `${left}%`,
+                    right: `${100 - right}%`,
+                    backgroundColor: barColor(day.pop, day.lead.weather[0]?.icon),
+                  }}
                 />
               </div>
 
