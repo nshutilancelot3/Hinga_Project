@@ -64,7 +64,11 @@
     "loading": "Loading forecast...",
     "feelsLike": "Feels like",
     "humidity": "Humidity",
-    "wind": "Wind"
+    "wind": "Wind",
+    "rain": "Rain",
+    "high": "High",
+    "low": "Low",
+    "empty": "Choose a district to see the next five days."
   },
   "diagnosis": {
     "title": "Crop Diagnosis",

@@ -64,7 +64,11 @@
     "loading": "Gutegereza iteganyabihe...",
     "feelsLike": "Biteye nk'aho",
     "humidity": "Ubuhehere",
-    "wind": "Umuyaga"
+    "wind": "Umuyaga",
+    "rain": "Imvura",
+    "high": "Ubushyuhe bwo hejuru",
+    "low": "Ubushyuhe bwo hasi",
+    "empty": "Hitamo akarere kugira ngo urebe iminsi itanu iri imbere."
   },
   "diagnosis": {
     "title": "Isuzuma ry'Ibihingwa",
