@@ -1,7 +1,26 @@
 {
   "home": {
     "tagline": "Market prices, weather, crop diagnosis, and a marketplace, all in one place in Kinyarwanda and English.",
-    "browseCta": "Browse the marketplace"
+    "browseCta": "Browse the marketplace",
+    "features": {
+      "sectionTitle": "How Hinga helps",
+      "prices": {
+        "title": "Market Prices",
+        "description": "See today's crop prices from 5 major markets, kept current by cooperative admins."
+      },
+      "weather": {
+        "title": "Weather Forecast",
+        "description": "Check the 5-day forecast for your district before you plant or harvest."
+      },
+      "diagnosis": {
+        "title": "Crop Diagnosis",
+        "description": "Photograph a sick plant and get an instant diagnosis with treatment advice."
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "description": "List your produce and reach buyers directly, no middleman needed."
+      }
+    }
   },
   "nav": {
     "prices": "Market Prices",
