@@ -11,6 +11,14 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        hinga: {
+          green: "#1F6B3A",
+          greenDark: "#154D29",
+          terracotta: "#C1622B",
+          cream: "#FBF6EC",
+          ink: "#2B2118",
+          inkMuted: "#5C4A3B",
+        },
       },
     },
   },
