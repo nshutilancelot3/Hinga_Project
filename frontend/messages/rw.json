@@ -1,7 +1,26 @@
 {
   "home": {
     "tagline": "Ibiciro by'isoko, ikirere, isuzuma ry'ibihingwa, n'isoko, byose hamwe mu Kinyarwanda.",
-    "browseCta": "Reba isoko"
+    "browseCta": "Reba isoko",
+    "features": {
+      "sectionTitle": "Uko Hinga igufasha",
+      "prices": {
+        "title": "Ibiciro by'Isoko",
+        "description": "Reba ibiciro by'ubuhinzi by'uyu munsi mu masoko 5 akomeye, bishyirwaho n'abayobozi b'amakoperative."
+      },
+      "weather": {
+        "title": "Ikirere",
+        "description": "Reba iteganyagihe ry'iminsi 5 mu karere kawe mbere yo gutera cyangwa gusarura."
+      },
+      "diagnosis": {
+        "title": "Isuzuma ry'Ibihingwa",
+        "description": "Fata ifoto y'ikimera kirwaye ubone isuzuma ako kanya n'inama zo kuvura."
+      },
+      "marketplace": {
+        "title": "Isoko",
+        "description": "Shyira ku isoko ibicuruzwa byawe hanyuma ubigurishe ku baguzi imbonankubone, nta muhuza ukenewe."
+      }
+    }
   },
   "nav": {
     "prices": "Ibiciro by'Isoko",
@@ -80,7 +99,7 @@
     "loading": "Gusuzuma igihingwa cyawe...",
     "result": "Ibisubizo by'isuzuma",
     "confidence": "Ubushobozi",
-    "disclaimer": "Iyi nsubizo ni ubufasha gusa. Baza inzobere mu buhinzi igihe hari ikibazo gikomeye.",
+    "disclaimer": "Iki gisubizo ni ubufasha gusa. Gisha inama inzobere mu by'ubuhinzi igihe hari ibibazo bikomeye byugarije imyaka.",
     "errors": {
       "noFile": "Hitamo ifoto mbere.",
       "tooLarge": "Ifoto igomba kuba munsi ya 5MB.",
