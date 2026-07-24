@@ -6,6 +6,7 @@ import { apiGet, getRawError } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
 import { formatShortDate } from '@/lib/dateFormat';
 import PriceTrendChart from '@/components/PriceTrendChart';
+import MarketOverviewChart from '@/components/MarketOverviewChart';
 
 type MarketPrice = {
   price_id: string;
@@ -89,12 +90,16 @@ export default function PricesPage() {
 
       {hasError && <p className="text-sm text-red-600 mb-4">{errorRaw || tc('error')}</p>}
 
-      {cropFilter && (
+      {!loading && !hasError && prices.length > 0 && (
         <div className="mb-4">
-          <PriceTrendChart
-            prices={prices.filter((p) => p.crop_type === cropFilter)}
-            cropType={cropFilter}
-          />
+          {cropFilter ? (
+            <PriceTrendChart
+              prices={prices.filter((p) => p.crop_type === cropFilter)}
+              cropType={cropFilter}
+            />
+          ) : (
+            <MarketOverviewChart prices={prices} onSelectCrop={setCropFilter} />
+          )}
         </div>
       )}
 
