@@ -131,7 +131,7 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
             fontWeight={500}
             transform={`rotate(-90, 14, ${PAD_TOP + plotHeight / 2})`}
           >
-            {t('trendYAxis')}
+            {t('price')}
           </text>
 
           <text x={PAD_LEFT} y={HEIGHT - 20} textAnchor="start" className="fill-gray-400" fontSize={10}>
@@ -148,7 +148,7 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
             fontSize={10}
             fontWeight={500}
           >
-            {t('trendXAxis')}
+            {t('date')}
           </text>
 
           {hoverIndex !== null && (

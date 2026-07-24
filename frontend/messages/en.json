@@ -81,8 +81,10 @@
     "empty": "No prices found.",
     "trendTitle": "How {crop} prices have moved by market",
     "trendNeedsData": "Pick a crop to see its price trend. Needs at least two prices recorded on different dates.",
-    "trendYAxis": "Price (RWF)",
-    "trendXAxis": "Date"
+    "overviewTitle": "Market overview",
+    "overviewSubtitle": "Average price per crop across all markets",
+    "overviewMarketCount": "{count, plural, one {1 market} other {# markets}}",
+    "overviewHint": "Click a crop to see how its price has changed over time."
   },
   "weather": {
     "title": "Weather Forecast",
