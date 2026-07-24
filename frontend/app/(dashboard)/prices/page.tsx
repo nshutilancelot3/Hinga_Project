@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
 import { formatShortDate } from '@/lib/dateFormat';
+import PriceTrendChart from '@/components/PriceTrendChart';
 
 type MarketPrice = {
   price_id: string;
@@ -87,6 +88,15 @@ export default function PricesPage() {
       </div>
 
       {hasError && <p className="text-sm text-red-600 mb-4">{errorRaw || tc('error')}</p>}
+
+      {cropFilter && (
+        <div className="mb-4">
+          <PriceTrendChart
+            prices={prices.filter((p) => p.crop_type === cropFilter)}
+            cropType={cropFilter}
+          />
+        </div>
+      )}
 
       <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl">
         <table className="w-full text-sm">

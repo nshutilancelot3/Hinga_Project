@@ -76,7 +76,9 @@
     "price": "Igiciro (RWF)",
     "date": "Itariki",
     "loading": "Gutegereza ibiciro...",
-    "empty": "Nta biciro bibonetse."
+    "empty": "Nta biciro bibonetse.",
+    "trendTitle": "Uko igiciro cya {crop} cyahindutse mu turere",
+    "trendNeedsData": "Hitamo ubuhinzi kugira ngo urebe uko ibiciro byahindutse. Hakenewe byibuze ibiciro bibiri byanditswe ku itariki zitandukanye."
   },
   "weather": {
     "title": "Iteganyabihe",
