@@ -63,7 +63,9 @@
       "missingField": "Please fill in: {field}",
       "passwordTooShort": "Password must be at least 8 characters.",
       "invalidRole": "Please choose a valid role."
-    }
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "prices": {
     "title": "Market Prices",

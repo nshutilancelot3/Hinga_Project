@@ -67,7 +67,7 @@ export default function Navbar() {
   );
 
   const localeSwitch = (
-    <div className="flex items-center rounded-full bg-white/60 border border-hinga-green/15 p-0.5 text-xs font-medium">
+    <div className="flex items-center rounded-full bg-hinga-cream border border-hinga-green/15 p-0.5 text-xs font-medium">
       <button
         onClick={() => switchLocale('rw')}
         className={`px-2.5 py-1 rounded-full ${locale === 'rw' ? 'bg-hinga-green text-white' : 'text-hinga-inkMuted hover:text-hinga-ink'}`}
@@ -100,7 +100,7 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="bg-hinga-cream border-b border-hinga-green/10 shadow-[0_1px_0_rgba(31,107,58,0.04)] px-4 sm:px-6 py-3">
+    <nav className="bg-white border-b border-hinga-green/10 shadow-sm px-4 sm:px-6 py-3">
       <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <SproutMark />
