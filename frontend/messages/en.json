@@ -80,7 +80,9 @@
     "loading": "Loading prices...",
     "empty": "No prices found.",
     "trendTitle": "How {crop} prices have moved by market",
-    "trendNeedsData": "Pick a crop to see its price trend. Needs at least two prices recorded on different dates."
+    "trendNeedsData": "Pick a crop to see its price trend. Needs at least two prices recorded on different dates.",
+    "trendYAxis": "Price (RWF)",
+    "trendXAxis": "Date"
   },
   "weather": {
     "title": "Weather Forecast",

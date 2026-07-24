@@ -21,10 +21,10 @@ type Props = {
 
 const WIDTH = 640;
 const HEIGHT = 260;
-const PAD_LEFT = 56;
+const PAD_LEFT = 68;
 const PAD_RIGHT = 16;
 const PAD_TOP = 16;
-const PAD_BOTTOM = 32;
+const PAD_BOTTOM = 44;
 
 export default function PriceTrendChart({ prices, cropType }: Props) {
   const t = useTranslations('prices');
@@ -122,11 +122,33 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
             </g>
           ))}
 
-          <text x={PAD_LEFT} y={HEIGHT - 6} textAnchor="start" className="fill-gray-400" fontSize={10}>
+          <text
+            x={14}
+            y={PAD_TOP + plotHeight / 2}
+            textAnchor="middle"
+            className="fill-gray-500"
+            fontSize={10}
+            fontWeight={500}
+            transform={`rotate(-90, 14, ${PAD_TOP + plotHeight / 2})`}
+          >
+            {t('trendYAxis')}
+          </text>
+
+          <text x={PAD_LEFT} y={HEIGHT - 20} textAnchor="start" className="fill-gray-400" fontSize={10}>
             {dates[0]}
           </text>
-          <text x={WIDTH - PAD_RIGHT} y={HEIGHT - 6} textAnchor="end" className="fill-gray-400" fontSize={10}>
+          <text x={WIDTH - PAD_RIGHT} y={HEIGHT - 20} textAnchor="end" className="fill-gray-400" fontSize={10}>
             {dates[dates.length - 1]}
+          </text>
+          <text
+            x={PAD_LEFT + plotWidth / 2}
+            y={HEIGHT - 6}
+            textAnchor="middle"
+            className="fill-gray-500"
+            fontSize={10}
+            fontWeight={500}
+          >
+            {t('trendXAxis')}
           </text>
 
           {hoverIndex !== null && (

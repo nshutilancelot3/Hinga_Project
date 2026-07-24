@@ -80,7 +80,9 @@
     "loading": "Gutegereza ibiciro...",
     "empty": "Nta biciro bibonetse.",
     "trendTitle": "Uko igiciro cya {crop} cyahindutse mu turere",
-    "trendNeedsData": "Hitamo ubuhinzi kugira ngo urebe uko ibiciro byahindutse. Hakenewe byibuze ibiciro bibiri byanditswe ku itariki zitandukanye."
+    "trendNeedsData": "Hitamo ubuhinzi kugira ngo urebe uko ibiciro byahindutse. Hakenewe byibuze ibiciro bibiri byanditswe ku itariki zitandukanye.",
+    "trendYAxis": "Igiciro (RWF)",
+    "trendXAxis": "Itariki"
   },
   "weather": {
     "title": "Iteganyabihe",
