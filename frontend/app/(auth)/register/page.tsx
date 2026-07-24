@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiPost, getApiError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
+import PasswordField from '@/components/PasswordField';
 
 const FIELD_LABEL_KEYS: Record<string, string> = {
   full_name: 'fullName',
@@ -20,6 +21,9 @@ const ERROR_MESSAGE_KEYS: Record<string, string> = {
   INVALID_ROLE: 'invalidRole',
   PASSWORD_TOO_SHORT: 'passwordTooShort',
 };
+
+const inputClass =
+  'w-full border border-hinga-green/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-hinga-green';
 
 export default function RegisterPage() {
   const t = useTranslations('auth');
@@ -75,47 +79,40 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-10">
-      <div className="bg-white border border-gray-200 rounded-xl p-8 w-full max-w-sm">
-        <h1 className="text-xl font-semibold mb-6">{t('registerTitle')}</h1>
+    <div className="min-h-screen flex items-center justify-center bg-hinga-cream py-10">
+      <div className="bg-white border border-hinga-green/10 shadow-sm rounded-xl p-8 w-full max-w-sm">
+        <h1 className="text-xl font-semibold text-hinga-ink mb-6">{t('registerTitle')}</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('fullName')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('fullName')}</label>
             <input
               type="text"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('email')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('email')}</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('password')}</label>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
-            />
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('password')}</label>
+            <PasswordField required minLength={8} value={password} onChange={setPassword} />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('role')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('role')}</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             >
               <option value="farmer">{t('roles.farmer')}</option>
               <option value="buyer">{t('roles.buyer')}</option>
@@ -123,21 +120,21 @@ export default function RegisterPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('district')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('district')}</label>
             <select
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             >
               {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('languagePref')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('languagePref')}</label>
             <select
               value={languagePref}
               onChange={(e) => selectLanguage(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             >
               <option value="rw">{t('languages.rw')}</option>
               <option value="en">{t('languages.en')}</option>
@@ -147,14 +144,14 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-green-700 text-white rounded-lg py-2 text-sm font-medium hover:bg-green-800 disabled:opacity-60"
+            className="bg-hinga-green text-white rounded-lg py-2 text-sm font-medium hover:bg-hinga-greenDark disabled:opacity-60"
           >
             {loading ? tc('loading') : t('registerButton')}
           </button>
         </form>
-        <p className="text-sm text-gray-500 text-center mt-4">
+        <p className="text-sm text-hinga-inkMuted text-center mt-4">
           {t('hasAccount')}{' '}
-          <Link href="/login" className="text-green-700 hover:underline">{tn('login')}</Link>
+          <Link href="/login" className="text-hinga-green hover:underline">{tn('login')}</Link>
         </p>
       </div>
     </div>

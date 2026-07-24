@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiPost, getApiError } from '@/lib/api';
+import PasswordField from '@/components/PasswordField';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -37,29 +38,23 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white border border-gray-200 rounded-xl p-8 w-full max-w-sm">
-        <h1 className="text-xl font-semibold mb-6">{t('loginTitle')}</h1>
+    <div className="min-h-screen flex items-center justify-center bg-hinga-cream">
+      <div className="bg-white border border-hinga-green/10 shadow-sm rounded-xl p-8 w-full max-w-sm">
+        <h1 className="text-xl font-semibold text-hinga-ink mb-6">{t('loginTitle')}</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('email')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('email')}</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className="w-full border border-hinga-green/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-hinga-green"
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('password')}</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
-            />
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('password')}</label>
+            <PasswordField required value={password} onChange={setPassword} />
           </div>
           {hasError && (
             <p className="text-sm text-red-600">
@@ -69,14 +64,14 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-green-700 text-white rounded-lg py-2 text-sm font-medium hover:bg-green-800 disabled:opacity-60"
+            className="bg-hinga-green text-white rounded-lg py-2 text-sm font-medium hover:bg-hinga-greenDark disabled:opacity-60"
           >
             {loading ? tc('loading') : t('loginButton')}
           </button>
         </form>
-        <p className="text-sm text-gray-500 text-center mt-4">
+        <p className="text-sm text-hinga-inkMuted text-center mt-4">
           {t('noAccount')}{' '}
-          <Link href="/register" className="text-green-700 hover:underline">{tn('register')}</Link>
+          <Link href="/register" className="text-hinga-green hover:underline">{tn('register')}</Link>
         </p>
       </div>
     </div>

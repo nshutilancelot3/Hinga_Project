@@ -17,6 +17,18 @@ type Listing = {
   farmer: { full_name: string };
 };
 
+function CropIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F6B3A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3C14.5 5.5 15.5 4.5 17.5 6.5C19.5 8.5 18 10 20 12C22 14 20 15 19.5 17C19 19 17 18 15.5 19.5C14 21 13 19.5 12 21C11 19.5 10 21 8.5 19.5C7 18 5 19 4.5 17C4 15 2 14 4 12C6 10 4.5 8.5 6.5 6.5C8.5 4.5 9.5 5.5 12 3Z" />
+      <path d="M12 6C10.5 9 13.5 11 12 14C10.5 17 13.5 18.5 12 21" />
+    </svg>
+  );
+}
+
+const inputClass =
+  'w-full border border-hinga-green/20 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-hinga-green';
+
 export default function MarketplacePage() {
   const t = useTranslations('marketplace');
   const tc = useTranslations('common');
@@ -143,11 +155,11 @@ export default function MarketplacePage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">{t('title')}</h1>
+        <h1 className="text-2xl font-semibold text-hinga-ink">{t('title')}</h1>
         {canPost && (
           <button
             onClick={openPostForm}
-            className="px-4 py-2 bg-green-700 text-white rounded-lg text-sm font-medium hover:bg-green-800"
+            className="px-4 py-2 bg-hinga-green text-white rounded-lg text-sm font-medium hover:bg-hinga-greenDark"
           >
             {t('postListing')}
           </button>
@@ -156,11 +168,11 @@ export default function MarketplacePage() {
 
       <div className="flex flex-wrap gap-3 mb-4">
         <div>
-          <label className="block text-sm text-gray-600 mb-1">{t('filterCrop')}</label>
+          <label className="block text-sm text-hinga-inkMuted mb-1">{t('filterCrop')}</label>
           <select
             value={cropFilter}
             onChange={(e) => setCropFilter(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-green-500"
+            className={inputClass}
           >
             <option value="">{t('allCrops')}</option>
             {crops.map((crop) => (
@@ -169,11 +181,11 @@ export default function MarketplacePage() {
           </select>
         </div>
         <div>
-          <label className="block text-sm text-gray-600 mb-1">{t('filterDistrict')}</label>
+          <label className="block text-sm text-hinga-inkMuted mb-1">{t('filterDistrict')}</label>
           <select
             value={districtFilter}
             onChange={(e) => setDistrictFilter(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-green-500"
+            className={inputClass}
           >
             <option value="">{t('allDistricts')}</option>
             {DISTRICTS.map((d) => (
@@ -188,24 +200,24 @@ export default function MarketplacePage() {
       {showPostForm && (
         <form
           onSubmit={handlePostSubmit}
-          className="bg-white border border-gray-200 rounded-xl p-6 mb-6 flex flex-col gap-4 max-w-md"
+          className="bg-white border border-hinga-green/10 rounded-xl p-6 mb-6 flex flex-col gap-4 max-w-md"
         >
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('crop')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('crop')}</label>
             <input
               type="text"
               required
               value={postCrop}
               onChange={(e) => setPostCrop(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('district')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('district')}</label>
             <select
               value={postDistrict}
               onChange={(e) => setPostDistrict(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             >
               {DISTRICTS.map((d) => (
                 <option key={d} value={d}>{d}</option>
@@ -213,7 +225,7 @@ export default function MarketplacePage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('quantity')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('quantity')}</label>
             <input
               type="number"
               required
@@ -221,11 +233,11 @@ export default function MarketplacePage() {
               step="0.01"
               value={postQuantity}
               onChange={(e) => setPostQuantity(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('pricePerKg')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('pricePerKg')}</label>
             <input
               type="number"
               required
@@ -233,16 +245,16 @@ export default function MarketplacePage() {
               step="0.01"
               value={postPrice}
               onChange={(e) => setPostPrice(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-600 mb-1">{t('description')}</label>
+            <label className="block text-sm text-hinga-inkMuted mb-1">{t('description')}</label>
             <textarea
               value={postDescription}
               onChange={(e) => setPostDescription(e.target.value)}
               rows={3}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className={inputClass}
             />
           </div>
           {postHasError && <p className="text-sm text-red-600">{postErrorRaw || tc('error')}</p>}
@@ -250,14 +262,14 @@ export default function MarketplacePage() {
             <button
               type="submit"
               disabled={postLoading}
-              className="px-4 py-2 bg-green-700 text-white rounded-lg text-sm font-medium hover:bg-green-800 disabled:opacity-60"
+              className="px-4 py-2 bg-hinga-green text-white rounded-lg text-sm font-medium hover:bg-hinga-greenDark disabled:opacity-60"
             >
               {postLoading ? tc('loading') : t('submit')}
             </button>
             <button
               type="button"
               onClick={() => setShowPostForm(false)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+              className="px-4 py-2 border border-hinga-green/20 rounded-lg text-sm text-hinga-inkMuted hover:bg-hinga-green/5"
             >
               {t('cancel')}
             </button>
@@ -266,30 +278,51 @@ export default function MarketplacePage() {
       )}
 
       {loading ? (
-        <p className="text-sm text-gray-500">{t('loading')}</p>
+        <p className="text-sm text-hinga-inkMuted">{t('loading')}</p>
       ) : rows.length === 0 ? (
-        <p className="text-sm text-gray-500">{t('empty')}</p>
+        <p className="text-sm text-hinga-inkMuted">{t('empty')}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {rows.map((l) => (
-            <div key={l.listing_id} className="bg-white border border-gray-200 rounded-xl p-4">
-              <p className="font-medium text-gray-900">{translateCrop(l.crop_type, locale)}</p>
-              <p className="text-sm text-gray-500 mt-1">
-                {t('quantity')}: {Number(l.quantity_kg).toLocaleString(locale)} kg
+            <div
+              key={l.listing_id}
+              className="group bg-white border border-hinga-green/10 rounded-xl p-4 transition-all duration-200 hover:border-hinga-green/25 hover:shadow-lg hover:shadow-hinga-green/5 hover:-translate-y-0.5"
+            >
+              <div className="flex items-start gap-3 mb-3">
+                <div className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-hinga-green/10 -rotate-12 transition-transform duration-300 group-hover:rotate-0">
+                  <CropIcon />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-lg font-bold text-hinga-ink tracking-tight truncate">{translateCrop(l.crop_type, locale)}</p>
+                  <p className="text-xs text-hinga-inkMuted">{l.district}</p>
+                </div>
+              </div>
+
+              <div className="flex items-baseline justify-between mb-3">
+                <p className="text-3xl font-extrabold text-hinga-green tracking-tight tabular-nums">
+                  {Number(l.price_per_kg).toLocaleString(locale)}
+                  <span className="text-sm font-normal text-hinga-inkMuted ml-1">RWF/kg</span>
+                </p>
+                <p className="px-2 py-0.5 rounded-full bg-hinga-green/5 text-xs font-medium text-hinga-inkMuted whitespace-nowrap">
+                  {Number(l.quantity_kg).toLocaleString(locale)} kg
+                </p>
+              </div>
+
+              <p className="text-xs text-hinga-inkMuted mb-2">
+                {t('farmer')}: <span className="font-medium text-hinga-ink">{l.farmer.full_name}</span>
               </p>
-              <p className="text-sm text-gray-500">
-                {t('pricePerKg')}: {Number(l.price_per_kg).toLocaleString(locale)} RWF
-              </p>
-              <p className="text-sm text-gray-500">{l.district}</p>
-              <p className="text-sm text-gray-500 mb-2">
-                {t('farmer')}: {l.farmer.full_name}
-              </p>
-              {l.description && <p className="text-sm text-gray-600 mb-2">{l.description}</p>}
+              {l.description && (
+                <p className="text-sm text-hinga-inkMuted italic mb-2">
+                  <span className="text-hinga-terracotta not-italic mr-0.5">&ldquo;</span>
+                  {l.description}
+                  <span className="text-hinga-terracotta not-italic ml-0.5">&rdquo;</span>
+                </p>
+              )}
 
               {canEnquire && (
                 <>
                   {sentEnquiryIds.includes(l.listing_id) ? (
-                    <p className="text-sm text-green-700">{t('enquirySent')}</p>
+                    <p className="text-sm text-hinga-green font-medium">{t('enquirySent')}</p>
                   ) : openEnquiryId === l.listing_id ? (
                     <form
                       onSubmit={(e) => handleEnquirySubmit(e, l.listing_id)}
@@ -301,21 +334,21 @@ export default function MarketplacePage() {
                         onChange={(e) => setEnquiryMessage(e.target.value)}
                         rows={2}
                         placeholder={t('message')}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+                        className={inputClass}
                       />
                       {enquiryHasError && <p className="text-sm text-red-600">{enquiryErrorRaw || tc('error')}</p>}
                       <div className="flex gap-2">
                         <button
                           type="submit"
                           disabled={enquiryLoading}
-                          className="px-3 py-1 bg-green-700 text-white rounded-lg text-sm font-medium hover:bg-green-800 disabled:opacity-60"
+                          className="px-3 py-1 bg-hinga-green text-white rounded-lg text-sm font-medium hover:bg-hinga-greenDark disabled:opacity-60"
                         >
                           {enquiryLoading ? tc('loading') : t('submit')}
                         </button>
                         <button
                           type="button"
                           onClick={() => setOpenEnquiryId(null)}
-                          className="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+                          className="px-3 py-1 border border-hinga-green/20 rounded-lg text-sm text-hinga-inkMuted hover:bg-hinga-green/5"
                         >
                           {t('cancel')}
                         </button>
@@ -324,7 +357,7 @@ export default function MarketplacePage() {
                   ) : (
                     <button
                       onClick={() => openEnquiryBox(l.listing_id)}
-                      className="px-3 py-1 border border-green-700 text-green-700 rounded-lg text-sm font-medium hover:bg-green-50"
+                      className="px-3 py-1 border border-hinga-green text-hinga-green rounded-lg text-sm font-medium hover:bg-hinga-green/5"
                     >
                       {t('sendEnquiry')}
                     </button>

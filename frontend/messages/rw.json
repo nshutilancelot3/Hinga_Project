@@ -63,7 +63,9 @@
       "missingField": "Nyamuneka uzuza: {field}",
       "passwordTooShort": "Ijambo banga rigomba kugira nibura inyuguti 8.",
       "invalidRole": "Nyamuneka hitamo uruhare rwemewe."
-    }
+    },
+    "showPassword": "Erekana ijambo banga",
+    "hidePassword": "Hisha ijambo banga"
   },
   "prices": {
     "title": "Ibiciro by'Isoko",
