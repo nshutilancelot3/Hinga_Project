@@ -112,12 +112,18 @@
     "result": "Ibisubizo by'isuzuma",
     "confidence": "Ubushobozi",
     "healthy": "Kirakomeye",
-    "diseased": "Hasanzwe indwara",
+    "diseased": "Indwara yavumbuwe",
     "disclaimer": "Iki gisubizo ni ubufasha gusa. Gisha inama inzobere mu by'ubuhinzi igihe hari ibibazo bikomeye byugarije imyaka.",
     "errors": {
       "noFile": "Hitamo ifoto mbere.",
       "tooLarge": "Ifoto igomba kuba munsi ya 5MB.",
       "generic": "Isuzuma ntiryakunze. Ongera ugerageze."
+    },
+    "treatmentCategories": {
+      "biological": "Kurwanya mu buryo bw'ibinyabuzima",
+      "chemical": "Kuvura n'imiti",
+      "cultural": "Uburyo bwo guhinga",
+      "prevention": "Kwirinda"
     }
   },
   "marketplace": {
