@@ -36,7 +36,8 @@ router.post('/', authenticate, requireRole('farmer'), async (req, res) => {
     });
 
     if (!plantIdRes.ok) {
-      console.error(`Plant.id responded ${plantIdRes.status}`);
+      const body = await plantIdRes.text();
+      console.error(`Plant.id responded ${plantIdRes.status}: ${body}`);
       return res.status(502).json({ error: 'Diagnosis service unavailable' });
     }
 
