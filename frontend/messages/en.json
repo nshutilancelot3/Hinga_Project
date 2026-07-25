@@ -68,6 +68,7 @@
     "rain": "Rain",
     "high": "High",
     "low": "Low",
+    "forecast": "5-day forecast",
     "empty": "Choose a district to see the next five days."
   },
   "diagnosis": {
