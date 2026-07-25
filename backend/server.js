@@ -8,6 +8,7 @@ const listingsRouter = require('./routes/listings');
 const enquiriesRouter = require('./routes/enquiries');
 const weatherRouter = require('./routes/weather');
 const diagnosisRouter = require('./routes/diagnosis');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.use('/api/listings', listingsRouter);
 app.use('/api/enquiries', enquiriesRouter);
 app.use('/api/weather', weatherRouter);
 app.use('/api/diagnosis', diagnosisRouter);
+app.use('/api/admin', adminRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
