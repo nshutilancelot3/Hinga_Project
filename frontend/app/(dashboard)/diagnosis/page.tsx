@@ -15,6 +15,15 @@ type DiagnosisResult = {
   is_healthy: boolean | null;
 };
 
+function UploadIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F6B3A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 16V4M12 4 7 9M12 4l5 5" />
+      <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+    </svg>
+  );
+}
+
 function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -53,11 +62,9 @@ export default function DiagnosisPage() {
   const [errorKey, setErrorKey] = useState<'noFile' | 'tooLarge' | 'generic' | null>(null);
   const [errorRaw, setErrorRaw] = useState('');
   const [loading, setLoading] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const selected = e.target.files?.[0];
-    if (!selected) return;
-
+  function acceptFile(selected: File) {
     if (selected.size > MAX_SIZE_BYTES) {
       setErrorKey('tooLarge');
       return;
@@ -67,6 +74,18 @@ export default function DiagnosisPage() {
     setResult(null);
     setFile(selected);
     setPreviewUrl(URL.createObjectURL(selected));
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0];
+    if (selected) acceptFile(selected);
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLLabelElement>) {
+    e.preventDefault();
+    setDragActive(false);
+    const dropped = e.dataTransfer.files?.[0];
+    if (dropped) acceptFile(dropped);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -99,31 +118,44 @@ export default function DiagnosisPage() {
 
   return (
     <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-semibold mb-6 text-center">{t('title')}</h1>
+      <h1 className="text-2xl font-semibold text-hinga-ink mb-6 text-center">{t('title')}</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm text-gray-600 mb-1">{t('cropType')}</label>
+          <label className="block text-sm text-hinga-inkMuted mb-1">{t('cropType')}</label>
           <input
             type="text"
             required
             value={cropType}
             onChange={(e) => setCropType(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+            className="w-full border border-hinga-green/20 rounded-lg px-3 py-2 text-sm transition-colors focus:outline-none focus:border-hinga-green"
           />
         </div>
 
         <label
           htmlFor="photo"
-          className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-green-500 flex flex-col items-center gap-3"
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragActive(true);
+          }}
+          onDragLeave={() => setDragActive(false)}
+          onDrop={handleDrop}
+          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer flex flex-col items-center gap-3 transition-all duration-200 ${
+            dragActive
+              ? 'border-hinga-green bg-hinga-green/5 scale-[1.02]'
+              : 'border-hinga-green/25 hover:border-hinga-green/50 hover:bg-hinga-green/[0.03]'
+          }`}
         >
           {previewUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={previewUrl} alt="" className="max-h-48 rounded-lg object-cover" />
+            <img src={previewUrl} alt="" className="max-h-48 rounded-lg object-cover shadow-sm" />
           ) : (
-            <span className="text-sm text-gray-500">{t('dragDrop')}</span>
+            <>
+              <UploadIcon />
+              <span className="text-sm text-hinga-inkMuted">{t('dragDrop')}</span>
+            </>
           )}
-          <span className="text-sm text-gray-600">{t('upload')}</span>
+          <span className="text-sm font-medium text-hinga-green">{t('upload')}</span>
           <input
             id="photo"
             type="file"
@@ -142,7 +174,7 @@ export default function DiagnosisPage() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-green-700 text-white rounded-lg py-2 text-sm font-medium hover:bg-green-800 disabled:opacity-60"
+          className="bg-hinga-green text-white rounded-lg py-2 text-sm font-medium transition-colors hover:bg-hinga-greenDark disabled:opacity-60"
         >
           {loading ? t('loading') : t('diagnoseButton')}
         </button>
