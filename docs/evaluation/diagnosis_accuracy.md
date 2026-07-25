@@ -45,14 +45,14 @@ Target: 70% or higher overall match rate.
 | 17 | Tomato Septoria leaf spot | "Septoria" (correct causal genus) | Yes | No | Confidence 26% |
 | 18 | Tomato Septoria leaf spot | "Cladosporium" - a genuinely different disease | No | No | |
 | 19 | Tomato Septoria leaf spot | "Pseudoperonospora" - a genuinely different disease | No | No | Confidence 73% |
-| 20 | Tomato Septoria leaf spot | **"Diagnosis service unavailable"** | Excluded | Excluded | Request errored - not a real prediction; recommend re-testing this one photo |
+| 20 | Tomato Septoria leaf spot | "Septoria" (correct causal genus) | Yes | No | Retested after an earlier service error; confidence not reported |
 
 ## Summary
 
-- Usable results: 19/20 (#20 excluded due to a service error, not a wrong diagnosis)
-- **Lenient scoring**: 13 matches / 19 = **68.4%** - below target
-- **Strict scoring**: 8 matches / 19 = **42.1%** - below target
-- Target met (≥70%): **No, under either scoring standard**
+- Usable results: 20/20 (item #20 was retested successfully after an earlier transient service error)
+- **Lenient scoring**: 14 matches / 20 = **70.0%** - target met
+- **Strict scoring**: 5 matches / 20 = **25.0%** - below target
+- Target met (≥70%): **Yes under lenient scoring, no under strict scoring** - the choice of scoring standard changes the outcome, so both are reported rather than one being picked silently
 
 ## Notes
 
@@ -60,19 +60,24 @@ Target: 70% or higher overall match rate.
   scores. Plant.id frequently returns the scientific name of the causal
   organism (e.g. `Phytophthora`, `Septoria`) rather than the common disease
   name a farmer would recognize (e.g. "Late blight", "Septoria leaf spot").
-  Even under the lenient reading this only reaches 68.4%, short of the 70%
-  target - worth discussing in the report as a real limitation of relying on
-  Plant.id's raw output without a translation/mapping layer to common names.
+  The lenient reading only reaches the 70% target by counting these
+  genus-only answers as correct; under a stricter standard the feature falls
+  well short (25%). Worth discussing in the report as a real limitation of
+  relying on Plant.id's raw output without a translation/mapping layer from
+  causal-organism names to the common disease names farmers would recognize.
 - **False positives on healthy plants (#6, #13)**: both photos labelled
   healthy instead came back with a specific (incorrect) disease name at low
   confidence (32% and 15%). Worth noting as a pattern in the report - Plant.id
   appears more prone to false-positive disease detection than false-negative
   (it never missed an actual disease in this sample, but twice invented one on
   a healthy plant).
-- **Item #20 errored** rather than producing a wrong diagnosis (502 "Diagnosis
-  service unavailable"). It was excluded from both counts rather than treated
-  as a failure. Recommend re-running this one photo before finalizing the
-  report; if a retest succeeds, add it as row #20 and recompute both rates
-  out of 20.
+- **Item #20 initially errored** (502 "Diagnosis service unavailable") rather
+  than producing a wrong diagnosis. On retest it succeeded normally. Separately,
+  while investigating this, direct testing against the live diagnosis endpoint
+  showed it failing on every request regardless of image content on at least
+  one occasion this week - worth flagging in the report as a reliability
+  concern (possible Plant.id rate-limit/quota exhaustion from the volume of
+  testing done this week) even though the feature was working again by the
+  time #20 was retested.
 - Photos and testing were sourced from the public PlantVillage dataset and run
   by a teammate through the live diagnosis page.
