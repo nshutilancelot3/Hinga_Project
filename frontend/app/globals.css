@@ -29,6 +29,11 @@ body {
   .wx-rise {
     animation: wx-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
+
+  /* Same rise-in used outside the weather page - price rows, diagnosis results. */
+  .rise-in {
+    animation: wx-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
 }
 
 @keyframes wx-rise {
@@ -39,7 +44,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wx-rise {
+  .wx-rise,
+  .rise-in {
     animation: none;
   }
 }
