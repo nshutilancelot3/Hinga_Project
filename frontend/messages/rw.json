@@ -98,6 +98,8 @@
     "high": "Ubushyuhe bwo hejuru",
     "low": "Ubushyuhe bwo hasi",
     "forecast": "Iteganyagihe ry'iminsi 5",
+    "advisoryDry": "Nta mvura nyinshi iteganyijwe uyu munsi.",
+    "advisoryWet": "Imvura irashobora kugwa uyu munsi — tegura gutera umuti no kwanika umusaruro uhereye kuri byo.",
     "empty": "Hitamo akarere kugira ngo urebe iminsi itanu iri imbere."
   },
   "diagnosis": {

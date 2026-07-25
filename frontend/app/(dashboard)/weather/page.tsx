@@ -46,10 +46,12 @@ function WeatherIcon({
   const kind = code.slice(0, 2);
   const night = code.endsWith('n');
 
+  // Slightly cool-white cloud with a defined outline: reads as white over the dark
+  // sky hero, yet still stands out against the pale forecast list.
   const cloud = (
     <path
       d="M7 18h9.5a3.5 3.5 0 0 0 .3-7A5 5 0 0 0 7.6 9.4 4.3 4.3 0 0 0 7 18Z"
-      className="fill-stone-100 stroke-stone-400"
+      className="fill-slate-50 stroke-slate-400"
     />
   );
 
@@ -57,7 +59,7 @@ function WeatherIcon({
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      strokeWidth={1.5}
+      strokeWidth={1.6}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
@@ -67,28 +69,29 @@ function WeatherIcon({
         (night ? (
           <path
             d="M18 14.5A7 7 0 0 1 9.5 6a7 7 0 1 0 8.5 8.5Z"
-            className="fill-stone-200 stroke-stone-500"
+            className="fill-slate-200 stroke-slate-400"
           />
         ) : (
           <g className="stroke-amber-500">
-            <circle cx="12" cy="12" r="4.2" className="fill-amber-200" />
+            <circle cx="12" cy="12" r="4.4" className="fill-amber-300" />
             <path
               className={animate ? 'wx-spin' : undefined}
-              d="M12 3.2v1.6M12 19.2v1.6M3.2 12h1.6M19.2 12h1.6M5.8 5.8l1.1 1.1M17.1 17.1l1.1 1.1M18.2 5.8l-1.1 1.1M6.9 17.1l-1.1 1.1"
+              strokeWidth={2}
+              d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.4 5.4l1.4 1.4M17.2 17.2l1.4 1.4M18.6 5.4l-1.4 1.4M6.8 17.2l-1.4 1.4"
             />
           </g>
         ))}
 
       {(kind === '02' || kind === '03' || kind === '04') && (
         <g>
-          {kind === '02' &&
+          {kind !== '04' &&
             (night ? (
               <path
                 d="M15.5 8.2A4.4 4.4 0 0 1 11 3.8a4.4 4.4 0 1 0 4.5 4.4Z"
-                className="fill-stone-200 stroke-stone-500"
+                className="fill-slate-200 stroke-slate-400"
               />
             ) : (
-              <circle cx="9" cy="8" r="3" className="fill-amber-200 stroke-amber-500" />
+              <circle cx="9" cy="7.6" r="3.2" className="fill-amber-300 stroke-amber-500" />
             ))}
           {cloud}
         </g>
@@ -97,8 +100,8 @@ function WeatherIcon({
       {(kind === '09' || kind === '10') && (
         <g>
           {cloud}
-          <g className={`stroke-sky-500 ${animate ? 'wx-rain' : ''}`}>
-            <path d="M9.5 20.2l-.7 1.6M13 20.2l-.7 1.6M16.5 20.2l-.7 1.6" />
+          <g className={`stroke-blue-500 ${animate ? 'wx-rain' : ''}`} strokeWidth={2.1}>
+            <path d="M9.3 20l-.8 1.9M12.9 20l-.8 1.9M16.5 20l-.8 1.9" />
           </g>
         </g>
       )}
@@ -106,24 +109,63 @@ function WeatherIcon({
       {kind === '11' && (
         <g>
           {cloud}
-          <path d="M13.2 19.6l-3 2.6h2.6l-1.2 1.7" className="stroke-amber-500" />
+          <path
+            d="M13.2 19.4l-3 2.8h2.7l-1.3 1.8"
+            className="fill-amber-400 stroke-amber-500"
+            strokeWidth={1.4}
+          />
         </g>
       )}
 
       {kind === '13' && (
         <g>
           {cloud}
-          <g className={`stroke-sky-400 ${animate ? 'wx-rain' : ''}`} strokeWidth={2.2}>
+          <g className={`stroke-sky-400 ${animate ? 'wx-rain' : ''}`} strokeWidth={2.4}>
             <path d="M10 21h.01M13 21.6h.01M16 21h.01" />
           </g>
         </g>
       )}
 
       {kind === '50' && (
-        <g className="stroke-stone-400">
+        <g className="stroke-slate-400">
           <path d="M4 9h16M6 13h13M4 17h11" />
         </g>
       )}
+    </svg>
+  );
+}
+
+// Small glyphs for the farmer advisory. currentColor lets the caller tint them.
+function DropIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        d="M12 3s6 6.6 6 11a6 6 0 0 1-12 0c0-4.4 6-11 6-11Z"
+        fill="currentColor"
+        fillOpacity={0.35}
+        stroke="currentColor"
+        strokeWidth={1.6}
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function SproutIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.7}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M12 21v-8" />
+      <path d="M12 13c0-3.2 2.2-5.3 5.5-5.3 0 3.2-2.2 5.3-5.5 5.3Z" fill="currentColor" fillOpacity={0.3} />
+      <path d="M12 14.5c0-2.8-2-4.8-5-4.8 0 2.8 2 4.8 5 4.8Z" fill="currentColor" fillOpacity={0.3} />
     </svg>
   );
 }
@@ -141,20 +183,20 @@ function skyGradient(code = '') {
   const scrim =
     'linear-gradient(to top, rgba(15,21,31,0.5), rgba(15,21,31,0.08) 54%, transparent 72%), ' +
     'radial-gradient(85% 120% at 100% 100%, rgba(13,19,29,0.42), transparent 58%)';
-  const sun = 'radial-gradient(120% 90% at 82% 6%, rgba(255,238,196,0.55), transparent 46%)';
+  const sun = 'radial-gradient(125% 95% at 84% 2%, rgba(255,222,130,0.7), transparent 48%)';
   const moon = 'radial-gradient(70% 60% at 80% 12%, rgba(210,224,255,0.35), transparent 45%)';
 
   const base = (() => {
     switch (kind) {
       case '01':
         return night
-          ? `${moon}, linear-gradient(160deg, #0e1738 0%, #223057 62%, #364670 100%)`
-          : `${sun}, linear-gradient(160deg, #1a548f 0%, #3f80c2 62%, #649cce 100%)`;
+          ? `${moon}, linear-gradient(160deg, #0d1a44 0%, #23306a 60%, #3a4f8f 100%)`
+          : `${sun}, linear-gradient(158deg, #0c62b8 0%, #2189db 58%, #52a8e6 100%)`;
       case '02':
       case '03':
         return night
           ? `${moon}, linear-gradient(162deg, #171f2c 0%, #2e3a4c 66%, #414e5e 100%)`
-          : `${sun}, linear-gradient(160deg, #356491 0%, #5e88ad 66%, #85a4bd 100%)`;
+          : `${sun}, linear-gradient(158deg, #2273b6 0%, #4d98cd 64%, #79b7de 100%)`;
       case '04':
         return night
           ? `linear-gradient(162deg, #1a212a 0%, #2f3843 68%, #424c57 100%)`
@@ -188,9 +230,9 @@ function barColor(pop: number, code = '') {
   // 01 clear, 02 few clouds, 03 scattered, 04 overcast; rest carry no sun.
   const sun = kind === '01' ? 1 : kind === '02' ? 0.6 : kind === '03' ? 0.25 : kind === '04' ? 0.1 : 0;
 
-  const dry = [214, 211, 209]; // stone-300 — cloudy and dry
-  const warm = [245, 200, 66]; // amber — sunny
-  const wet = [2, 132, 199]; // sky-600 — rainy
+  const dry = [203, 213, 225]; // slate-300 — cloudy and dry
+  const warm = [250, 189, 47]; // vivid gold — sunny
+  const wet = [14, 116, 205]; // vivid blue — rainy
   const c = dry.map((d, i) => Math.round(d + (warm[i] - d) * sun * (1 - p) + (wet[i] - d) * p));
   return `rgb(${c[0]} ${c[1]} ${c[2]})`;
 }
@@ -259,11 +301,23 @@ export default function WeatherPage() {
   const span = Math.max(scale.hi - scale.lo, 1);
   const today = days[0];
 
+  // Rain is what a farmer plans around, so it drives one plain-language cue:
+  // a meaningful chance of rain (>=40%) flips the advice from "good to work" to
+  // "plan around the rain". The forecast page shows the numbers; this reads them.
+  const rainToday = today ? Math.round(today.pop * 100) : 0;
+  const wetDay = today ? today.pop >= 0.4 : false;
+
   const clock = (slot: ForecastSlot) =>
     new Date(slot.dt * 1000).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
 
   return (
     <div className="text-stone-800">
+      {/* Soft sky-to-field wash so the page never reads as flat white. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-sky-50 via-white to-lime-50/50"
+      />
+
       <header className="mb-8">
         <p className="text-[11px] uppercase tracking-[0.22em] text-green-800/70">{t('title')}</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
@@ -316,7 +370,7 @@ export default function WeatherPage() {
             textShadow: '0 1px 3px rgba(12,18,28,0.28)',
           }}
         >
-          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-8">
+          <div className="flex flex-wrap items-start justify-between gap-x-8 gap-y-6">
             <div className="flex items-center gap-4 sm:gap-5">
               <WeatherIcon
                 code={today.lead.weather[0]?.icon}
@@ -335,19 +389,35 @@ export default function WeatherPage() {
               </div>
             </div>
 
-            <dl className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-3 text-sm sm:gap-x-12">
-              {[
-                [t('feelsLike'), `${Math.round(today.lead.main.feels_like)}°`],
-                [t('rain'), `${Math.round(today.pop * 100)}%`],
-                [t('humidity'), `${today.lead.main.humidity}%`],
-                [t('wind'), `${today.lead.wind.speed} m/s`],
-              ].map(([label, value]) => (
-                <div key={label} className="flex items-baseline justify-between gap-4">
-                  <dt className="text-white/70">{label}</dt>
-                  <dd className="font-semibold tabular-nums">{value}</dd>
-                </div>
-              ))}
-            </dl>
+            <div className="flex flex-col gap-4 sm:items-end">
+              <div className="flex items-center gap-2.5">
+                <DropIcon className="h-6 w-6 text-sky-200" />
+                <span className="text-sm text-white/75">{t('rain')}</span>
+                <span className="text-3xl font-bold tabular-nums leading-none">{rainToday}%</span>
+              </div>
+              <dl className="flex gap-x-8 text-sm">
+                {[
+                  [t('humidity'), `${today.lead.main.humidity}%`],
+                  [t('wind'), `${today.lead.wind.speed} m/s`],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex flex-col gap-0.5 sm:items-end">
+                    <dt className="text-white/70">{label}</dt>
+                    <dd className="text-base font-semibold tabular-nums">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-center gap-3 rounded-2xl bg-white/15 px-4 py-3 ring-1 ring-inset ring-white/15">
+            {wetDay ? (
+              <DropIcon className="h-5 w-5 shrink-0 text-sky-100" />
+            ) : (
+              <SproutIcon className="h-5 w-5 shrink-0 text-lime-200" />
+            )}
+            <p className="text-sm font-medium leading-snug">
+              {wetDay ? t('advisoryWet') : t('advisoryDry')}
+            </p>
           </div>
         </section>
       )}
@@ -363,7 +433,7 @@ export default function WeatherPage() {
               className="h-1.5 w-24 rounded-full"
               style={{
                 background:
-                  'linear-gradient(to right, rgb(245 200 66), rgb(214 211 209), rgb(2 132 199))',
+                  'linear-gradient(to right, rgb(250 189 47), rgb(203 213 225), rgb(14 116 205))',
               }}
             />
             <WeatherIcon code="10d" className="h-4 w-4" />
@@ -380,20 +450,29 @@ export default function WeatherPage() {
             key={day.key}
             open={i === 0}
             style={{ animationDelay: `${Math.min(i, 6) * 55}ms` }}
-            className="wx-rise border-b border-stone-200/80 last:border-b-0"
+            className="wx-rise border-b border-stone-200/70 last:border-b-0"
           >
-            <summary className="flex cursor-pointer list-none items-center gap-3 py-3.5 transition-colors hover:bg-stone-50/80 [&::-webkit-details-marker]:hidden">
-              <span className="w-[4.5rem] shrink-0 text-sm font-medium text-stone-700">
+            <summary className="flex cursor-pointer list-none items-center gap-3 rounded-xl px-2 py-3.5 transition-colors hover:bg-white/70 [&::-webkit-details-marker]:hidden">
+              <span className="w-16 shrink-0 text-sm font-semibold text-stone-700">
                 {new Date(`${day.key}T00:00:00`).toLocaleDateString(locale, { weekday: 'short' })}
               </span>
 
-              <WeatherIcon code={day.lead.weather[0]?.icon} className="h-6 w-6 shrink-0" />
+              <WeatherIcon code={day.lead.weather[0]?.icon} className="h-7 w-7 shrink-0" />
 
-              <span className="w-9 shrink-0 text-right text-xs tabular-nums text-sky-700">
-                {day.pop >= 0.1 ? `${Math.round(day.pop * 100)}%` : ''}
+              <span
+                className={`flex w-11 shrink-0 items-center justify-end gap-0.5 text-right text-xs font-semibold tabular-nums ${
+                  day.pop >= 0.4 ? 'text-blue-600' : 'text-sky-600/70'
+                }`}
+              >
+                {day.pop >= 0.1 && (
+                  <>
+                    <DropIcon className="h-3 w-3" />
+                    {Math.round(day.pop * 100)}%
+                  </>
+                )}
               </span>
 
-              <div className="relative mx-1 h-1.5 min-w-0 flex-1 rounded-full bg-stone-200/80">
+              <div className="relative mx-1 h-2 min-w-0 flex-1 rounded-full bg-stone-200/70">
                 <div
                   className="absolute inset-y-0 rounded-full"
                   style={{
