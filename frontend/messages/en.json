@@ -50,7 +50,8 @@
     "roles": {
       "farmer": "Farmer",
       "buyer": "Buyer",
-      "coop_admin": "Cooperative Admin"
+      "coop_admin": "Cooperative Admin",
+      "super_admin": "Super Admin"
     },
     "languages": {
       "rw": "Kinyarwanda",
@@ -63,7 +64,9 @@
       "missingField": "Please fill in: {field}",
       "passwordTooShort": "Password must be at least 8 characters.",
       "invalidRole": "Please choose a valid role."
-    }
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "prices": {
     "title": "Market Prices",
@@ -94,6 +97,9 @@
     "rain": "Rain",
     "high": "High",
     "low": "Low",
+    "forecast": "5-day forecast",
+    "advisoryDry": "Little rain expected today — a good day for field work and drying crops.",
+    "advisoryWet": "Rain is likely today — plan spraying and harvest drying around it.",
     "empty": "Choose a district to see the next five days."
   },
   "diagnosis": {
@@ -105,6 +111,8 @@
     "loading": "Analysing your crop...",
     "result": "Diagnosis result",
     "confidence": "Confidence",
+    "healthy": "Healthy",
+    "diseased": "Disease detected",
     "disclaimer": "This result is a guide only. Consult an agronomist for serious crop issues.",
     "errors": {
       "noFile": "Please select an image first.",
@@ -141,5 +149,28 @@
     "delete": "Delete",
     "edit": "Edit",
     "close": "Close"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "pricesHeading": "Market Prices",
+    "usersHeading": "Users",
+    "addPrice": "Add price",
+    "updatePrice": "Update price",
+    "cancelEdit": "Cancel",
+    "market": "Market",
+    "crop": "Crop",
+    "price": "Price (RWF)",
+    "unit": "Unit",
+    "updatedAt": "Updated",
+    "actions": "Actions",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "district": "District",
+    "noPrices": "No prices yet.",
+    "noUsers": "No users found.",
+    "confirmDeletePrice": "Delete this price?",
+    "confirmDeleteUser": "Delete this user?",
+    "saving": "Saving..."
   }
 }

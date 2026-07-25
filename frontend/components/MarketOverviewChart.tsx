@@ -19,7 +19,7 @@ type Props = {
 
 const WIDTH = 640;
 const HEIGHT = 260;
-const PAD_LEFT = 56;
+const PAD_LEFT = 68;
 const PAD_RIGHT = 16;
 const PAD_TOP = 16;
 const PAD_BOTTOM = 44;
@@ -74,6 +74,18 @@ export default function MarketOverviewChart({ prices, onSelectCrop }: Props) {
               </text>
             </g>
           ))}
+
+          <text
+            x={14}
+            y={PAD_TOP + plotHeight / 2}
+            textAnchor="middle"
+            className="fill-gray-500"
+            fontSize={10}
+            fontWeight={500}
+            transform={`rotate(-90, 14, ${PAD_TOP + plotHeight / 2})`}
+          >
+            {t('price')}
+          </text>
 
           {bars.map((b, i) => {
             const cx = PAD_LEFT + slot * i + slot / 2;

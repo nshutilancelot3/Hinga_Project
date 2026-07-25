@@ -18,7 +18,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className="antialiased bg-gray-50 text-gray-900">
+      <body className="antialiased bg-hinga-cream text-hinga-ink">
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

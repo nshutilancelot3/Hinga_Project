@@ -53,6 +53,23 @@ export async function apiPost(path: string, body: object) {
   return parseResponse(res);
 }
 
+export async function apiPut(path: string, body: object) {
+  const res = await safeFetch(`${API_URL}/api${path}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(body),
+  });
+  return parseResponse(res);
+}
+
+export async function apiDelete(path: string) {
+  const res = await safeFetch(`${API_URL}/api${path}`, {
+    method: 'DELETE',
+    headers: authHeader(),
+  });
+  return parseResponse(res);
+}
+
 export async function apiUpload(path: string, formData: FormData) {
   const res = await safeFetch(`${API_URL}/api${path}`, {
     method: 'POST',

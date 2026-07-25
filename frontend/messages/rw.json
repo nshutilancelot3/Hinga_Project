@@ -50,7 +50,8 @@
     "roles": {
       "farmer": "Umuhinzi",
       "buyer": "Umuguzi",
-      "coop_admin": "Umuyobozi w'Ikoperative"
+      "coop_admin": "Umuyobozi w'Ikoperative",
+      "super_admin": "Umuyobozi Mukuru"
     },
     "languages": {
       "rw": "Ikinyarwanda",
@@ -63,7 +64,9 @@
       "missingField": "Nyamuneka uzuza: {field}",
       "passwordTooShort": "Ijambo banga rigomba kugira nibura inyuguti 8.",
       "invalidRole": "Nyamuneka hitamo uruhare rwemewe."
-    }
+    },
+    "showPassword": "Erekana ijambo banga",
+    "hidePassword": "Hisha ijambo banga"
   },
   "prices": {
     "title": "Ibiciro by'Isoko",
@@ -80,9 +83,9 @@
     "trendTitle": "Uko igiciro cya {crop} cyahindutse mu turere",
     "trendNeedsData": "Hitamo ubuhinzi kugira ngo urebe uko ibiciro byahindutse. Hakenewe byibuze ibiciro bibiri byanditswe ku itariki zitandukanye.",
     "overviewTitle": "Uko isoko rihagaze muri rusange",
-    "overviewSubtitle": "Igiciro cy'impuzandengo kuri buri bwoko bw'ubuhinzi, hakurikijwe amasoko yose",
+    "overviewSubtitle": "Igiciro mpuzandengo cya buri gihingwa ku masoko yose.",
     "overviewMarketCount": "{count, plural, one {isoko rimwe} other {amasoko #}}",
-    "overviewHint": "Kanda ku buhinzi kugira ngo urebe uko igiciro cyahindutse mu gihe."
+    "overviewHint": "Kanda ku gihingwa kugira ngo urebe uko igiciro cyacyo cyagiye gihinduka uko igihe gihita."
   },
   "weather": {
     "title": "Iteganyabihe",
@@ -94,6 +97,9 @@
     "rain": "Imvura",
     "high": "Ubushyuhe bwo hejuru",
     "low": "Ubushyuhe bwo hasi",
+    "forecast": "Iteganyagihe ry'iminsi 5",
+    "advisoryDry": "Nta mvura nyinshi iteganyijwe uyu munsi.",
+    "advisoryWet": "Imvura irashobora kugwa uyu munsi — tegura gutera umuti no kwanika umusaruro uhereye kuri byo.",
     "empty": "Hitamo akarere kugira ngo urebe iminsi itanu iri imbere."
   },
   "diagnosis": {
@@ -105,6 +111,8 @@
     "loading": "Gusuzuma igihingwa cyawe...",
     "result": "Ibisubizo by'isuzuma",
     "confidence": "Ubushobozi",
+    "healthy": "Kirakomeye",
+    "diseased": "Hasanzwe indwara",
     "disclaimer": "Iki gisubizo ni ubufasha gusa. Gisha inama inzobere mu by'ubuhinzi igihe hari ibibazo bikomeye byugarije imyaka.",
     "errors": {
       "noFile": "Hitamo ifoto mbere.",
@@ -141,5 +149,28 @@
     "delete": "Siba",
     "edit": "Hindura",
     "close": "Funga"
+  },
+  "admin": {
+    "title": "Ubuyobozi",
+    "pricesHeading": "Ibiciro by'Isoko",
+    "usersHeading": "Abakoresha",
+    "addPrice": "Ongeraho igiciro",
+    "updatePrice": "Hindura igiciro",
+    "cancelEdit": "Reka",
+    "market": "Isoko",
+    "crop": "Igihingwa",
+    "price": "Igiciro (RWF)",
+    "unit": "Igipimo",
+    "updatedAt": "Byahinduwe",
+    "actions": "Ibikorwa",
+    "name": "Izina",
+    "email": "Imeri",
+    "role": "Uruhare",
+    "district": "Akarere",
+    "noPrices": "Nta biciro birahari.",
+    "noUsers": "Nta bakoresha bahari.",
+    "confirmDeletePrice": "Siba iki giciro?",
+    "confirmDeleteUser": "Siba uyu mukoresha?",
+    "saving": "Kubika..."
   }
 }
