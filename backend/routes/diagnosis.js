@@ -32,7 +32,9 @@ router.post('/', authenticate, requireRole('farmer'), async (req, res) => {
         'Api-Key': process.env.PLANTID_KEY,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ images: [base64], similar_images: false }),
+      // similar_images is opt-in only: Plant.id v3 rejects the request if it's
+      // explicitly set to false instead of just being left out.
+      body: JSON.stringify({ images: [base64] }),
     });
 
     if (!plantIdRes.ok) {
