@@ -33,21 +33,21 @@ function fileToDataUrl(file: File): Promise<string> {
   });
 }
 
-// The backend stores Plant.id's treatment object as a JSON string; render it
-// readably if it parsed, otherwise fall back to showing the raw text.
-function renderTreatment(treatment: string) {
+// The backend stores Plant.id's treatment object as a JSON string. Each
+// category (chemical, biological, ...) holds several tips; render them as a
+// bullet list per category instead of one long comma-joined line.
+function parseTreatment(treatment: string): Array<[string, string[]]> | null {
   try {
     const parsed = JSON.parse(treatment);
     if (parsed && typeof parsed === 'object') {
-      return Object.entries(parsed)
-        .filter(([, tips]) => Array.isArray(tips) && tips.length > 0)
-        .map(([category, tips]) => `${category}: ${(tips as string[]).join(', ')}`)
-        .join('\n');
+      return Object.entries(parsed).filter(
+        (entry): entry is [string, string[]] => Array.isArray(entry[1]) && entry[1].length > 0
+      );
     }
   } catch {
-    // not JSON, fall through to raw text
+    // not JSON
   }
-  return treatment;
+  return null;
 }
 
 export default function DiagnosisPage() {
@@ -212,7 +212,28 @@ export default function DiagnosisPage() {
             </div>
           </div>
 
-          <p className="text-sm text-hinga-inkMuted whitespace-pre-line">{renderTreatment(result.treatment)}</p>
+          {(() => {
+            const categories = parseTreatment(result.treatment);
+            if (!categories) {
+              return <p className="text-sm text-hinga-inkMuted">{result.treatment}</p>;
+            }
+            return (
+              <div className="flex flex-col gap-3">
+                {categories.map(([category, tips]) => (
+                  <div key={category}>
+                    <p className="text-xs font-semibold text-hinga-ink uppercase tracking-wide mb-1">
+                      {t.has(`treatmentCategories.${category}`) ? t(`treatmentCategories.${category}`) : category}
+                    </p>
+                    <ul className="list-disc list-outside pl-4 flex flex-col gap-1">
+                      {tips.map((tip, i) => (
+                        <li key={i} className="text-sm text-hinga-inkMuted">{tip}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       )}
 

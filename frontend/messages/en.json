@@ -118,6 +118,12 @@
       "noFile": "Please select an image first.",
       "tooLarge": "Image must be under 5MB.",
       "generic": "Diagnosis failed. Please try again."
+    },
+    "treatmentCategories": {
+      "biological": "Biological control",
+      "chemical": "Chemical treatment",
+      "cultural": "Cultural practices",
+      "prevention": "Prevention"
     }
   },
   "marketplace": {
