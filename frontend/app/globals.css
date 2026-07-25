@@ -30,6 +30,11 @@ body {
     animation: wx-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
 
+  /* Same rise-in used outside the weather page - price rows, diagnosis results. */
+  .rise-in {
+    animation: wx-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
   /* Hero-only weather-icon motion: a slow sun, drifting float, falling rain.
      Kept off the small forecast-row icons so a full week never twitches. */
   .wx-float {
@@ -80,6 +85,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .wx-rise,
+  .rise-in,
   .wx-float,
   .wx-spin,
   .wx-rain {
