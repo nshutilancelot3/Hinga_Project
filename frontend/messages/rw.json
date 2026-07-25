@@ -108,6 +108,8 @@
     "loading": "Gusuzuma igihingwa cyawe...",
     "result": "Ibisubizo by'isuzuma",
     "confidence": "Ubushobozi",
+    "healthy": "Kirakomeye",
+    "diseased": "Hasanzwe indwara",
     "disclaimer": "Iki gisubizo ni ubufasha gusa. Gisha inama inzobere mu by'ubuhinzi igihe hari ibibazo bikomeye byugarije imyaka.",
     "errors": {
       "noFile": "Hitamo ifoto mbere.",

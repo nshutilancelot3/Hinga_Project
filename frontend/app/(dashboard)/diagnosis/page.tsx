@@ -181,17 +181,42 @@ export default function DiagnosisPage() {
       </form>
 
       {result && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6 mt-6">
-          <h2 className="text-lg font-semibold mb-3">{t('result')}</h2>
-          <p className="font-medium text-gray-900">{translateDisease(result.disease_name, locale)}</p>
-          <p className="text-sm text-gray-500 mb-3">
-            {t('confidence')}: {Math.round(result.confidence * 100)}%
-          </p>
-          <p className="text-sm text-gray-700 whitespace-pre-line">{renderTreatment(result.treatment)}</p>
+        <div className="rise-in bg-white border border-hinga-green/10 shadow-sm rounded-xl p-6 mt-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold text-hinga-ink">{t('result')}</h2>
+            {result.is_healthy !== null && (
+              <span
+                className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  result.is_healthy
+                    ? 'bg-hinga-green/10 text-hinga-green'
+                    : 'bg-hinga-terracotta/10 text-hinga-terracotta'
+                }`}
+              >
+                {result.is_healthy ? t('healthy') : t('diseased')}
+              </span>
+            )}
+          </div>
+
+          <p className="font-medium text-hinga-ink mb-2">{translateDisease(result.disease_name, locale)}</p>
+
+          <div className="mb-4">
+            <div className="flex items-center justify-between text-xs text-hinga-inkMuted mb-1">
+              <span>{t('confidence')}</span>
+              <span className="font-medium tabular-nums">{Math.round(result.confidence * 100)}%</span>
+            </div>
+            <div className="h-1.5 rounded-full bg-hinga-green/10 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-hinga-green transition-all duration-700 ease-out"
+                style={{ width: `${Math.round(result.confidence * 100)}%` }}
+              />
+            </div>
+          </div>
+
+          <p className="text-sm text-hinga-inkMuted whitespace-pre-line">{renderTreatment(result.treatment)}</p>
         </div>
       )}
 
-      <p className="text-xs text-gray-500 mt-4">{t('disclaimer')}</p>
+      <p className="text-xs text-hinga-inkMuted mt-4">{t('disclaimer')}</p>
     </div>
   );
 }

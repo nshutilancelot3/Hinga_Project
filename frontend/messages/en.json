@@ -108,6 +108,8 @@
     "loading": "Analysing your crop...",
     "result": "Diagnosis result",
     "confidence": "Confidence",
+    "healthy": "Healthy",
+    "diseased": "Disease detected",
     "disclaimer": "This result is a guide only. Consult an agronomist for serious crop issues.",
     "errors": {
       "noFile": "Please select an image first.",
