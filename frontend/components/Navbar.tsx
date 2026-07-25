@@ -8,7 +8,14 @@ import { isLoggedIn, getCurrentUser, logout } from '@/lib/api';
 
 function SproutMark() {
   return (
-    <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 28 28"
+      fill="none"
+      aria-hidden="true"
+      className="transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-110"
+    >
       <path d="M14 24V13.5" stroke="#1F6B3A" strokeWidth="2" strokeLinecap="round" />
       <path d="M14 14C14 9 10 6 6 6C6 10 9 14 14 14Z" fill="#1F6B3A" />
       <path d="M14 17C14 12.5 17.5 9 22 9C22 13 18.5 17 14 17Z" fill="#C1622B" />
@@ -102,9 +109,11 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b border-hinga-green/10 shadow-sm px-4 sm:px-6 py-3">
       <div className="flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="group flex items-center gap-2">
           <SproutMark />
-          <span className="text-hinga-green font-semibold text-lg tracking-tight">Hinga</span>
+          <span className="text-hinga-green font-semibold text-lg tracking-tight transition-colors group-hover:text-hinga-greenDark">
+            Hinga
+          </span>
         </Link>
 
         {/* Desktop nav: everything on one line from md up */}
