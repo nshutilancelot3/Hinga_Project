@@ -97,6 +97,9 @@
     "rain": "Rain",
     "high": "High",
     "low": "Low",
+    "forecast": "5-day forecast",
+    "advisoryDry": "Little rain expected today — a good day for field work and drying crops.",
+    "advisoryWet": "Rain is likely today — plan spraying and harvest drying around it.",
     "empty": "Choose a district to see the next five days."
   },
   "diagnosis": {
@@ -108,6 +111,8 @@
     "loading": "Analysing your crop...",
     "result": "Diagnosis result",
     "confidence": "Confidence",
+    "healthy": "Healthy",
+    "diseased": "Disease detected",
     "disclaimer": "This result is a guide only. Consult an agronomist for serious crop issues.",
     "errors": {
       "noFile": "Please select an image first.",

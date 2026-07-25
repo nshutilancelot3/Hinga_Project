@@ -97,6 +97,9 @@
     "rain": "Imvura",
     "high": "Ubushyuhe bwo hejuru",
     "low": "Ubushyuhe bwo hasi",
+    "forecast": "Iteganyagihe ry'iminsi 5",
+    "advisoryDry": "Nta mvura nyinshi iteganyijwe uyu munsi.",
+    "advisoryWet": "Imvura irashobora kugwa uyu munsi — tegura gutera umuti no kwanika umusaruro uhereye kuri byo.",
     "empty": "Hitamo akarere kugira ngo urebe iminsi itanu iri imbere."
   },
   "diagnosis": {
@@ -108,6 +111,8 @@
     "loading": "Gusuzuma igihingwa cyawe...",
     "result": "Ibisubizo by'isuzuma",
     "confidence": "Ubushobozi",
+    "healthy": "Kirakomeye",
+    "diseased": "Hasanzwe indwara",
     "disclaimer": "Iki gisubizo ni ubufasha gusa. Gisha inama inzobere mu by'ubuhinzi igihe hari ibibazo bikomeye byugarije imyaka.",
     "errors": {
       "noFile": "Hitamo ifoto mbere.",

@@ -22,7 +22,7 @@ export default function HomeCta() {
       <div className="flex flex-wrap justify-center gap-4">
         <Link
           href="/marketplace"
-          className="px-6 py-2 bg-hinga-green text-white rounded-lg hover:bg-hinga-greenDark text-sm font-medium"
+          className="px-6 py-2 bg-hinga-green text-white rounded-lg text-sm font-medium transition-all duration-200 hover:bg-hinga-greenDark hover:-translate-y-0.5 hover:shadow-lg hover:shadow-hinga-green/20"
         >
           {t('browseCta')}
         </Link>
@@ -32,10 +32,16 @@ export default function HomeCta() {
 
   return (
     <div className="flex flex-wrap justify-center gap-4">
-      <Link href="/register" className="px-6 py-2 bg-hinga-green text-white rounded-lg hover:bg-hinga-greenDark text-sm font-medium">
+      <Link
+        href="/register"
+        className="px-6 py-2 bg-hinga-green text-white rounded-lg text-sm font-medium transition-all duration-200 hover:bg-hinga-greenDark hover:-translate-y-0.5 hover:shadow-lg hover:shadow-hinga-green/20"
+      >
         {tn('register')}
       </Link>
-      <Link href="/login" className="px-6 py-2 border border-hinga-green/20 text-hinga-ink rounded-lg hover:bg-hinga-green/5 text-sm font-medium">
+      <Link
+        href="/login"
+        className="px-6 py-2 border border-hinga-green/20 text-hinga-ink rounded-lg text-sm font-medium transition-all duration-200 hover:bg-hinga-green/5 hover:-translate-y-0.5"
+      >
         {tn('login')}
       </Link>
     </div>

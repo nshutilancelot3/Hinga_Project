@@ -55,8 +55,8 @@ export default async function HomeFeatures() {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
         {FEATURES.map(({ key, Icon }) => (
-          <div key={key} className="text-center sm:text-left">
-            <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-hinga-green/10 mb-4">
+          <div key={key} className="group text-center sm:text-left">
+            <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-hinga-green/10 mb-4 transition-all duration-300 group-hover:bg-hinga-green/15 group-hover:-translate-y-1">
               <Icon />
             </div>
             <h3 className="font-semibold text-hinga-ink mb-1.5">{t(`${key}.title`)}</h3>
