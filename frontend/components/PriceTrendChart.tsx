@@ -22,7 +22,7 @@ type Props = {
 const WIDTH = 640;
 const HEIGHT = 260;
 const PAD_LEFT = 56;
-const PAD_RIGHT = 16;
+const PAD_RIGHT = 156;
 const PAD_TOP = 16;
 const PAD_BOTTOM = 32;
 
@@ -95,7 +95,7 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">
-      <p className="text-sm font-medium text-gray-900 mb-1">
+      <p className="text-base font-semibold text-gray-900 mb-2">
         {t('trendTitle', { crop: translateCrop(cropType, locale) })}
       </p>
       <div className="overflow-x-auto">
@@ -116,16 +116,16 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
                 stroke="#e1e0d9"
                 strokeWidth={1}
               />
-              <text x={PAD_LEFT - 8} y={yFor(v)} textAnchor="end" dominantBaseline="middle" className="fill-gray-400" fontSize={10}>
+              <text x={PAD_LEFT - 8} y={yFor(v)} textAnchor="end" dominantBaseline="middle" className="fill-gray-500" fontSize={12}>
                 {Math.round(v).toLocaleString(locale)}
               </text>
             </g>
           ))}
 
-          <text x={PAD_LEFT} y={HEIGHT - 6} textAnchor="start" className="fill-gray-400" fontSize={10}>
+          <text x={PAD_LEFT} y={HEIGHT - 6} textAnchor="start" className="fill-gray-500" fontSize={12}>
             {dates[0]}
           </text>
-          <text x={WIDTH - PAD_RIGHT} y={HEIGHT - 6} textAnchor="end" className="fill-gray-400" fontSize={10}>
+          <text x={xFor(dates.length - 1)} y={HEIGHT - 6} textAnchor="end" className="fill-gray-500" fontSize={12}>
             {dates[dates.length - 1]}
           </text>
 
@@ -145,6 +145,31 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
             const segments = s.points
               .map((v, i) => (v === null ? null : `${xFor(i)},${yFor(v)}`))
               .filter((p): p is string => p !== null);
+
+            let lastIndex = -1;
+            for (let i = s.points.length - 1; i >= 0; i--) {
+              if (s.points[i] !== null) {
+                lastIndex = i;
+                break;
+              }
+            }
+            const lastValue = lastIndex >= 0 ? s.points[lastIndex] : null;
+            const firstValue = s.points.find((v) => v !== null) ?? null;
+
+            let arrow = '';
+            let arrowColor = '#52514e';
+            if (firstValue !== null && lastValue !== null) {
+              if (lastValue > firstValue) {
+                arrow = '▲';
+                arrowColor = '#0ca30c';
+              } else if (lastValue < firstValue) {
+                arrow = '▼';
+                arrowColor = '#d03b3b';
+              } else {
+                arrow = '–';
+              }
+            }
+
             return (
               <g key={s.market}>
                 {segments.length > 1 && (
@@ -155,15 +180,31 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
                     <circle key={i} cx={xFor(i)} cy={yFor(v)} r={4} fill={color} stroke="#fff" strokeWidth={2} />
                   )
                 )}
+                {lastValue !== null && (
+                  <g>
+                    <circle cx={xFor(lastIndex) + 10} cy={yFor(lastValue)} r={3} fill={color} />
+                    <text
+                      x={xFor(lastIndex) + 16}
+                      y={yFor(lastValue)}
+                      dominantBaseline="middle"
+                      className="fill-gray-800"
+                      fontSize={12}
+                      fontWeight={600}
+                    >
+                      {s.market}: {Math.round(lastValue).toLocaleString(locale)}
+                      {arrow && <tspan fill={arrowColor}> {arrow}</tspan>}
+                    </text>
+                  </g>
+                )}
               </g>
             );
           })}
         </svg>
       </div>
 
-      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-3">
         {markets.map((market, i) => (
-          <div key={market} className="flex items-center gap-1.5 text-xs text-gray-600">
+          <div key={market} className="flex items-center gap-1.5 text-sm text-gray-700">
             <span className="inline-block w-3 h-0.5 rounded-full" style={{ backgroundColor: SERIES_COLORS[i % SERIES_COLORS.length] }} />
             {market}
           </div>
@@ -171,7 +212,7 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
       </div>
 
       {hoverIndex !== null && (
-        <div className="mt-3 border-t border-gray-100 pt-2 text-xs text-gray-600">
+        <div className="mt-3 border-t border-gray-100 pt-2 text-sm text-gray-700">
           <p className="text-gray-900 font-medium mb-1">{dates[hoverIndex]}</p>
           {series.map((s, i) => {
             const v = s.points[hoverIndex];
