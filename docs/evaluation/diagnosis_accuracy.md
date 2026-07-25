@@ -31,14 +31,14 @@ Target: 70% or higher overall match rate.
 | 3 | Corn (maize) healthy | Healthy | Yes | Yes | Confidence 27% |
 | 4 | Corn (maize) healthy | Healthy | Yes | Yes | Confidence reported as 0% - worth re-checking |
 | 5 | Corn (maize) healthy | Healthy (insect feeding damage) | Yes | Yes | Confidence 3% |
-| 6 | Potato healthy | "healthy" **and** "Peronospora" in the same response | No | No | Self-contradictory output - flagged below |
+| 6 | Potato healthy | "Peronospora" - a false positive on a healthy plant | No | No | |
 | 7 | Potato Late blight | "fungi" (too vague to count) | No | No | |
 | 8 | Potato Late blight | "Phytophthora" (correct causal genus) | Yes | No | |
 | 9 | Potato Late blight | "Phytophthora" | Yes | No | |
 | 10 | Raspberry healthy | Healthy (insect feeding damage) | Yes | Yes | Confidence 5% |
 | 11 | Squash Powdery mildew | "Erysiphaceae" (correct fungal family) | Yes | Yes | Confidence 84% |
 | 12 | Strawberry Leaf scorch | "Diplocarpon" (correct causal genus) | Yes | No | Confidence 80% |
-| 13 | Tomato healthy | "healthy" **and** "Saissetia" in the same response | No | No | Self-contradictory output - flagged below |
+| 13 | Tomato healthy | "Saissetia" - a false positive on a healthy plant | No | No | Confidence 15% |
 | 14 | Tomato Late blight | "Phytophthora" | Yes | No | Confidence 61% |
 | 15 | Tomato Late blight | "Phytophthora" | Yes | No | Confidence 75% |
 | 16 | Tomato Septoria leaf spot | "Peronospora" - a genuinely different disease | No | No | |
@@ -63,12 +63,12 @@ Target: 70% or higher overall match rate.
   Even under the lenient reading this only reaches 68.4%, short of the 70%
   target - worth discussing in the report as a real limitation of relying on
   Plant.id's raw output without a translation/mapping layer to common names.
-- **Self-contradictory results (#6, #13)**: two photos got a response that
-  simultaneously indicated "healthy" and named a specific disease. This
-  suggests the `is_healthy` flag and the top disease suggestion can disagree
-  within a single Plant.id response, which is a genuine finding worth
-  including in the report's evaluation/limitations section, independent of
-  the accuracy number.
+- **False positives on healthy plants (#6, #13)**: both photos labelled
+  healthy instead came back with a specific (incorrect) disease name at low
+  confidence (32% and 15%). Worth noting as a pattern in the report - Plant.id
+  appears more prone to false-positive disease detection than false-negative
+  (it never missed an actual disease in this sample, but twice invented one on
+  a healthy plant).
 - **Item #20 errored** rather than producing a wrong diagnosis (502 "Diagnosis
   service unavailable"). It was excluded from both counts rather than treated
   as a failure. Recommend re-running this one photo before finalizing the
