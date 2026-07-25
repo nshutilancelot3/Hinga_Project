@@ -50,7 +50,8 @@
     "roles": {
       "farmer": "Umuhinzi",
       "buyer": "Umuguzi",
-      "coop_admin": "Umuyobozi w'Ikoperative"
+      "coop_admin": "Umuyobozi w'Ikoperative",
+      "super_admin": "Umuyobozi Mukuru"
     },
     "languages": {
       "rw": "Ikinyarwanda",
@@ -143,5 +144,28 @@
     "delete": "Siba",
     "edit": "Hindura",
     "close": "Funga"
+  },
+  "admin": {
+    "title": "Ubuyobozi",
+    "pricesHeading": "Ibiciro by'Isoko",
+    "usersHeading": "Abakoresha",
+    "addPrice": "Ongeraho igiciro",
+    "updatePrice": "Hindura igiciro",
+    "cancelEdit": "Reka",
+    "market": "Isoko",
+    "crop": "Igihingwa",
+    "price": "Igiciro (RWF)",
+    "unit": "Igipimo",
+    "updatedAt": "Byahinduwe",
+    "actions": "Ibikorwa",
+    "name": "Izina",
+    "email": "Imeri",
+    "role": "Uruhare",
+    "district": "Akarere",
+    "noPrices": "Nta biciro birahari.",
+    "noUsers": "Nta bakoresha bahari.",
+    "confirmDeletePrice": "Siba iki giciro?",
+    "confirmDeleteUser": "Siba uyu mukoresha?",
+    "saving": "Kubika..."
   }
 }

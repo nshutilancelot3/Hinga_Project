@@ -50,7 +50,8 @@
     "roles": {
       "farmer": "Farmer",
       "buyer": "Buyer",
-      "coop_admin": "Cooperative Admin"
+      "coop_admin": "Cooperative Admin",
+      "super_admin": "Super Admin"
     },
     "languages": {
       "rw": "Kinyarwanda",
@@ -143,5 +144,28 @@
     "delete": "Delete",
     "edit": "Edit",
     "close": "Close"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "pricesHeading": "Market Prices",
+    "usersHeading": "Users",
+    "addPrice": "Add price",
+    "updatePrice": "Update price",
+    "cancelEdit": "Cancel",
+    "market": "Market",
+    "crop": "Crop",
+    "price": "Price (RWF)",
+    "unit": "Unit",
+    "updatedAt": "Updated",
+    "actions": "Actions",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "district": "District",
+    "noPrices": "No prices yet.",
+    "noUsers": "No users found.",
+    "confirmDeletePrice": "Delete this price?",
+    "confirmDeleteUser": "Delete this user?",
+    "saving": "Saving..."
   }
 }
