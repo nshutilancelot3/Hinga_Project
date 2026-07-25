@@ -16,9 +16,9 @@ function SproutMark() {
       aria-hidden="true"
       className="transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-110"
     >
-      <path d="M14 24V13.5" stroke="#1F6B3A" strokeWidth="2" strokeLinecap="round" />
-      <path d="M14 14C14 9 10 6 6 6C6 10 9 14 14 14Z" fill="#1F6B3A" />
-      <path d="M14 17C14 12.5 17.5 9 22 9C22 13 18.5 17 14 17Z" fill="#C1622B" />
+      <path d="M14 25V13" stroke="#1F6B3A" strokeWidth="2" strokeLinecap="round" />
+      <ellipse cx="9" cy="12" rx="5" ry="3" transform="rotate(-38 9 12)" fill="#2E8B4E" />
+      <ellipse cx="19" cy="10" rx="5" ry="3" transform="rotate(38 19 10)" fill="#1F6B3A" />
     </svg>
   );
 }
