@@ -32,7 +32,17 @@ type Day = {
 
 // OpenWeatherMap's icon PNGs are dated and cost one request each. Their codes map
 // to nine conditions, so we draw them instead: sharper, and nothing to download.
-function WeatherIcon({ code = '', className = '' }: { code?: string; className?: string }) {
+// `animate` is reserved for the large hero icon — the tiny row icons stay still so
+// a full week of them never turns into visual noise.
+function WeatherIcon({
+  code = '',
+  className = '',
+  animate = false,
+}: {
+  code?: string;
+  className?: string;
+  animate?: boolean;
+}) {
   const kind = code.slice(0, 2);
   const night = code.endsWith('n');
 
@@ -62,7 +72,10 @@ function WeatherIcon({ code = '', className = '' }: { code?: string; className?:
         ) : (
           <g className="stroke-amber-500">
             <circle cx="12" cy="12" r="4.2" className="fill-amber-200" />
-            <path d="M12 3.2v1.6M12 19.2v1.6M3.2 12h1.6M19.2 12h1.6M5.8 5.8l1.1 1.1M17.1 17.1l1.1 1.1M18.2 5.8l-1.1 1.1M6.9 17.1l-1.1 1.1" />
+            <path
+              className={animate ? 'wx-spin' : undefined}
+              d="M12 3.2v1.6M12 19.2v1.6M3.2 12h1.6M19.2 12h1.6M5.8 5.8l1.1 1.1M17.1 17.1l1.1 1.1M18.2 5.8l-1.1 1.1M6.9 17.1l-1.1 1.1"
+            />
           </g>
         ))}
 
@@ -84,7 +97,7 @@ function WeatherIcon({ code = '', className = '' }: { code?: string; className?:
       {(kind === '09' || kind === '10') && (
         <g>
           {cloud}
-          <g className="stroke-sky-500">
+          <g className={`stroke-sky-500 ${animate ? 'wx-rain' : ''}`}>
             <path d="M9.5 20.2l-.7 1.6M13 20.2l-.7 1.6M16.5 20.2l-.7 1.6" />
           </g>
         </g>
@@ -100,7 +113,7 @@ function WeatherIcon({ code = '', className = '' }: { code?: string; className?:
       {kind === '13' && (
         <g>
           {cloud}
-          <g className="stroke-sky-400" strokeWidth={2.2}>
+          <g className={`stroke-sky-400 ${animate ? 'wx-rain' : ''}`} strokeWidth={2.2}>
             <path d="M10 21h.01M13 21.6h.01M16 21h.01" />
           </g>
         </g>
@@ -113,6 +126,56 @@ function WeatherIcon({ code = '', className = '' }: { code?: string; className?:
       )}
     </svg>
   );
+}
+
+// The hero wears the sky. Each condition + time of day gets a hand-tuned gradient
+// (all CSS — same "nothing to download" rule as the icons), layered under a bottom
+// scrim so the white readout stays legible even over the paler skies (snow, mist).
+// Rain and night skies read darker on purpose: the weather you'd want to plan around.
+function skyGradient(code = '') {
+  const kind = code.slice(0, 2);
+  const night = code.endsWith('n');
+  // Two scrims keep the white readout legible over any sky: a floor along the
+  // bottom, and a pool under the bottom-right where the detail grid lands on wide
+  // screens (the palest corner of a daytime gradient).
+  const scrim =
+    'linear-gradient(to top, rgba(15,21,31,0.5), rgba(15,21,31,0.08) 54%, transparent 72%), ' +
+    'radial-gradient(85% 120% at 100% 100%, rgba(13,19,29,0.42), transparent 58%)';
+  const sun = 'radial-gradient(120% 90% at 82% 6%, rgba(255,238,196,0.55), transparent 46%)';
+  const moon = 'radial-gradient(70% 60% at 80% 12%, rgba(210,224,255,0.35), transparent 45%)';
+
+  const base = (() => {
+    switch (kind) {
+      case '01':
+        return night
+          ? `${moon}, linear-gradient(160deg, #0e1738 0%, #223057 62%, #364670 100%)`
+          : `${sun}, linear-gradient(160deg, #1a548f 0%, #3f80c2 62%, #649cce 100%)`;
+      case '02':
+      case '03':
+        return night
+          ? `${moon}, linear-gradient(162deg, #171f2c 0%, #2e3a4c 66%, #414e5e 100%)`
+          : `${sun}, linear-gradient(160deg, #356491 0%, #5e88ad 66%, #85a4bd 100%)`;
+      case '04':
+        return night
+          ? `linear-gradient(162deg, #1a212a 0%, #2f3843 68%, #424c57 100%)`
+          : `linear-gradient(160deg, #4e5c67 0%, #71808d 66%, #8b98a3 100%)`;
+      case '09':
+      case '10':
+        return night
+          ? `linear-gradient(163deg, #0f151d 0%, #202b37 66%, #2f3c49 100%)`
+          : `linear-gradient(160deg, #263845 0%, #38505f 60%, #4a6675 100%)`;
+      case '11':
+        return `linear-gradient(160deg, #241f33 0%, #3d3652 64%, #514a67 100%)`;
+      case '13':
+        return `linear-gradient(160deg, #5c7080 0%, #7f93a2 64%, #a4b3be 100%)`;
+      case '50':
+        return `linear-gradient(160deg, #626c76 0%, #838a92 64%, #a0a7ad 100%)`;
+      default:
+        return `linear-gradient(160deg, #356491 0%, #5e88ad 66%, #85a4bd 100%)`;
+    }
+  })();
+
+  return `${scrim}, ${base}`;
 }
 
 // Tint the range bar by conditions, not temperature — the bar's position already
@@ -238,7 +301,7 @@ export default function WeatherPage() {
       {loading && (
         <div aria-live="polite" className="space-y-3">
           <span className="sr-only">{t('loading')}</span>
-          <div className="h-28 animate-pulse rounded-xl bg-stone-100" />
+          <div className="h-52 animate-pulse rounded-3xl bg-stone-100" />
           {[...Array(4)].map((_, i) => (
             <div key={i} className="h-12 animate-pulse rounded-lg bg-stone-100" />
           ))}
@@ -246,48 +309,65 @@ export default function WeatherPage() {
       )}
 
       {today && (
-        <section className="wx-rise mb-2 flex flex-wrap items-center justify-between gap-x-8 gap-y-6 border-b border-stone-200 pb-8">
-          <div className="flex items-center gap-4">
-            <WeatherIcon code={today.lead.weather[0]?.icon} className="h-20 w-20 shrink-0" />
-            <div>
-              <p className="text-6xl font-light leading-none tracking-tighter tabular-nums text-stone-900">
-                {Math.round(today.lead.main.temp)}°
-              </p>
-              <p className="mt-2 text-sm capitalize text-stone-500">
-                {today.lead.weather[0]?.description
-                  ? translateCondition(today.lead.weather[0].description, locale)
-                  : ''}
-              </p>
-            </div>
-          </div>
-
-          <dl className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-2.5 text-sm sm:gap-x-10">
-            {[
-              [t('feelsLike'), `${Math.round(today.lead.main.feels_like)}°`],
-              [t('rain'), `${Math.round(today.pop * 100)}%`],
-              [t('humidity'), `${today.lead.main.humidity}%`],
-              [t('wind'), `${today.lead.wind.speed} m/s`],
-            ].map(([label, value]) => (
-              <div key={label} className="flex items-baseline justify-between gap-4">
-                <dt className="text-stone-500">{label}</dt>
-                <dd className="font-medium tabular-nums text-stone-900">{value}</dd>
+        <section
+          className="wx-rise relative mb-8 overflow-hidden rounded-3xl p-6 text-white shadow-xl shadow-stone-900/10 ring-1 ring-inset ring-white/10 sm:p-8"
+          style={{
+            background: skyGradient(today.lead.weather[0]?.icon),
+            textShadow: '0 1px 3px rgba(12,18,28,0.28)',
+          }}
+        >
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-8">
+            <div className="flex items-center gap-4 sm:gap-5">
+              <WeatherIcon
+                code={today.lead.weather[0]?.icon}
+                animate
+                className="wx-float h-24 w-24 shrink-0 drop-shadow-md sm:h-28 sm:w-28"
+              />
+              <div>
+                <p className="text-7xl font-light leading-none tracking-tighter tabular-nums drop-shadow-sm sm:text-8xl">
+                  {Math.round(today.lead.main.temp)}°
+                </p>
+                <p className="mt-2.5 text-base capitalize text-white/90">
+                  {today.lead.weather[0]?.description
+                    ? translateCondition(today.lead.weather[0].description, locale)
+                    : ''}
+                </p>
               </div>
-            ))}
-          </dl>
+            </div>
+
+            <dl className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-3 text-sm sm:gap-x-12">
+              {[
+                [t('feelsLike'), `${Math.round(today.lead.main.feels_like)}°`],
+                [t('rain'), `${Math.round(today.pop * 100)}%`],
+                [t('humidity'), `${today.lead.main.humidity}%`],
+                [t('wind'), `${today.lead.wind.speed} m/s`],
+              ].map(([label, value]) => (
+                <div key={label} className="flex items-baseline justify-between gap-4">
+                  <dt className="text-white/70">{label}</dt>
+                  <dd className="font-semibold tabular-nums">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </section>
       )}
 
       {days.length > 0 && (
-        <div className="mb-1 flex items-center justify-end gap-2 py-2 text-stone-400">
-          <WeatherIcon code="01d" className="h-4 w-4" />
-          <span
-            className="h-1.5 w-24 rounded-full"
-            style={{
-              background:
-                'linear-gradient(to right, rgb(245 200 66), rgb(214 211 209), rgb(2 132 199))',
-            }}
-          />
-          <WeatherIcon code="10d" className="h-4 w-4" />
+        <div className="mb-1 flex items-center justify-between gap-4 border-b border-stone-200 pb-2">
+          <h2 className="text-[11px] font-medium uppercase tracking-[0.22em] text-stone-500">
+            {t('forecast')}
+          </h2>
+          <div className="flex items-center gap-2 text-stone-400">
+            <WeatherIcon code="01d" className="h-4 w-4" />
+            <span
+              className="h-1.5 w-24 rounded-full"
+              style={{
+                background:
+                  'linear-gradient(to right, rgb(245 200 66), rgb(214 211 209), rgb(2 132 199))',
+              }}
+            />
+            <WeatherIcon code="10d" className="h-4 w-4" />
+          </div>
         </div>
       )}
 

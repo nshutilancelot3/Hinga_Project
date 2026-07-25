@@ -34,6 +34,20 @@ body {
   .rise-in {
     animation: wx-rise 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
+
+  /* Hero-only weather-icon motion: a slow sun, drifting float, falling rain.
+     Kept off the small forecast-row icons so a full week never twitches. */
+  .wx-float {
+    animation: wx-float 6s ease-in-out infinite;
+  }
+  .wx-spin {
+    transform-box: view-box;
+    transform-origin: 12px 12px;
+    animation: wx-spin 40s linear infinite;
+  }
+  .wx-rain {
+    animation: wx-rain 1.3s ease-in infinite;
+  }
 }
 
 @keyframes wx-rise {
@@ -43,9 +57,38 @@ body {
   }
 }
 
+@keyframes wx-float {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes wx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wx-rain {
+  0% {
+    opacity: 0.35;
+    transform: translateY(-1.5px);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.35;
+    transform: translateY(2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wx-rise,
-  .rise-in {
+  .rise-in,
+  .wx-float,
+  .wx-spin,
+  .wx-rain {
     animation: none;
   }
 }
