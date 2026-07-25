@@ -110,9 +110,18 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
     return null;
   });
 
+  // Direction since the first recorded price, shown as a plain arrow so it
+  // reads without needing to interpret the line's slope.
+  const directionByMarket = series.map((s, i) => {
+    const first = s.points.find((v) => v !== null) ?? null;
+    const latest = latestByMarket[i];
+    if (first === null || latest === null || latest === first) return null;
+    return latest > first ? 'up' : 'down';
+  });
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">
-      <p className="text-sm font-medium text-gray-900 mb-1">
+      <p className="text-base font-semibold text-gray-900 mb-2">
         {t('trendTitle', { crop: translateCrop(cropType, locale) })}
       </p>
       <div className="overflow-x-auto">
@@ -133,7 +142,7 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
                 stroke="#e1e0d9"
                 strokeWidth={1}
               />
-              <text x={PAD_LEFT - 8} y={yFor(v)} textAnchor="end" dominantBaseline="middle" className="fill-gray-400" fontSize={10}>
+              <text x={PAD_LEFT - 8} y={yFor(v)} textAnchor="end" dominantBaseline="middle" className="fill-gray-500" fontSize={12}>
                 {Math.round(v).toLocaleString(locale)}
               </text>
             </g>
@@ -193,6 +202,31 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
             const segments = s.points
               .map((v, i) => (v === null ? null : `${xFor(i)},${yFor(v)}`))
               .filter((p): p is string => p !== null);
+
+            let lastIndex = -1;
+            for (let i = s.points.length - 1; i >= 0; i--) {
+              if (s.points[i] !== null) {
+                lastIndex = i;
+                break;
+              }
+            }
+            const lastValue = lastIndex >= 0 ? s.points[lastIndex] : null;
+            const firstValue = s.points.find((v) => v !== null) ?? null;
+
+            let arrow = '';
+            let arrowColor = '#52514e';
+            if (firstValue !== null && lastValue !== null) {
+              if (lastValue > firstValue) {
+                arrow = '▲';
+                arrowColor = '#0ca30c';
+              } else if (lastValue < firstValue) {
+                arrow = '▼';
+                arrowColor = '#d03b3b';
+              } else {
+                arrow = '–';
+              }
+            }
+
             return (
               <g key={s.market}>
                 {segments.length > 1 && (
@@ -217,6 +251,22 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
                     </g>
                   )
                 )}
+                {lastValue !== null && (
+                  <g>
+                    <circle cx={xFor(lastIndex) + 10} cy={yFor(lastValue)} r={3} fill={color} />
+                    <text
+                      x={xFor(lastIndex) + 16}
+                      y={yFor(lastValue)}
+                      dominantBaseline="middle"
+                      className="fill-gray-800"
+                      fontSize={12}
+                      fontWeight={600}
+                    >
+                      {s.market}: {Math.round(lastValue).toLocaleString(locale)}
+                      {arrow && <tspan fill={arrowColor}> {arrow}</tspan>}
+                    </text>
+                  </g>
+                )}
               </g>
             );
           })}
@@ -225,12 +275,14 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
 
       <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-3">
         {markets.map((market, i) => (
-          <div key={market} className="flex items-center gap-1.5 text-xs text-gray-600">
+          <div key={market} className="flex items-center gap-1.5 text-sm text-gray-700">
             <span className="inline-block w-3 h-0.5 rounded-full" style={{ backgroundColor: SERIES_COLORS[i % SERIES_COLORS.length] }} />
             <span>{market}</span>
             {latestByMarket[i] !== null && (
               <span className="font-medium text-gray-900">
                 {Math.round(latestByMarket[i] as number).toLocaleString(locale)} RWF
+                {directionByMarket[i] === 'up' && <span className="text-[#0ca30c]"> ▲</span>}
+                {directionByMarket[i] === 'down' && <span className="text-[#d03b3b]"> ▼</span>}
               </span>
             )}
           </div>
