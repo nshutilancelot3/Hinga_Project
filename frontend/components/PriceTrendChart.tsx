@@ -203,30 +203,6 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
               .map((v, i) => (v === null ? null : `${xFor(i)},${yFor(v)}`))
               .filter((p): p is string => p !== null);
 
-            let lastIndex = -1;
-            for (let i = s.points.length - 1; i >= 0; i--) {
-              if (s.points[i] !== null) {
-                lastIndex = i;
-                break;
-              }
-            }
-            const lastValue = lastIndex >= 0 ? s.points[lastIndex] : null;
-            const firstValue = s.points.find((v) => v !== null) ?? null;
-
-            let arrow = '';
-            let arrowColor = '#52514e';
-            if (firstValue !== null && lastValue !== null) {
-              if (lastValue > firstValue) {
-                arrow = '▲';
-                arrowColor = '#0ca30c';
-              } else if (lastValue < firstValue) {
-                arrow = '▼';
-                arrowColor = '#d03b3b';
-              } else {
-                arrow = '–';
-              }
-            }
-
             return (
               <g key={s.market}>
                 {segments.length > 1 && (
@@ -250,22 +226,6 @@ export default function PriceTrendChart({ prices, cropType }: Props) {
                       )}
                     </g>
                   )
-                )}
-                {lastValue !== null && (
-                  <g>
-                    <circle cx={xFor(lastIndex) + 10} cy={yFor(lastValue)} r={3} fill={color} />
-                    <text
-                      x={xFor(lastIndex) + 16}
-                      y={yFor(lastValue)}
-                      dominantBaseline="middle"
-                      className="fill-gray-800"
-                      fontSize={12}
-                      fontWeight={600}
-                    >
-                      {s.market}: {Math.round(lastValue).toLocaleString(locale)}
-                      {arrow && <tspan fill={arrowColor}> {arrow}</tspan>}
-                    </text>
-                  </g>
                 )}
               </g>
             );
