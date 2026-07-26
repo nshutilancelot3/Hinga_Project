@@ -141,7 +141,7 @@ export default function MarketplacePage() {
     setEnquiryLoading(true);
 
     try {
-      await apiPost(`/listings/${listingId}/enquiries`, { message: enquiryMessage });
+      await apiPost('/enquiries', { listing_id: listingId, message: enquiryMessage });
       setSentEnquiryIds((ids) => [...ids, listingId]);
       setOpenEnquiryId(null);
     } catch (err) {
