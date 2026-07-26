@@ -56,7 +56,7 @@ authenticated user."
 | PUT | `/prices/:id` | Yes | coop_admin, super_admin | Update a price entry |
 | DELETE | `/prices/:id` | Yes | coop_admin, super_admin | Delete a price entry |
 | GET | `/weather/:district` | Yes | any | 5-day forecast, served from cache if < 3h old |
-| POST | `/diagnose` | Yes | farmer | Upload photo, proxy to Plant.id, return diagnosis |
+| POST | `/diagnosis` | Yes | farmer | Upload photo, proxy to Plant.id, return diagnosis |
 | GET | `/listings` | No | — | Browse active listings (filter by `district`, `crop`) |
 | POST | `/listings` | Yes | farmer | Create a listing |
 | PATCH | `/listings/:id` | Yes | farmer (owner) | Update status (e.g. mark sold/cancelled) |
@@ -77,7 +77,7 @@ Error responses use `{ "error": "message" }` with a matching 4xx/5xx status code
   usably at a 360px viewport width, since most target users access Hinga from a phone browser.
 - **Secure API key handling**: OpenWeatherMap and Plant.id keys live only in backend environment
   variables (`backend/.env`, never committed) and are never sent to or readable from the browser;
-  the frontend calls Hinga's own `/weather` and `/diagnose` proxy routes, not the external APIs
+  the frontend calls Hinga's own `/weather` and `/diagnosis` proxy routes, not the external APIs
   directly.
 - **Data minimization**: Diagnosis photos are forwarded to Plant.id and discarded after the
   response is received — they are not persisted to disk or the database (proposal §1.7).
