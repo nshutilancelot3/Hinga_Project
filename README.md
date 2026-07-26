@@ -2,6 +2,13 @@
 
 A bilingual web platform for Rwanda's smallholder farmers: market prices, weather forecast, crop disease diagnosis, and a produce marketplace in Kinyarwanda and English.
 
+## Live Demo
+
+- **App (frontend):** https://hinga-frontend.onrender.com
+- **API (backend):** https://hinga-backend-8qfy.onrender.com
+
+> Hosted on Render's free tier, so the services sleep after inactivity — the first request may take ~50 seconds to wake them.
+
 ## Scrum Board
 
 [View the 4-week sprint board](https://github.com/users/Teta-Dianah/projects/3)
