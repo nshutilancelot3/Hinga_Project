@@ -26,6 +26,9 @@ for (const entry of CROPS) {
   for (const alias of entry.aliases) {
     LOOKUP[alias] = entry;
   }
+  // Also match the Kinyarwanda display name itself, so a crop typed in
+  // Kinyarwanda (e.g. a farmer posting a listing) still translates to English.
+  LOOKUP[entry.rw.toLowerCase()] = entry;
 }
 
 export function translateCrop(rawCropName: string, locale: string) {
