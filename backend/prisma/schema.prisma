@@ -63,7 +63,7 @@ model Enquiry {
   status     String   @default("pending") @db.VarChar(20)
   created_at DateTime @default(now())
 
-  listing Listing @relation(fields: [listing_id], references: [listing_id])
+  listing Listing @relation(fields: [listing_id], references: [listing_id], onDelete: Cascade)
   buyer   User    @relation(fields: [buyer_id], references: [user_id])
 
   @@map("enquiries")
