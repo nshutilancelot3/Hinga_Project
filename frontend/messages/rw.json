@@ -27,6 +27,7 @@
     "weather": "Ikirere",
     "diagnosis": "Isuzuma ry'Ibihingwa",
     "marketplace": "Isoko",
+    "enquiries": "Ibibazo",
     "login": "Injira",
     "register": "Iyandikishe",
     "logout": "Sohoka",
@@ -140,6 +141,13 @@
     "loading": "Gutegereza urutonde...",
     "empty": "Nta rutonde ruhari.",
     "enquirySent": "Ikibazo cyawe cyoherejwe."
+  },
+  "enquiries": {
+    "title": "Ibibazo wakiriye",
+    "loading": "Gutegereza ibibazo...",
+    "empty": "Nta bibazo birahari. Igihe umuguzi akubajije ku bicuruzwa byawe, bizagaragara hano.",
+    "onListing": "Kuri {crop} · {district}",
+    "from": "Bivuye kuri {name}"
   },
   "common": {
     "loading": "Gutegereza...",
