@@ -5,7 +5,7 @@ A bilingual web platform for Rwanda's smallholder farmers: market prices, weathe
 ## Live Demo
 
 - **App (frontend):** https://hinga-frontend.onrender.com
-- **API (backend):** https://hinga-backend-8qfy.onrender.com
+- **API health check:** https://hinga-backend-8qfy.onrender.com/health
 
 > Hosted on Render's free tier, so the services sleep after inactivity — the first request may take ~50 seconds to wake them.
 
