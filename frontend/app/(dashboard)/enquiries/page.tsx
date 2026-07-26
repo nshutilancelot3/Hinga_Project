@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiGet, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
+import { apiGet, apiPut, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
 import { formatLongDate } from '@/lib/dateFormat';
 
@@ -11,12 +11,14 @@ type Enquiry = {
   enquiry_id: string;
   message: string;
   created_at: string;
-  buyer: { full_name: string };
+  status: 'pending' | 'resolved';
+  buyer: { full_name: string; email: string };
   listing: { listing_id: string; crop_type: string; district: string };
 };
 
 export default function EnquiriesPage() {
   const t = useTranslations('enquiries');
+  const tm = useTranslations('marketplace');
   const tc = useTranslations('common');
   const locale = useLocale();
   const router = useRouter();
@@ -24,6 +26,21 @@ export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorRaw, setErrorRaw] = useState('');
+  const [resolvingId, setResolvingId] = useState<string | null>(null);
+
+  async function markResolved(enquiryId: string) {
+    setResolvingId(enquiryId);
+    try {
+      await apiPut(`/enquiries/${enquiryId}`, { status: 'resolved' });
+      setEnquiries((prev) =>
+        prev.map((e) => (e.enquiry_id === enquiryId ? { ...e, status: 'resolved' } : e))
+      );
+    } catch (err) {
+      setErrorRaw(getRawError(err));
+    } finally {
+      setResolvingId(null);
+    }
+  }
 
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -73,9 +90,20 @@ export default function EnquiriesPage() {
               </span>
             </div>
             <p className="text-sm text-hinga-ink mb-1">{e.message}</p>
-            <p className="text-xs text-hinga-inkMuted">
-              {t('from', { name: e.buyer.full_name })}
+            <p className="text-xs text-hinga-inkMuted mb-2">
+              {t('from', { name: e.buyer.full_name })} · {e.buyer.email}
             </p>
+            {e.status === 'resolved' ? (
+              <span className="text-sm text-hinga-green font-medium">{tm('responded')}</span>
+            ) : (
+              <button
+                onClick={() => markResolved(e.enquiry_id)}
+                disabled={resolvingId === e.enquiry_id}
+                className="text-sm text-hinga-green font-medium hover:underline disabled:opacity-60"
+              >
+                {resolvingId === e.enquiry_id ? tc('loading') : tm('markResponded')}
+              </button>
+            )}
           </li>
         ))}
       </ul>
