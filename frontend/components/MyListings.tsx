@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { apiDelete, apiGet, apiPut, getRawError } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
 import { translateDescription } from '@/lib/descriptions';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 type OwnListing = {
   listing_id: string;
@@ -54,6 +55,9 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
   const [openEnquiriesId, setOpenEnquiriesId] = useState<string | null>(null);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [enquiriesLoading, setEnquiriesLoading] = useState(false);
+
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   function loadMine() {
     setLoading(true);
@@ -105,15 +109,21 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
     }
   }
 
-  async function handleDelete(listingId: string) {
-    if (!confirm(t('confirmDelete'))) return;
+  async function confirmDelete() {
+    const listingId = confirmDeleteId;
+    if (!listingId) return;
+
+    setDeletingId(listingId);
     try {
       await apiDelete(`/listings/${listingId}`);
       setListings((prev) => prev.filter((l) => l.listing_id !== listingId));
       onChange?.();
     } catch (err) {
-      setErrorRaw(getRawError(err));
+      setErrorRaw(getRawError(err) || t('deleteError'));
       setHasError(true);
+    } finally {
+      setDeletingId(null);
+      setConfirmDeleteId(null);
     }
   }
 
@@ -252,10 +262,11 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
                       {tc('edit')}
                     </button>
                     <button
-                      onClick={() => handleDelete(l.listing_id)}
-                      className="px-3 py-1 border border-red-300 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50"
+                      onClick={() => setConfirmDeleteId(l.listing_id)}
+                      disabled={deletingId === l.listing_id}
+                      className="px-3 py-1 border border-red-300 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 disabled:opacity-60"
                     >
-                      {tc('delete')}
+                      {deletingId === l.listing_id ? tc('loading') : tc('delete')}
                     </button>
                     <button
                       onClick={() => toggleEnquiries(l.listing_id)}
@@ -289,6 +300,14 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmDeleteId !== null}
+        message={t('confirmDeleteListing')}
+        loading={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
     </section>
   );
 }

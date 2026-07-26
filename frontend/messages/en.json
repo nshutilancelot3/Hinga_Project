@@ -157,8 +157,9 @@
     "hideEnquiries": "Hide enquiries",
     "noEnquiries": "No enquiries yet.",
     "buyer": "Buyer",
-    "confirmDelete": "Delete this listing?",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "confirmDeleteListing": "Remove this listing?",
+    "deleteError": "Could not remove the listing. Please try again."
   },
   "common": {
     "loading": "Loading...",
@@ -167,7 +168,8 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "cancel": "Cancel"
   },
   "admin": {
     "title": "Admin Panel",
