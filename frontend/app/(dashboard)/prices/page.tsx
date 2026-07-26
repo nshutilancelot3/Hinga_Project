@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
 import { formatShortDate } from '@/lib/dateFormat';
-import PriceTrendChart from '@/components/PriceTrendChart';
+import PriceByMarketChart from '@/components/PriceByMarketChart';
 import MarketOverviewChart from '@/components/MarketOverviewChart';
 
 type MarketPrice = {
@@ -105,7 +105,7 @@ export default function PricesPage() {
       {!loading && !hasError && prices.length > 0 && (
         <div className="mb-4">
           {cropFilter ? (
-            <PriceTrendChart
+            <PriceByMarketChart
               prices={prices.filter((p) => p.crop_type === cropFilter)}
               cropType={cropFilter}
             />
