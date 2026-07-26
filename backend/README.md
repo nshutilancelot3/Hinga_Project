@@ -1,7 +1,7 @@
 # Hinga Backend
 
 Express API with Prisma ORM against PostgreSQL. 
-Deployed on Render. Live at [hinga-backend-8qfy.onrender.com].
+Deployed on Render. Live at [hinga-backend-8qfy.onrender.com/health](https://hinga-backend-8qfy.onrender.com/health).
 
 ## API
 
