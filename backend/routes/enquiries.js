@@ -46,6 +46,27 @@ router.post('/', authenticate, requireRole('buyer'), async (req, res) => {
   }
 });
 
+// GET /api/enquiries/received
+// Farmers only. Returns every enquiry across all of the farmer's listings,
+// most recent first, with the buyer name and the listing it refers to.
+
+router.get('/received', authenticate, requireRole('farmer'), async (req, res) => {
+  try {
+    const enquiries = await prisma.enquiry.findMany({
+      where: { listing: { farmer_id: req.user.user_id } },
+      orderBy: { created_at: 'desc' },
+      include: {
+        buyer: { select: { full_name: true } },
+        listing: { select: { listing_id: true, crop_type: true, district: true } },
+      },
+    });
+    res.json(enquiries);
+  } catch (err) {
+    console.error('GET /api/enquiries/received failed:', err);
+    res.status(500).json({ error: 'Failed to fetch enquiries' });
+  }
+});
+
 // GET /api/enquiries?listing_id=
 
 router.get('/', authenticate, async (req, res) => {
