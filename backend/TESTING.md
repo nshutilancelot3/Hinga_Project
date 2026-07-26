@@ -46,5 +46,6 @@ Idempotent — safe to run twice.
 SEED_ADMIN_EMAIL=admin@hinga.rw SEED_ADMIN_PASSWORD='<strong-password>' npm run seed
 ```
 
-Runs against whatever `DATABASE_URL` points to. In production, set a strong
-`SEED_ADMIN_PASSWORD` (a default is used with a warning if omitted).
+Runs against whatever `DATABASE_URL` points to. `SEED_ADMIN_PASSWORD` is
+**required** — the seed refuses to run without it (no public default). Re-running
+with a different value rotates the existing admin's password.
