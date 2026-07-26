@@ -103,7 +103,10 @@ const LISTING_STATUSES = ['active', 'sold', 'cancelled'];
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-// Loads the listing and rejects with 404/403 unless the caller owns it.
+const ADMIN_ROLES = ['coop_admin', 'super_admin'];
+
+// Loads the listing and rejects with 404/403 unless the caller owns it or is a
+// cooperative/super admin moderating the marketplace.
 async function loadOwnListing(req, res, next) {
   if (!UUID_PATTERN.test(req.params.id)) {
     return res.status(404).json({ error: 'Listing not found' });
@@ -115,7 +118,9 @@ async function loadOwnListing(req, res, next) {
     if (!listing) {
       return res.status(404).json({ error: 'Listing not found' });
     }
-    if (listing.farmer_id !== req.user.user_id) {
+    const isOwner = listing.farmer_id === req.user.user_id;
+    const isAdmin = ADMIN_ROLES.includes(req.user.role);
+    if (!isOwner && !isAdmin) {
       return res.status(403).json({ error: 'Forbidden' });
     }
     req.listing = listing;
@@ -181,7 +186,7 @@ router.put('/:id', authenticate, requireRole('farmer'), loadOwnListing, async (r
 
 // DELETE /api/listings/:id
 
-router.delete('/:id', authenticate, requireRole('farmer'), loadOwnListing, async (req, res) => {
+router.delete('/:id', authenticate, requireRole('farmer', 'coop_admin', 'super_admin'), loadOwnListing, async (req, res) => {
   try {
     await prisma.listing.delete({
       where: { listing_id: req.params.id },
