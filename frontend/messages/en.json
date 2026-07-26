@@ -27,6 +27,7 @@
     "weather": "Weather",
     "diagnosis": "Crop Diagnosis",
     "marketplace": "Marketplace",
+    "enquiries": "Enquiries",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
@@ -147,6 +148,13 @@
     "enquirySent": "Your enquiry was sent.",
     "confirmDeleteListing": "Remove this listing?",
     "deleteError": "Could not remove the listing. Please try again."
+  },
+  "enquiries": {
+    "title": "Enquiries received",
+    "loading": "Loading enquiries...",
+    "empty": "No enquiries yet. When a buyer contacts you about a listing, it will appear here.",
+    "onListing": "On {crop} · {district}",
+    "from": "From {name}"
   },
   "common": {
     "loading": "Loading...",
