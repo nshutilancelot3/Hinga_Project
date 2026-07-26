@@ -7,6 +7,7 @@ import { apiDelete, apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } f
 import { DISTRICTS } from '@/lib/districts';
 import { translateCrop } from '@/lib/crops';
 import ConfirmDialog from '@/components/ConfirmDialog';
+import { translateDescription } from '@/lib/descriptions';
 
 type Listing = {
   listing_id: string;
@@ -340,7 +341,7 @@ export default function MarketplacePage() {
               {l.description && (
                 <p className="text-sm text-hinga-inkMuted italic mb-2">
                   <span className="text-hinga-terracotta not-italic mr-0.5">&ldquo;</span>
-                  {l.description}
+                  {translateDescription(l.description, locale)}
                   <span className="text-hinga-terracotta not-italic ml-0.5">&rdquo;</span>
                 </p>
               )}
