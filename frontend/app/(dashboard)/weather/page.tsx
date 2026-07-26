@@ -312,12 +312,6 @@ export default function WeatherPage() {
 
   return (
     <div className="text-stone-800">
-      {/* Soft sky-to-field wash so the page never reads as flat white. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-sky-50 via-white to-lime-50/50"
-      />
-
       <header className="mb-8">
         <p className="text-[11px] uppercase tracking-[0.22em] text-green-800/70">{t('title')}</p>
         <div className="mt-2 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
