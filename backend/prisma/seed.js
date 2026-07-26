@@ -4,13 +4,13 @@ const prisma = require('../lib/prisma');
 
 // Seeds the first admin account and a handful of market prices so a fresh
 // production database isn't empty for the demo (issue #28). Idempotent: safe to
-// run more than once — the admin is upserted by email and prices are only added
-// when the table is empty.
+// run more than once — the admin is upserted by email (and its password kept in
+// sync with SEED_ADMIN_PASSWORD), and prices are only added when the table is empty.
 
 const SALT_ROUNDS = 12;
 
 const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@hinga.rw';
-const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'ChangeMe123!';
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD;
 
 // A spread across the five markets and common crops (price in RWF/kg).
 const DEMO_PRICES = [
@@ -24,10 +24,11 @@ const DEMO_PRICES = [
 ];
 
 async function main() {
-  if (!process.env.SEED_ADMIN_PASSWORD) {
-    console.warn(
-      '⚠  SEED_ADMIN_PASSWORD not set — using the default demo password. ' +
-        'Set a strong SEED_ADMIN_PASSWORD in production.'
+  // No public default: refuse to seed without an explicit password, so the admin
+  // can never end up with a guessable password that lives in the repo.
+  if (!ADMIN_PASSWORD || !ADMIN_PASSWORD.trim()) {
+    throw new Error(
+      'SEED_ADMIN_PASSWORD is required. Set it (a strong value) before seeding.'
     );
   }
 
@@ -35,7 +36,9 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: ADMIN_EMAIL },
-    update: { role: 'super_admin' },
+    // Keep the password in sync with SEED_ADMIN_PASSWORD on re-run, so rotating it
+    // is just "change the env var and re-seed" even when the admin already exists.
+    update: { role: 'super_admin', password_hash },
     create: {
       full_name: 'Hinga Admin',
       email: ADMIN_EMAIL,
