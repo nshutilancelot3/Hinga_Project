@@ -28,6 +28,14 @@ app.use('/api/diagnosis', diagnosisRouter);
 app.use('/api/admin', adminRouter);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Hinga backend listening on port ${PORT}`);
-});
+
+// Only listen when run directly (node server.js). When imported — e.g. by the
+// Supertest integration tests — export the app so it can be exercised in-process
+// without binding a port.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Hinga backend listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;

@@ -81,12 +81,11 @@
     "date": "Itariki",
     "loading": "Gutegereza ibiciro...",
     "empty": "Nta biciro bibonetse.",
-    "trendTitle": "Uko igiciro cya {crop} cyahindutse mu turere",
-    "trendNeedsData": "Hitamo ubuhinzi kugira ngo urebe uko ibiciro byahindutse. Hakenewe byibuze ibiciro bibiri byanditswe ku itariki zitandukanye.",
+    "byMarketTitle": "Igiciro cya {crop} kuri buri isoko",
     "overviewTitle": "Uko isoko rihagaze muri rusange",
     "overviewSubtitle": "Igiciro mpuzandengo cya buri gihingwa ku masoko yose.",
     "overviewMarketCount": "{count, plural, one {isoko rimwe} other {amasoko #}}",
-    "overviewHint": "Kanda ku gihingwa kugira ngo urebe uko igiciro cyacyo cyagiye gihinduka uko igihe gihita."
+    "overviewHint": "Kanda ku gihingwa kugira ngo ugereranye igiciro cyacyo mu masoko atandukanye."
   },
   "weather": {
     "title": "Iteganyabihe",
@@ -113,12 +112,18 @@
     "result": "Ibisubizo by'isuzuma",
     "confidence": "Ubushobozi",
     "healthy": "Kirakomeye",
-    "diseased": "Hasanzwe indwara",
+    "diseased": "Indwara yavumbuwe",
     "disclaimer": "Iki gisubizo ni ubufasha gusa. Gisha inama inzobere mu by'ubuhinzi igihe hari ibibazo bikomeye byugarije imyaka.",
     "errors": {
       "noFile": "Hitamo ifoto mbere.",
       "tooLarge": "Ifoto igomba kuba munsi ya 5MB.",
       "generic": "Isuzuma ntiryakunze. Ongera ugerageze."
+    },
+    "treatmentCategories": {
+      "biological": "Kurwanya mu buryo bw'ibinyabuzima",
+      "chemical": "Kuvura n'imiti",
+      "cultural": "Uburyo bwo guhinga",
+      "prevention": "Kwirinda"
     }
   },
   "marketplace": {
@@ -140,7 +145,9 @@
     "cancel": "Hagarika",
     "loading": "Gutegereza urutonde...",
     "empty": "Nta rutonde ruhari.",
-    "enquirySent": "Ikibazo cyawe cyoherejwe."
+    "enquirySent": "Ikibazo cyawe cyoherejwe.",
+    "confirmDeleteListing": "Siba uru rutonde?",
+    "deleteError": "Ntibyakunze gusiba urutonde. Ongera ugerageze."
   },
   "enquiries": {
     "title": "Ibibazo wakiriye",
@@ -156,7 +163,8 @@
     "save": "Bika",
     "delete": "Siba",
     "edit": "Hindura",
-    "close": "Funga"
+    "close": "Funga",
+    "cancel": "Hagarika"
   },
   "admin": {
     "title": "Ubuyobozi",

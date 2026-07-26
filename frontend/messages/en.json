@@ -81,12 +81,11 @@
     "date": "Date",
     "loading": "Loading prices...",
     "empty": "No prices found.",
-    "trendTitle": "How {crop} prices have moved by market",
-    "trendNeedsData": "Pick a crop to see its price trend. Needs at least two prices recorded on different dates.",
+    "byMarketTitle": "{crop} price by market",
     "overviewTitle": "Market overview",
     "overviewSubtitle": "Average price per crop across all markets",
     "overviewMarketCount": "{count, plural, one {1 market} other {# markets}}",
-    "overviewHint": "Click a crop to see how its price has changed over time."
+    "overviewHint": "Click a crop to compare its price across markets."
   },
   "weather": {
     "title": "Weather Forecast",
@@ -119,6 +118,12 @@
       "noFile": "Please select an image first.",
       "tooLarge": "Image must be under 5MB.",
       "generic": "Diagnosis failed. Please try again."
+    },
+    "treatmentCategories": {
+      "biological": "Biological control",
+      "chemical": "Chemical treatment",
+      "cultural": "Cultural practices",
+      "prevention": "Prevention"
     }
   },
   "marketplace": {
@@ -140,7 +145,9 @@
     "cancel": "Cancel",
     "loading": "Loading listings...",
     "empty": "No listings yet.",
-    "enquirySent": "Your enquiry was sent."
+    "enquirySent": "Your enquiry was sent.",
+    "confirmDeleteListing": "Remove this listing?",
+    "deleteError": "Could not remove the listing. Please try again."
   },
   "enquiries": {
     "title": "Enquiries received",
@@ -156,7 +163,8 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "cancel": "Cancel"
   },
   "admin": {
     "title": "Admin Panel",

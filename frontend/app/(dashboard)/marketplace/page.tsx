@@ -3,12 +3,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
+import { apiDelete, apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 import { translateCrop } from '@/lib/crops';
+import ConfirmDialog from '@/components/ConfirmDialog';
+import { translateDescription } from '@/lib/descriptions';
 
 type Listing = {
   listing_id: string;
+  farmer_id: string;
   crop_type: string;
   quantity_kg: string;
   price_per_kg: string;
@@ -58,6 +61,9 @@ export default function MarketplacePage() {
   const [enquiryHasError, setEnquiryHasError] = useState(false);
   const [enquiryLoading, setEnquiryLoading] = useState(false);
   const [sentEnquiryIds, setSentEnquiryIds] = useState<string[]>([]);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteErrorId, setDeleteErrorId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const user = getCurrentUser();
   const canPost = !user || user.role === 'farmer';
@@ -141,7 +147,7 @@ export default function MarketplacePage() {
     setEnquiryLoading(true);
 
     try {
-      await apiPost(`/listings/${listingId}/enquiries`, { message: enquiryMessage });
+      await apiPost('/enquiries', { listing_id: listingId, message: enquiryMessage });
       setSentEnquiryIds((ids) => [...ids, listingId]);
       setOpenEnquiryId(null);
     } catch (err) {
@@ -149,6 +155,27 @@ export default function MarketplacePage() {
       setEnquiryHasError(true);
     } finally {
       setEnquiryLoading(false);
+    }
+  }
+
+  function requestDelete(listingId: string) {
+    setConfirmDeleteId(listingId);
+  }
+
+  async function confirmDelete() {
+    const listingId = confirmDeleteId;
+    if (!listingId) return;
+
+    setDeleteErrorId(null);
+    setDeletingId(listingId);
+    try {
+      await apiDelete(`/listings/${listingId}`);
+      setListings((current) => current.filter((l) => l.listing_id !== listingId));
+    } catch {
+      setDeleteErrorId(listingId);
+    } finally {
+      setDeletingId(null);
+      setConfirmDeleteId(null);
     }
   }
 
@@ -314,9 +341,24 @@ export default function MarketplacePage() {
               {l.description && (
                 <p className="text-sm text-hinga-inkMuted italic mb-2">
                   <span className="text-hinga-terracotta not-italic mr-0.5">&ldquo;</span>
-                  {l.description}
+                  {translateDescription(l.description, locale)}
                   <span className="text-hinga-terracotta not-italic ml-0.5">&rdquo;</span>
                 </p>
+              )}
+
+              {user?.user_id === l.farmer_id && (
+                <div className="mb-2">
+                  <button
+                    onClick={() => requestDelete(l.listing_id)}
+                    disabled={deletingId === l.listing_id}
+                    className="px-3 py-1 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 disabled:opacity-60"
+                  >
+                    {deletingId === l.listing_id ? tc('loading') : tc('delete')}
+                  </button>
+                  {deleteErrorId === l.listing_id && (
+                    <p className="text-sm text-red-600 mt-1">{t('deleteError')}</p>
+                  )}
+                </div>
               )}
 
               {canEnquire && (
@@ -368,6 +410,14 @@ export default function MarketplacePage() {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmDeleteId !== null}
+        message={t('confirmDeleteListing')}
+        loading={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
     </div>
   );
 }

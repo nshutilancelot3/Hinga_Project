@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { apiGet, apiPost, apiPut, apiDelete, getCurrentUser, getRawError } from '@/lib/api';
 import { translateCrop } from '@/lib/crops';
 
@@ -48,6 +49,9 @@ export default function AdminPage() {
   const [price, setPrice] = useState('');
   const [unit, setUnit] = useState('kg');
   const [saving, setSaving] = useState(false);
+
+  const [confirmTarget, setConfirmTarget] = useState<{ type: 'price' | 'user'; id: string } | null>(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   // Redirect anyone who is not an admin straight to home.
   useEffect(() => {
@@ -113,12 +117,15 @@ export default function AdminPage() {
   }
 
   async function handleDeletePrice(id: string) {
-    if (!confirm(t('confirmDeletePrice'))) return;
+    setConfirmLoading(true);
     try {
       await apiDelete(`/prices/${id}`);
       setPrices((prev) => prev.filter((p) => p.price_id !== id));
+      setConfirmTarget(null);
     } catch (err) {
       setErrorRaw(getRawError(err));
+    } finally {
+      setConfirmLoading(false);
     }
   }
 
@@ -132,13 +139,22 @@ export default function AdminPage() {
   }
 
   async function handleDeleteUser(id: string) {
-    if (!confirm(t('confirmDeleteUser'))) return;
+    setConfirmLoading(true);
     try {
       await apiDelete(`/admin/users/${id}`);
       setUsers((prev) => prev.filter((u) => u.user_id !== id));
+      setConfirmTarget(null);
     } catch (err) {
       setErrorRaw(getRawError(err));
+    } finally {
+      setConfirmLoading(false);
     }
+  }
+
+  function handleConfirmDelete() {
+    if (!confirmTarget) return;
+    if (confirmTarget.type === 'price') handleDeletePrice(confirmTarget.id);
+    else handleDeleteUser(confirmTarget.id);
   }
 
   if (!ready) return null;
@@ -249,7 +265,7 @@ export default function AdminPage() {
                         <button onClick={() => startEdit(p)} className="text-green-700 hover:underline">
                           {tc('edit')}
                         </button>
-                        <button onClick={() => handleDeletePrice(p.price_id)} className="text-red-600 hover:underline">
+                        <button onClick={() => setConfirmTarget({ type: 'price', id: p.price_id })} className="text-red-600 hover:underline">
                           {tc('delete')}
                         </button>
                       </td>
@@ -299,7 +315,7 @@ export default function AdminPage() {
                         </td>
                         <td className="px-4 py-2">{u.district}</td>
                         <td className="px-4 py-2">
-                          <button onClick={() => handleDeleteUser(u.user_id)} className="text-red-600 hover:underline">
+                          <button onClick={() => setConfirmTarget({ type: 'user', id: u.user_id })} className="text-red-600 hover:underline">
                             {tc('delete')}
                           </button>
                         </td>
@@ -312,6 +328,14 @@ export default function AdminPage() {
           </section>
         )}
       </main>
+
+      <ConfirmDialog
+        open={confirmTarget !== null}
+        message={confirmTarget?.type === 'user' ? t('confirmDeleteUser') : t('confirmDeletePrice')}
+        loading={confirmLoading}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setConfirmTarget(null)}
+      />
     </>
   );
 }
