@@ -67,6 +67,9 @@ export default function Navbar() {
       <Link href="/weather" className={navLinkClass('/weather')}>{t('weather')}</Link>
       <Link href="/diagnosis" className={navLinkClass('/diagnosis')}>{t('diagnosis')}</Link>
       <Link href="/marketplace" className={navLinkClass('/marketplace')}>{t('marketplace')}</Link>
+      {loggedIn && user?.role === 'farmer' && (
+        <Link href="/enquiries" className={navLinkClass('/enquiries')}>{t('enquiries')}</Link>
+      )}
       {loggedIn && user?.role === 'super_admin' && (
         <Link href="/admin" className={navLinkClass('/admin')}>{t('admin')}</Link>
       )}
