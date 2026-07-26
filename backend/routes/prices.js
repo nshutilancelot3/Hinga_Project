@@ -70,9 +70,36 @@ router.post('/', authenticate, requireRole('coop_admin', 'super_admin'), async (
   }
 });
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Loads the price record and rejects with 404/403 unless the caller created it
+// or is a super_admin. Matches the "coop_admin cannot delete other admins'
+// price entries" rule in the requirements doc.
+async function loadOwnPrice(req, res, next) {
+  if (!UUID_PATTERN.test(req.params.id)) {
+    return res.status(404).json({ error: 'Price record not found' });
+  }
+  try {
+    const price = await prisma.marketPrice.findUnique({
+      where: { price_id: req.params.id },
+    });
+    if (!price) {
+      return res.status(404).json({ error: 'Price record not found' });
+    }
+    if (req.user.role !== 'super_admin' && price.admin_id !== req.user.user_id) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+    req.price = price;
+    next();
+  } catch (err) {
+    console.error(`${req.method} /api/prices/:id failed:`, err);
+    res.status(500).json({ error: 'Failed to load price record' });
+  }
+}
+
 // PUT /api/prices/:id
 
-router.put('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
+router.put('/:id', authenticate, requireRole('coop_admin', 'super_admin'), loadOwnPrice, async (req, res) => {
   const { price_rwf, unit, market_name } = req.body;
 
   const data = {};
@@ -101,9 +128,6 @@ router.put('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async
     });
     res.json(price);
   } catch (err) {
-    if (err.code === 'P2025') {
-      return res.status(404).json({ error: 'Price record not found' });
-    }
     console.error('PUT /api/prices/:id failed:', err);
     res.status(500).json({ error: 'Failed to update market price' });
   }
@@ -111,16 +135,13 @@ router.put('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async
 
 // DELETE /api/prices/:id
 
-router.delete('/:id', authenticate, requireRole('coop_admin', 'super_admin'), async (req, res) => {
+router.delete('/:id', authenticate, requireRole('coop_admin', 'super_admin'), loadOwnPrice, async (req, res) => {
   try {
     await prisma.marketPrice.delete({
       where: { price_id: req.params.id },
     });
     res.status(204).end();
   } catch (err) {
-    if (err.code === 'P2025') {
-      return res.status(404).json({ error: 'Price record not found' });
-    }
     console.error('DELETE /api/prices/:id failed:', err);
     res.status(500).json({ error: 'Failed to delete market price' });
   }

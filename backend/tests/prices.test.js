@@ -39,3 +39,80 @@ describe('POST /api/prices', () => {
     expect(res.status).toBe(401);
   });
 });
+
+async function createPrice(ownerToken) {
+  const res = await request(app)
+    .post('/api/prices')
+    .set('Authorization', `Bearer ${ownerToken}`)
+    .send(priceBody);
+  return res.body.price_id;
+}
+
+describe('PUT /api/prices/:id', () => {
+  it("returns 403 when a different coop_admin tries to edit someone else's price", async () => {
+    const owner = await authToken('coop_admin');
+    const priceId = await createPrice(owner.token);
+
+    const other = await authToken('coop_admin');
+    const res = await request(app)
+      .put(`/api/prices/${priceId}`)
+      .set('Authorization', `Bearer ${other.token}`)
+      .send({ price_rwf: 500 });
+    expect(res.status).toBe(403);
+  });
+
+  it('returns 200 when the owning coop_admin edits their own price', async () => {
+    const owner = await authToken('coop_admin');
+    const priceId = await createPrice(owner.token);
+
+    const res = await request(app)
+      .put(`/api/prices/${priceId}`)
+      .set('Authorization', `Bearer ${owner.token}`)
+      .send({ price_rwf: 500 });
+    expect(res.status).toBe(200);
+    expect(res.body.price_rwf).toBe('500');
+  });
+
+  it("returns 200 when a super_admin edits another admin's price", async () => {
+    const owner = await authToken('coop_admin');
+    const priceId = await createPrice(owner.token);
+
+    const admin = await authToken('super_admin');
+    const res = await request(app)
+      .put(`/api/prices/${priceId}`)
+      .set('Authorization', `Bearer ${admin.token}`)
+      .send({ price_rwf: 500 });
+    expect(res.status).toBe(200);
+  });
+});
+
+describe('DELETE /api/prices/:id', () => {
+  it("returns 403 when a different coop_admin tries to delete someone else's price", async () => {
+    const owner = await authToken('coop_admin');
+    const priceId = await createPrice(owner.token);
+
+    const other = await authToken('coop_admin');
+    const res = await request(app)
+      .delete(`/api/prices/${priceId}`)
+      .set('Authorization', `Bearer ${other.token}`);
+    expect(res.status).toBe(403);
+  });
+
+  it('returns 204 when the owning coop_admin deletes their own price', async () => {
+    const owner = await authToken('coop_admin');
+    const priceId = await createPrice(owner.token);
+
+    const res = await request(app)
+      .delete(`/api/prices/${priceId}`)
+      .set('Authorization', `Bearer ${owner.token}`);
+    expect(res.status).toBe(204);
+  });
+
+  it('returns 404 for a nonexistent price record', async () => {
+    const { token } = await authToken('coop_admin');
+    const res = await request(app)
+      .delete('/api/prices/00000000-0000-0000-0000-000000000000')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(404);
+  });
+});
