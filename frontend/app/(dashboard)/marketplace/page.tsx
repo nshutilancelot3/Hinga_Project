@@ -3,12 +3,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
+import { apiDelete, apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 import { translateCrop } from '@/lib/crops';
 
 type Listing = {
   listing_id: string;
+  farmer_id: string;
   crop_type: string;
   quantity_kg: string;
   price_per_kg: string;
@@ -58,6 +59,8 @@ export default function MarketplacePage() {
   const [enquiryHasError, setEnquiryHasError] = useState(false);
   const [enquiryLoading, setEnquiryLoading] = useState(false);
   const [sentEnquiryIds, setSentEnquiryIds] = useState<string[]>([]);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteErrorId, setDeleteErrorId] = useState<string | null>(null);
 
   const user = getCurrentUser();
   const canPost = !user || user.role === 'farmer';
@@ -149,6 +152,21 @@ export default function MarketplacePage() {
       setEnquiryHasError(true);
     } finally {
       setEnquiryLoading(false);
+    }
+  }
+
+  async function handleDelete(listingId: string) {
+    if (!window.confirm(t('confirmDeleteListing'))) return;
+
+    setDeleteErrorId(null);
+    setDeletingId(listingId);
+    try {
+      await apiDelete(`/listings/${listingId}`);
+      setListings((current) => current.filter((l) => l.listing_id !== listingId));
+    } catch {
+      setDeleteErrorId(listingId);
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -317,6 +335,21 @@ export default function MarketplacePage() {
                   {l.description}
                   <span className="text-hinga-terracotta not-italic ml-0.5">&rdquo;</span>
                 </p>
+              )}
+
+              {user?.user_id === l.farmer_id && (
+                <div className="mb-2">
+                  <button
+                    onClick={() => handleDelete(l.listing_id)}
+                    disabled={deletingId === l.listing_id}
+                    className="px-3 py-1 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 disabled:opacity-60"
+                  >
+                    {deletingId === l.listing_id ? tc('loading') : tc('delete')}
+                  </button>
+                  {deleteErrorId === l.listing_id && (
+                    <p className="text-sm text-red-600 mt-1">{t('deleteError')}</p>
+                  )}
+                </div>
               )}
 
               {canEnquire && (

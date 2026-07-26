@@ -144,7 +144,9 @@
     "cancel": "Cancel",
     "loading": "Loading listings...",
     "empty": "No listings yet.",
-    "enquirySent": "Your enquiry was sent."
+    "enquirySent": "Your enquiry was sent.",
+    "confirmDeleteListing": "Remove this listing?",
+    "deleteError": "Could not remove the listing. Please try again."
   },
   "common": {
     "loading": "Loading...",
