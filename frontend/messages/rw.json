@@ -144,7 +144,21 @@
     "cancel": "Hagarika",
     "loading": "Gutegereza urutonde...",
     "empty": "Nta rutonde ruhari.",
-    "enquirySent": "Ikibazo cyawe cyoherejwe."
+    "enquirySent": "Ikibazo cyawe cyoherejwe.",
+    "myListingsTitle": "Ibyo nashyize ku isoko",
+    "status": "Imiterere",
+    "statusActive": "Birimo",
+    "statusSold": "Byagurishijwe",
+    "statusCancelled": "Byahagaritswe",
+    "markSold": "Emeza ko byagurishijwe",
+    "markCancelled": "Hagarika urutonde",
+    "reactivate": "Ongera ushyire ku isoko",
+    "viewEnquiries": "Reba ibibazo",
+    "hideEnquiries": "Hisha ibibazo",
+    "noEnquiries": "Nta kibazo kirahari.",
+    "buyer": "Umuguzi",
+    "confirmDelete": "Siba uru rutonde?",
+    "saveChanges": "Bika impinduka"
   },
   "common": {
     "loading": "Gutegereza...",

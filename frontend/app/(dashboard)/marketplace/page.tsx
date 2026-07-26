@@ -7,6 +7,7 @@ import { apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/
 import { DISTRICTS } from '@/lib/districts';
 import { translateCrop } from '@/lib/crops';
 import { translateDescription } from '@/lib/descriptions';
+import MyListings from '@/components/MyListings';
 
 type Listing = {
   listing_id: string;
@@ -59,6 +60,7 @@ export default function MarketplacePage() {
   const [enquiryHasError, setEnquiryHasError] = useState(false);
   const [enquiryLoading, setEnquiryLoading] = useState(false);
   const [sentEnquiryIds, setSentEnquiryIds] = useState<string[]>([]);
+  const [myListingsKey, setMyListingsKey] = useState(0);
 
   const user = getCurrentUser();
   const canPost = !user || user.role === 'farmer';
@@ -118,6 +120,7 @@ export default function MarketplacePage() {
       setPostPrice('');
       setPostDescription('');
       loadListings();
+      setMyListingsKey((k) => k + 1);
     } catch (err) {
       setPostErrorRaw(getRawError(err));
       setPostHasError(true);
@@ -142,7 +145,7 @@ export default function MarketplacePage() {
     setEnquiryLoading(true);
 
     try {
-      await apiPost(`/listings/${listingId}/enquiries`, { message: enquiryMessage });
+      await apiPost('/enquiries', { listing_id: listingId, message: enquiryMessage });
       setSentEnquiryIds((ids) => [...ids, listingId]);
       setOpenEnquiryId(null);
     } catch (err) {
@@ -197,6 +200,10 @@ export default function MarketplacePage() {
       </div>
 
       {hasError && <p className="text-sm text-red-600 mb-4">{errorRaw || tc('error')}</p>}
+
+      {user?.role === 'farmer' && (
+        <MyListings key={myListingsKey} onChange={loadListings} />
+      )}
 
       {showPostForm && (
         <form

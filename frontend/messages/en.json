@@ -144,7 +144,21 @@
     "cancel": "Cancel",
     "loading": "Loading listings...",
     "empty": "No listings yet.",
-    "enquirySent": "Your enquiry was sent."
+    "enquirySent": "Your enquiry was sent.",
+    "myListingsTitle": "My listings",
+    "status": "Status",
+    "statusActive": "Active",
+    "statusSold": "Sold",
+    "statusCancelled": "Cancelled",
+    "markSold": "Mark as sold",
+    "markCancelled": "Cancel listing",
+    "reactivate": "Reactivate",
+    "viewEnquiries": "View enquiries",
+    "hideEnquiries": "Hide enquiries",
+    "noEnquiries": "No enquiries yet.",
+    "buyer": "Buyer",
+    "confirmDelete": "Delete this listing?",
+    "saveChanges": "Save changes"
   },
   "common": {
     "loading": "Loading...",

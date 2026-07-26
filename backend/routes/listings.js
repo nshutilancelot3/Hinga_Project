@@ -33,6 +33,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/listings/mine
+
+router.get('/mine', authenticate, requireRole('farmer'), async (req, res) => {
+  try {
+    const listings = await prisma.listing.findMany({
+      where: { farmer_id: req.user.user_id },
+      orderBy: { created_at: 'desc' },
+    });
+    res.json(listings);
+  } catch (err) {
+    console.error('GET /api/listings/mine failed:', err);
+    res.status(500).json({ error: 'Failed to fetch your listings' });
+  }
+});
+
 // POST /api/listings
 
 router.post('/', authenticate, requireRole('farmer'), async (req, res) => {
