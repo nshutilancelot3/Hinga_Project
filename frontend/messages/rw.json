@@ -80,12 +80,11 @@
     "date": "Itariki",
     "loading": "Gutegereza ibiciro...",
     "empty": "Nta biciro bibonetse.",
-    "trendTitle": "Uko igiciro cya {crop} cyahindutse mu turere",
-    "trendNeedsData": "Hitamo ubuhinzi kugira ngo urebe uko ibiciro byahindutse. Hakenewe byibuze ibiciro bibiri byanditswe ku itariki zitandukanye.",
+    "byMarketTitle": "Igiciro cya {crop} kuri buri isoko",
     "overviewTitle": "Uko isoko rihagaze muri rusange",
     "overviewSubtitle": "Igiciro mpuzandengo cya buri gihingwa ku masoko yose.",
     "overviewMarketCount": "{count, plural, one {isoko rimwe} other {amasoko #}}",
-    "overviewHint": "Kanda ku gihingwa kugira ngo urebe uko igiciro cyacyo cyagiye gihinduka uko igihe gihita."
+    "overviewHint": "Kanda ku gihingwa kugira ngo ugereranye igiciro cyacyo mu masoko atandukanye."
   },
   "weather": {
     "title": "Iteganyabihe",
