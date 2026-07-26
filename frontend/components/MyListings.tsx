@@ -21,7 +21,9 @@ type Enquiry = {
   enquiry_id: string;
   message: string;
   created_at: string;
-  buyer: { full_name: string };
+  status: 'pending' | 'resolved';
+  buyer: { full_name: string; email: string };
+  listing: { listing_id: string };
 };
 
 const inputClass =
@@ -54,7 +56,8 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
 
   const [openEnquiriesId, setOpenEnquiriesId] = useState<string | null>(null);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
-  const [enquiriesLoading, setEnquiriesLoading] = useState(false);
+  const [enquiriesLoading, setEnquiriesLoading] = useState(true);
+  const [resolvingId, setResolvingId] = useState<string | null>(null);
 
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -72,6 +75,13 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
 
   useEffect(() => {
     loadMine();
+    apiGet('/enquiries/received')
+      .then(setEnquiries)
+      .catch((err) => {
+        setErrorRaw(getRawError(err));
+        setHasError(true);
+      })
+      .finally(() => setEnquiriesLoading(false));
   }, []);
 
   function startEdit(l: OwnListing) {
@@ -128,19 +138,22 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
   }
 
   function toggleEnquiries(listingId: string) {
-    if (openEnquiriesId === listingId) {
-      setOpenEnquiriesId(null);
-      return;
+    setOpenEnquiriesId((current) => (current === listingId ? null : listingId));
+  }
+
+  async function markResolved(enquiryId: string) {
+    setResolvingId(enquiryId);
+    try {
+      await apiPut(`/enquiries/${enquiryId}`, { status: 'resolved' });
+      setEnquiries((prev) =>
+        prev.map((e) => (e.enquiry_id === enquiryId ? { ...e, status: 'resolved' } : e))
+      );
+    } catch (err) {
+      setErrorRaw(getRawError(err));
+      setHasError(true);
+    } finally {
+      setResolvingId(null);
     }
-    setOpenEnquiriesId(listingId);
-    setEnquiriesLoading(true);
-    apiGet(`/enquiries?listing_id=${listingId}`)
-      .then(setEnquiries)
-      .catch((err) => {
-        setErrorRaw(getRawError(err));
-        setHasError(true);
-      })
-      .finally(() => setEnquiriesLoading(false));
   }
 
   if (loading) return <p className="text-sm text-hinga-inkMuted">{t('loading')}</p>;
@@ -280,17 +293,36 @@ export default function MyListings({ onChange }: { onChange?: () => void }) {
                     <div className="mt-2 border-t border-hinga-green/10 pt-2">
                       {enquiriesLoading ? (
                         <p className="text-xs text-hinga-inkMuted">{t('loading')}</p>
-                      ) : enquiries.length === 0 ? (
-                        <p className="text-xs text-hinga-inkMuted">{t('noEnquiries')}</p>
                       ) : (
-                        <ul className="flex flex-col gap-2">
-                          {enquiries.map((enq) => (
-                            <li key={enq.enquiry_id} className="text-xs text-hinga-ink">
-                              <span className="font-medium">{enq.buyer.full_name}</span>
-                              <span className="text-hinga-inkMuted">: {enq.message}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        (() => {
+                          const own = enquiries.filter((e) => e.listing.listing_id === l.listing_id);
+                          return own.length === 0 ? (
+                            <p className="text-xs text-hinga-inkMuted">{t('noEnquiries')}</p>
+                          ) : (
+                            <ul className="flex flex-col gap-2">
+                              {own.map((enq) => (
+                                <li key={enq.enquiry_id} className="text-xs">
+                                  <p className="text-hinga-ink">
+                                    <span className="font-medium">{enq.buyer.full_name}</span>
+                                    <span className="text-hinga-inkMuted">: {enq.message}</span>
+                                  </p>
+                                  <p className="text-hinga-inkMuted">{enq.buyer.email}</p>
+                                  {enq.status === 'resolved' ? (
+                                    <span className="text-hinga-green font-medium">{t('responded')}</span>
+                                  ) : (
+                                    <button
+                                      onClick={() => markResolved(enq.enquiry_id)}
+                                      disabled={resolvingId === enq.enquiry_id}
+                                      className="text-hinga-green font-medium hover:underline disabled:opacity-60"
+                                    >
+                                      {resolvingId === enq.enquiry_id ? tc('loading') : t('markResponded')}
+                                    </button>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          );
+                        })()
                       )}
                     </div>
                   )}

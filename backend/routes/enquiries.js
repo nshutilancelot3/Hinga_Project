@@ -56,7 +56,7 @@ router.get('/received', authenticate, requireRole('farmer'), async (req, res) =>
       where: { listing: { farmer_id: req.user.user_id } },
       orderBy: { created_at: 'desc' },
       include: {
-        buyer: { select: { full_name: true } },
+        buyer: { select: { full_name: true, email: true } },
         listing: { select: { listing_id: true, crop_type: true, district: true } },
       },
     });
@@ -67,41 +67,41 @@ router.get('/received', authenticate, requireRole('farmer'), async (req, res) =>
   }
 });
 
-// GET /api/enquiries?listing_id=
+const ENQUIRY_STATUSES = ['pending', 'resolved'];
 
-router.get('/', authenticate, async (req, res) => {
-  const { listing_id } = req.query;
+// PUT /api/enquiries/:id
+// Farmers only, and only for enquiries on their own listings. Lets a farmer
+// mark an enquiry as resolved once they've followed up with the buyer.
 
-  if (!listing_id) {
-    return res.status(400).json({ error: 'listing_id query parameter is required' });
+router.put('/:id', authenticate, requireRole('farmer'), async (req, res) => {
+  if (!UUID_PATTERN.test(req.params.id)) {
+    return res.status(404).json({ error: 'Enquiry not found' });
   }
-  if (!UUID_PATTERN.test(listing_id)) {
-    return res.status(400).json({ error: 'listing_id must be a valid UUID' });
+  const { status } = req.body;
+  if (!ENQUIRY_STATUSES.includes(status)) {
+    return res.status(400).json({ error: `status must be one of: ${ENQUIRY_STATUSES.join(', ')}` });
   }
 
   try {
-    const listing = await prisma.listing.findUnique({
-      where: { listing_id },
+    const enquiry = await prisma.enquiry.findUnique({
+      where: { enquiry_id: req.params.id },
+      include: { listing: { select: { farmer_id: true } } },
     });
-
-    if (!listing) {
-      return res.status(404).json({ error: 'Listing not found' });
+    if (!enquiry) {
+      return res.status(404).json({ error: 'Enquiry not found' });
     }
-    if (listing.farmer_id !== req.user.user_id) {
+    if (enquiry.listing.farmer_id !== req.user.user_id) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    const enquiries = await prisma.enquiry.findMany({
-      where: { listing_id },
-      orderBy: { created_at: 'desc' },
-      include: {
-        buyer: { select: { full_name: true } },
-      },
+    const updated = await prisma.enquiry.update({
+      where: { enquiry_id: req.params.id },
+      data: { status },
     });
-    res.json(enquiries);
+    res.json(updated);
   } catch (err) {
-    console.error('GET /api/enquiries failed:', err);
-    res.status(500).json({ error: 'Failed to fetch enquiries' });
+    console.error('PUT /api/enquiries/:id failed:', err);
+    res.status(500).json({ error: 'Failed to update enquiry' });
   }
 });
 

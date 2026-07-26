@@ -158,6 +158,8 @@
     "hideEnquiries": "Hide enquiries",
     "noEnquiries": "No enquiries yet.",
     "buyer": "Buyer",
+    "markResponded": "Mark as responded",
+    "responded": "Responded",
     "saveChanges": "Save changes",
     "confirmDeleteListing": "Remove this listing?",
     "deleteError": "Could not remove the listing. Please try again."
