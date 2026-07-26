@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { apiDelete, apiGet, apiPost, getCurrentUser, getRawError, isLoggedIn } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 import { translateCrop } from '@/lib/crops';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { translateDescription } from '@/lib/descriptions';
 
 type Listing = {
@@ -62,6 +63,7 @@ export default function MarketplacePage() {
   const [sentEnquiryIds, setSentEnquiryIds] = useState<string[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteErrorId, setDeleteErrorId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const user = getCurrentUser();
   const canPost = !user || user.role === 'farmer';
@@ -156,8 +158,13 @@ export default function MarketplacePage() {
     }
   }
 
-  async function handleDelete(listingId: string) {
-    if (!window.confirm(t('confirmDeleteListing'))) return;
+  function requestDelete(listingId: string) {
+    setConfirmDeleteId(listingId);
+  }
+
+  async function confirmDelete() {
+    const listingId = confirmDeleteId;
+    if (!listingId) return;
 
     setDeleteErrorId(null);
     setDeletingId(listingId);
@@ -168,6 +175,7 @@ export default function MarketplacePage() {
       setDeleteErrorId(listingId);
     } finally {
       setDeletingId(null);
+      setConfirmDeleteId(null);
     }
   }
 
@@ -341,7 +349,7 @@ export default function MarketplacePage() {
               {user?.user_id === l.farmer_id && (
                 <div className="mb-2">
                   <button
-                    onClick={() => handleDelete(l.listing_id)}
+                    onClick={() => requestDelete(l.listing_id)}
                     disabled={deletingId === l.listing_id}
                     className="px-3 py-1 border border-red-200 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 disabled:opacity-60"
                   >
@@ -402,6 +410,14 @@ export default function MarketplacePage() {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmDeleteId !== null}
+        message={t('confirmDeleteListing')}
+        loading={deletingId !== null}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
     </div>
   );
 }

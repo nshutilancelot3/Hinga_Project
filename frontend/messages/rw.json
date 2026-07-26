@@ -155,7 +155,8 @@
     "save": "Bika",
     "delete": "Siba",
     "edit": "Hindura",
-    "close": "Funga"
+    "close": "Funga",
+    "cancel": "Hagarika"
   },
   "admin": {
     "title": "Ubuyobozi",
