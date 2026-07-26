@@ -155,7 +155,8 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "cancel": "Cancel"
   },
   "admin": {
     "title": "Admin Panel",
