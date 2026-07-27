@@ -117,7 +117,8 @@
     "errors": {
       "noFile": "Please select an image first.",
       "tooLarge": "Image must be under 5MB.",
-      "generic": "Diagnosis failed. Please try again."
+      "generic": "Diagnosis failed. Please try again.",
+      "notAPlant": "This doesn’t look like a plant photo. Please upload a photo of a crop or leaf."
     },
     "treatmentCategories": {
       "biological": "Biological control",

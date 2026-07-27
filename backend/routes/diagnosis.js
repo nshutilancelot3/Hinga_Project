@@ -44,6 +44,14 @@ router.post('/', authenticate, requireRole('farmer'), async (req, res) => {
     }
 
     const result = await plantIdRes.json();
+
+    // Plant.id still returns a low-confidence disease guess for non-plant photos
+    // instead of erroring, so check is_plant explicitly rather than trusting
+    // confidence alone (genuine plant diagnoses can also score under 10%).
+    if (result?.result?.is_plant?.binary === false) {
+      return res.status(422).json({ error: 'NOT_A_PLANT' });
+    }
+
     const suggestion = result?.result?.disease?.suggestions?.[0];
 
     if (!suggestion) {

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { apiPost, getRawError, isLoggedIn } from '@/lib/api';
+import { apiPost, getApiError, isLoggedIn } from '@/lib/api';
 import { translateDisease } from '@/lib/diseases';
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
@@ -59,8 +59,7 @@ export default function DiagnosisPage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [cropType, setCropType] = useState('');
   const [result, setResult] = useState<DiagnosisResult | null>(null);
-  const [errorKey, setErrorKey] = useState<'noFile' | 'tooLarge' | 'generic' | null>(null);
-  const [errorRaw, setErrorRaw] = useState('');
+  const [errorKey, setErrorKey] = useState<'noFile' | 'tooLarge' | 'notAPlant' | 'generic' | null>(null);
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
@@ -109,8 +108,8 @@ export default function DiagnosisPage() {
       const data = await apiPost('/diagnosis', { image, crop_type: cropType });
       setResult(data);
     } catch (err) {
-      setErrorRaw(getRawError(err));
-      setErrorKey('generic');
+      const { code } = getApiError(err);
+      setErrorKey(code === 'NOT_A_PLANT' ? 'notAPlant' : 'generic');
     } finally {
       setLoading(false);
     }
@@ -165,11 +164,7 @@ export default function DiagnosisPage() {
           />
         </label>
 
-        {errorKey && (
-          <p className="text-sm text-red-600">
-            {errorKey === 'generic' && errorRaw ? errorRaw : t(`errors.${errorKey}`)}
-          </p>
-        )}
+        {errorKey && <p className="text-sm text-red-600">{t(`errors.${errorKey}`)}</p>}
 
         <button
           type="submit"

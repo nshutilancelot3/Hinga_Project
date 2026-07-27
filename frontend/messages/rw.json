@@ -117,7 +117,8 @@
     "errors": {
       "noFile": "Hitamo ifoto mbere.",
       "tooLarge": "Ifoto igomba kuba munsi ya 5MB.",
-      "generic": "Isuzuma ntiryakunze. Ongera ugerageze."
+      "generic": "Isuzuma ntiryakunze. Ongera ugerageze.",
+      "notAPlant": "Iyi ifoto ntabwo isa n'ifoto y'igihingwa. Nyamuneka shyiraho ifoto y'igihingwa cyangwa ikibabi."
     },
     "treatmentCategories": {
       "biological": "Kurwanya mu buryo bw'ibinyabuzima",
