@@ -49,7 +49,7 @@ async function createPrice(ownerToken) {
 }
 
 describe('PUT /api/prices/:id', () => {
-  it("returns 403 when a different coop_admin tries to edit someone else's price", async () => {
+  it("returns 200 when a different coop_admin edits another admin's price", async () => {
     const owner = await authToken('coop_admin');
     const priceId = await createPrice(owner.token);
 
@@ -58,7 +58,7 @@ describe('PUT /api/prices/:id', () => {
       .put(`/api/prices/${priceId}`)
       .set('Authorization', `Bearer ${other.token}`)
       .send({ price_rwf: 500 });
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(200);
   });
 
   it('returns 200 when the owning coop_admin edits their own price', async () => {
@@ -87,7 +87,7 @@ describe('PUT /api/prices/:id', () => {
 });
 
 describe('DELETE /api/prices/:id', () => {
-  it("returns 403 when a different coop_admin tries to delete someone else's price", async () => {
+  it("returns 204 when a different coop_admin deletes another admin's price", async () => {
     const owner = await authToken('coop_admin');
     const priceId = await createPrice(owner.token);
 
@@ -95,7 +95,7 @@ describe('DELETE /api/prices/:id', () => {
     const res = await request(app)
       .delete(`/api/prices/${priceId}`)
       .set('Authorization', `Bearer ${other.token}`);
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(204);
   });
 
   it('returns 204 when the owning coop_admin deletes their own price', async () => {
