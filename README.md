@@ -28,5 +28,10 @@ A bilingual web platform for Rwanda's smallholder farmers: market prices, weathe
 - **Frontend:** Next.js 14, Tailwind CSS, next-intl
 - **Backend:** Node.js, Express, Prisma ORM
 - **Database:** PostgreSQL (Render managed)
+- **Testing:** Jest + Supertest, run against a throwaway Postgres instance ([backend/TESTING.md](backend/TESTING.md))
 - **Deployment:** Render
 - **External APIs:** OpenWeatherMap, Plant.id
+
+## API Documentation
+
+Full endpoint reference: [backend/README.md](backend/README.md). Roles, feature scope, and the API contract: [docs/requirements.md](docs/requirements.md).

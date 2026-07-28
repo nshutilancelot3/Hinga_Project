@@ -1,6 +1,6 @@
 # Hinga — Requirements Document
 
-Status: draft, awaiting peer review (see [#6](https://github.com/nshutilancelot3/Hinga_Project/issues/6))
+Status: approved (see [#6](https://github.com/nshutilancelot3/Hinga_Project/issues/6)), updated as the API evolves
 Source: [Hinga Project Proposal](../Croissant_ProjectProposal.pdf), Chapter 1 (Scope) and Chapter 3 (System Analysis and Design)
 
 ## 1. Roles
@@ -14,7 +14,7 @@ the `users` table (`farmer`, `buyer`, `coop_admin`, `super_admin`).
 | **Farmer** | View market prices, view district weather forecast, upload a photo for disease diagnosis, create/edit/cancel their own produce listings, view enquiries received on their listings | Edit other farmers' listings, enter market prices, manage users |
 | **Buyer** | View market prices, browse marketplace listings, send an enquiry to a farmer on a listing | Create listings, enter market prices, manage users |
 | **Cooperative Admin (`coop_admin`)** | Everything a Buyer can view, plus create/update/delete market price entries for the 5 markets | Manage user accounts, delete other admins' price entries |
-| **Super Admin (`super_admin`)** | Everything a Cooperative Admin can do, plus create/update/delete/deactivate any user account | — |
+| **Super Admin (`super_admin`)** | Everything a Cooperative Admin can do, plus list all users, change any user's role, and delete any user account | — |
 
 Registration collects `full_name`, `email`, `password`, `district`, `role`, and `language_pref`
 (default `rw`), matching the `users` table (proposal §3.5).
@@ -43,13 +43,13 @@ Registration collects `full_name`, `email`, `password`, `district`, `role`, and 
 
 ## 3. API Specification
 
-Base URL: `/api/v1`. All request/response bodies are JSON. Routes marked **Auth** require an
+Base URL: `/api`. All request/response bodies are JSON. Routes marked **Auth** require an
 `Authorization: Bearer <JWT>` header; the required role is listed where narrower than "any
 authenticated user."
 
 | Method | Path | Auth | Role | Purpose |
 |---|---|---|---|---|
-| POST | `/auth/register` | No | — | Create a user account |
+| POST | `/auth/register` | No | — | Create a user account (`farmer`, `buyer`, or `coop_admin` only) |
 | POST | `/auth/login` | No | — | Authenticate, returns JWT |
 | GET | `/prices` | No | — | List market prices (filter by `market`, `crop`) |
 | POST | `/prices` | Yes | coop_admin, super_admin | Create a price entry |
@@ -58,12 +58,15 @@ authenticated user."
 | GET | `/weather/:district` | Yes | any | 5-day forecast, served from cache if < 3h old |
 | POST | `/diagnosis` | Yes | farmer | Upload photo, proxy to Plant.id, return diagnosis |
 | GET | `/listings` | No | — | Browse active listings (filter by `district`, `crop`) |
+| GET | `/listings/mine` | Yes | farmer | List the caller's own listings, any status |
 | POST | `/listings` | Yes | farmer | Create a listing |
-| PATCH | `/listings/:id` | Yes | farmer (owner) | Update status (e.g. mark sold/cancelled) |
-| POST | `/listings/:id/enquiries` | Yes | buyer | Send an enquiry on a listing |
-| GET | `/listings/:id/enquiries` | Yes | farmer (owner) | View enquiries received on own listing |
-| GET | `/admin/users` | Yes | super_admin | List all users |
-| PATCH | `/admin/users/:id` | Yes | super_admin | Update role/deactivate a user |
+| PUT | `/listings/:id` | Yes | farmer (owner) | Update quantity, price, description, or status |
+| DELETE | `/listings/:id` | Yes | farmer (owner), coop_admin, super_admin | Delete a listing (admins may moderate any listing) |
+| POST | `/enquiries` | Yes | buyer | Send an enquiry on a listing (`listing_id` in the body) |
+| GET | `/enquiries/received` | Yes | farmer | View enquiries received across all of the caller's own listings |
+| PUT | `/enquiries/:id` | Yes | farmer (owner of the listing) | Mark an enquiry `resolved` or `pending` |
+| GET | `/admin/users` | Yes | super_admin | List all users, paginated, filterable by role |
+| PUT | `/admin/users/:id/role` | Yes | super_admin | Change a user's role |
 | DELETE | `/admin/users/:id` | Yes | super_admin | Remove a user account |
 | GET | `/health` | No | — | Service liveness check (already implemented) |
 
