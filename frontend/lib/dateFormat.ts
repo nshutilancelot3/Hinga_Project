@@ -6,6 +6,11 @@
 const WEEKDAYS_RW = ['Ku cyumweru', 'Kuwa mbere', 'Kuwa kabiri', 'Kuwa gatatu', 'Kuwa kane', 'Kuwa gatanu', 'Kuwa gatandatu'];
 const WEEKDAYS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+// Short forms for compact UI (e.g. a 5-day forecast row), distinct enough at a
+// glance despite three of the full names all starting with "Gatan-/Gatat-".
+const WEEKDAYS_SHORT_RW = ['Cyu', 'Mbe', 'Kab', 'Gtu', 'Kan', 'Gnu', 'Gtd'];
+const WEEKDAYS_SHORT_EN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 const MONTHS_RW = ['Mutarama', 'Gashyantare', 'Werurwe', 'Mata', 'Gicurasi', 'Kamena', 'Nyakanga', 'Kanama', 'Nzeri', 'Ukwakira', 'Ugushyingo', 'Ukuboza'];
 const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -15,6 +20,16 @@ export function formatLongDate(date: Date, locale: string) {
   return locale === 'rw'
     ? `${weekday}, ${date.getDate()} ${month}`
     : `${weekday}, ${month} ${date.getDate()}`;
+}
+
+export function formatShortWeekday(date: Date, locale: string) {
+  return locale === 'rw' ? WEEKDAYS_SHORT_RW[date.getDay()] : WEEKDAYS_SHORT_EN[date.getDay()];
+}
+
+// Sunday-first list of {short, full} pairs so a UI can render a legend mapping
+// the Kinyarwanda short form back to the full English weekday name.
+export function weekdayKey() {
+  return WEEKDAYS_SHORT_RW.map((short, i) => ({ short, full: WEEKDAYS_EN[i] }));
 }
 
 export function formatShortDate(date: Date) {

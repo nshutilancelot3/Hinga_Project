@@ -100,7 +100,8 @@
     "forecast": "5-day forecast",
     "advisoryDry": "Little rain expected today — a good day for field work and drying crops.",
     "advisoryWet": "Rain is likely today — plan spraying and harvest drying around it.",
-    "empty": "Choose a district to see the next five days."
+    "empty": "Choose a district to see the next five days.",
+    "dayKeyHint": "Days:"
   },
   "diagnosis": {
     "title": "Crop Diagnosis",
