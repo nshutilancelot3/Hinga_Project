@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { apiGet, getRawError } from '@/lib/api';
 import { DISTRICTS } from '@/lib/districts';
 import { translateCondition } from '@/lib/weatherConditions';
+import { formatShortWeekday, weekdayKey } from '@/lib/dateFormat';
 
 type ForecastSlot = {
   dt: number;
@@ -448,7 +449,7 @@ export default function WeatherPage() {
           >
             <summary className="flex cursor-pointer list-none items-center gap-3 rounded-xl px-2 py-3.5 transition-colors hover:bg-white/70 [&::-webkit-details-marker]:hidden">
               <span className="w-16 shrink-0 text-sm font-semibold text-stone-700">
-                {new Date(`${day.key}T00:00:00`).toLocaleDateString(locale, { weekday: 'short' })}
+                {formatShortWeekday(new Date(`${day.key}T00:00:00`), locale)}
               </span>
 
               <WeatherIcon code={day.lead.weather[0]?.icon} className="h-7 w-7 shrink-0" />
@@ -504,6 +505,17 @@ export default function WeatherPage() {
           </details>
         );
       })}
+
+      {locale === 'rw' && (
+        <p className="flex flex-wrap gap-x-3 gap-y-1 border-t border-stone-200/70 px-2 pt-3 text-[11px] text-stone-500">
+          <span className="font-medium text-stone-600">{t('dayKeyHint')}</span>
+          {weekdayKey().map(({ short, full }) => (
+            <span key={short}>
+              {short} = {full}
+            </span>
+          ))}
+        </p>
+      )}
     </div>
   );
 }
